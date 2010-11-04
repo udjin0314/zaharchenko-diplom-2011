@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="UTF-8"?><?xml-stylesheet type='text/xsl' href='_UpgradeReport_Files/UpgradeReport.xslt'?><UpgradeLog>
+<Properties><Property Name="Solution" Value="DynamicDataDisplay-0.3">
+</Property><Property Name="Solution File" Value="C:\Users\Женька\Documents\Visual Studio 2010\Projects\DiplomWPF\D3\source\Stable\v0.3.1\sln\DynamicDataDisplay\DynamicDataDisplay-0.3.sln">
+</Property><Property Name="Date" Value="16 октября 2010 г.">
+</Property><Property Name="Time" Value="14:09">
+</Property></Properties><Event ErrorLevel="0" Project="DynamicDataDisplay" Source="..\..\src\DynamicDataDisplay\DynamicDataDisplay.csproj" Description="Project converted successfully">
+</Event><Event ErrorLevel="3" Project="DynamicDataDisplay" Source="..\..\src\DynamicDataDisplay\DynamicDataDisplay.csproj" Description="Converted">
+</Event><Event ErrorLevel="0" Project="DynamicDataDisplay.Maps" Source="..\..\src\DynamicDataDisplay.Maps\DynamicDataDisplay.Maps\DynamicDataDisplay.Maps.csproj" Description="Project converted successfully">
+</Event><Event ErrorLevel="3" Project="DynamicDataDisplay.Maps" Source="..\..\src\DynamicDataDisplay.Maps\DynamicDataDisplay.Maps\DynamicDataDisplay.Maps.csproj" Description="Converted">
+</Event><Event ErrorLevel="0" Project="DynamicDataDisplay.Coastline" Source="..\..\src\DynamicDataDisplay.Coastline\DynamicDataDisplay.Coastline.csproj" Description="Project converted successfully">
+</Event><Event ErrorLevel="3" Project="DynamicDataDisplay.Coastline" Source="..\..\src\DynamicDataDisplay.Coastline\DynamicDataDisplay.Coastline.csproj" Description="Converted">
+</Event><Event ErrorLevel="0" Project="DynamicDataDisplayTest" Source="..\..\src\DynamicDataDisplayTest\DynamicDataDisplayTest.csproj" Description="Project converted successfully">
+</Event><Event ErrorLevel="3" Project="DynamicDataDisplayTest" Source="..\..\src\DynamicDataDisplayTest\DynamicDataDisplayTest.csproj" Description="Converted">
+</Event><Event ErrorLevel="0" Project="AnimationSample" Source="..\..\src\Samples\v0.2\Animation\AnimationSample.csproj" Description="Project converted successfully">
+</Event><Event ErrorLevel="3" Project="AnimationSample" Source="..\..\src\Samples\v0.2\Animation\AnimationSample.csproj" Description="Converted">
+</Event><Event ErrorLevel="0" Project="CurrencyExchangeSample" Source="..\..\src\Samples\v0.2\CurrencyExchangeSample\CurrencyExchangeSample.csproj" Description="Project converted successfully">
+</Event><Event ErrorLevel="3" Project="CurrencyExchangeSample" Source="..\..\src\Samples\v0.2\CurrencyExchangeSample\CurrencyExchangeSample.csproj" Description="Converted">
+</Event><Event ErrorLevel="0" Project="DataTableSample" Source="..\..\src\Samples\v0.2\DataTable\DataTableSample.csproj" Description="Project converted successfully">
+</Event><Event ErrorLevel="3" Project="DataTableSample" Source="..\..\src\Samples\v0.2\DataTable\DataTableSample.csproj" Description="Converted">
+</Event><Event ErrorLevel="0" Project="Demo" Source="..\..\src\Samples\v0.2\Demo\Demo.csproj" Description="Project converted successfully">
+</Event><Event ErrorLevel="3" Project="Demo" Source="..\..\src\Samples\v0.2\Demo\Demo.csproj" Description="Converted">
+</Event><Event ErrorLevel="0" Project="HelloWorldSample" Source="..\..\src\Samples\v0.2\HelloWorld\HelloWorldSample.csproj" Description="Project converted successfully">
+</Event><Event ErrorLevel="3" Project="HelloWorldSample" Source="..\..\src\Samples\v0.2\HelloWorld\HelloWorldSample.csproj" Description="Converted">
+</Event><Event ErrorLevel="0" Project="ImageHistogramSample" Source="..\..\src\Samples\v0.2\ImageHistogram\ImageHistogramSample.csproj" Description="Project converted successfully">
+</Event><Event ErrorLevel="3" Project="ImageHistogramSample" Source="..\..\src\Samples\v0.2\ImageHistogram\ImageHistogramSample.csproj" Description="Converted">
+</Event><Event ErrorLevel="0" Project="LineSample" Source="..\..\src\Samples\v0.2\LineSample\LineSample.csproj" Description="Project converted successfully">
+</Event><Event ErrorLevel="3" Project="LineSample" Source="..\..\src\Samples\v0.2\LineSample\LineSample.csproj" Description="Converted">
+</Event><Event ErrorLevel="0" Project="MarkersSample" Source="..\..\src\Samples\v0.2\Markers\MarkersSample.csproj" Description="Project converted successfully">
+</Event><Event ErrorLevel="3" Project="MarkersSample" Source="..\..\src\Samples\v0.2\Markers\MarkersSample.csproj" Description="Converted">
+</Event><Event ErrorLevel="0" Project="PerfCounterSample" Source="..\..\src\Samples\v0.2\PerfCounter\PerfCounterSample.csproj" Description="Project converted successfully">
+</Event><Event ErrorLevel="3" Project="PerfCounterSample" Source="..\..\src\Samples\v0.2\PerfCounter\PerfCounterSample.csproj" Description="Converted">
+</Event><Event ErrorLevel="0" Project="PlotterLayoutSample" Source="..\..\src\Samples\v0.2\PlotterLayout\PlotterLayoutSample.csproj" Description="Project converted successfully">
+</Event><Event ErrorLevel="3" Project="PlotterLayoutSample" Source="..\..\src\Samples\v0.2\PlotterLayout\PlotterLayoutSample.csproj" Description="Converted">
+</Event><Event ErrorLevel="0" Project="StockExchangeSample" Source="..\..\src\Samples\v0.2\StockExchangeSample\StockExchangeSample.csproj" Description="Project converted successfully">
+</Event><Event ErrorLevel="3" Project="StockExchangeSample" Source="..\..\src\Samples\v0.2\StockExchangeSample\StockExchangeSample.csproj" Description="Converted">
+</Event><Event ErrorLevel="0" Project="TooltipSample" Source="..\..\src\Samples\v0.2\Tooltip\TooltipSample.csproj" Description="Project converted successfully">
+</Event><Event ErrorLevel="3" Project="TooltipSample" Source="..\..\src\Samples\v0.2\Tooltip\TooltipSample.csproj" Description="Converted">
+</Event><Event ErrorLevel="0" Project="CoastlineSampleApp" Source="..\..\src\Samples\v0.3\CoastlineSampleApp\CoastlineSampleApp.csproj" Description="Project converted successfully">
+</Event><Event ErrorLevel="3" Project="CoastlineSampleApp" Source="..\..\src\Samples\v0.3\CoastlineSampleApp\CoastlineSampleApp.csproj" Description="Converted">
+</Event><Event ErrorLevel="0" Project="IsolineSampleApp" Source="..\..\src\Samples\v0.3\IsolineSampleApp\IsolineSampleApp.csproj" Description="Project converted successfully">
+</Event><Event ErrorLevel="3" Project="IsolineSampleApp" Source="..\..\src\Samples\v0.3\IsolineSampleApp\IsolineSampleApp.csproj" Description="Converted">
+</Event><Event ErrorLevel="0" Project="MapSample" Source="..\..\src\Samples\v0.3\MapSample\MapSample.csproj" Description="Project converted successfully">
+</Event><Event ErrorLevel="3" Project="MapSample" Source="..\..\src\Samples\v0.3\MapSample\MapSample.csproj" Description="Converted">
+</Event><Event ErrorLevel="0" Project="MercatorShaderMapSampleApp" Source="..\..\src\Samples\v0.3\MercatorShaderMapSampleApp\MercatorShaderMapSampleApp.csproj" Description="Project converted successfully">
+</Event><Event ErrorLevel="3" Project="MercatorShaderMapSampleApp" Source="..\..\src\Samples\v0.3\MercatorShaderMapSampleApp\MercatorShaderMapSampleApp.csproj" Description="Converted">
+</Event><Event ErrorLevel="0" Project="SimulationSample" Source="..\..\src\Samples\v0.3\Simulation\SimulationSample.csproj" Description="Project converted successfully">
+</Event><Event ErrorLevel="3" Project="SimulationSample" Source="..\..\src\Samples\v0.3\Simulation\SimulationSample.csproj" Description="Converted">
+</Event><Event ErrorLevel="0" Project="PaletteControlSampleApp" Source="..\..\src\Samples\v0.3\PaletteControlSampleApp\PaletteControlSampleApp.csproj" Description="Project converted successfully">
+</Event><Event ErrorLevel="3" Project="PaletteControlSampleApp" Source="..\..\src\Samples\v0.3\PaletteControlSampleApp\PaletteControlSampleApp.csproj" Description="Converted">
+</Event><Event ErrorLevel="0" Project="DynamicDataDisplay.Controls" Source="..\..\src\DynamicDataDisplay.Controls\DynamicDataDisplay.Controls.csproj" Description="Project converted successfully">
+</Event><Event ErrorLevel="3" Project="DynamicDataDisplay.Controls" Source="..\..\src\DynamicDataDisplay.Controls\DynamicDataDisplay.Controls.csproj" Description="Converted">
+</Event><Event ErrorLevel="0" Project="" Source="DynamicDataDisplay-0.3.sln" Description="Solution converted successfully">
+</Event><Event ErrorLevel="3" Project="" Source="DynamicDataDisplay-0.3.sln" Description="Converted">
+</Event><Event ErrorLevel="0" Project="AnimationSample" Source="..\..\src\Samples\v0.2\Animation\AnimationSample.csproj" Description="Scan complete: Upgrade not required for project files.">
+</Event><Event ErrorLevel="0" Project="CurrencyExchangeSample" Source="..\..\src\Samples\v0.2\CurrencyExchangeSample\CurrencyExchangeSample.csproj" Description="Scan complete: Upgrade not required for project files.">
+</Event><Event ErrorLevel="0" Project="DataTableSample" Source="..\..\src\Samples\v0.2\DataTable\DataTableSample.csproj" Description="Scan complete: Upgrade not required for project files.">
+</Event><Event ErrorLevel="0" Project="Demo" Source="..\..\src\Samples\v0.2\Demo\Demo.csproj" Description="Scan complete: Upgrade not required for project files.">
+</Event><Event ErrorLevel="0" Project="HelloWorldSample" Source="..\..\src\Samples\v0.2\HelloWorld\HelloWorldSample.csproj" Description="Scan complete: Upgrade not required for project files.">
+</Event><Event ErrorLevel="0" Project="ImageHistogramSample" Source="..\..\src\Samples\v0.2\ImageHistogram\ImageHistogramSample.csproj" Description="Scan complete: Upgrade not required for project files.">
+</Event><Event ErrorLevel="0" Project="LineSample" Source="..\..\src\Samples\v0.2\LineSample\LineSample.csproj" Description="Scan complete: Upgrade not required for project files.">
+</Event><Event ErrorLevel="0" Project="MarkersSample" Source="..\..\src\Samples\v0.2\Markers\MarkersSample.csproj" Description="Scan complete: Upgrade not required for project files.">
+</Event><Event ErrorLevel="0" Project="PerfCounterSample" Source="..\..\src\Samples\v0.2\PerfCounter\PerfCounterSample.csproj" Description="Scan complete: Upgrade not required for project files.">
+</Event><Event ErrorLevel="0" Project="PlotterLayoutSample" Source="..\..\src\Samples\v0.2\PlotterLayout\PlotterLayoutSample.csproj" Description="Scan complete: Upgrade not required for project files.">
+</Event><Event ErrorLevel="0" Project="StockExchangeSample" Source="..\..\src\Samples\v0.2\StockExchangeSample\StockExchangeSample.csproj" Description="Scan complete: Upgrade not required for project files.">
+</Event><Event ErrorLevel="0" Project="TooltipSample" Source="..\..\src\Samples\v0.2\Tooltip\TooltipSample.csproj" Description="Scan complete: Upgrade not required for project files.">
+</Event><Event ErrorLevel="0" Project="CoastlineSampleApp" Source="..\..\src\Samples\v0.3\CoastlineSampleApp\CoastlineSampleApp.csproj" Description="Scan complete: Upgrade not required for project files.">
+</Event><Event ErrorLevel="0" Project="IsolineSampleApp" Source="..\..\src\Samples\v0.3\IsolineSampleApp\IsolineSampleApp.csproj" Description="Scan complete: Upgrade not required for project files.">
+</Event><Event ErrorLevel="0" Project="MapSample" Source="..\..\src\Samples\v0.3\MapSample\MapSample.csproj" Description="Scan complete: Upgrade not required for project files.">
+</Event><Event ErrorLevel="0" Project="MercatorShaderMapSampleApp" Source="..\..\src\Samples\v0.3\MercatorShaderMapSampleApp\MercatorShaderMapSampleApp.csproj" Description="Scan complete: Upgrade not required for project files.">
+</Event><Event ErrorLevel="0" Project="SimulationSample" Source="..\..\src\Samples\v0.3\Simulation\SimulationSample.csproj" Description="Scan complete: Upgrade not required for project files.">
+</Event><Event ErrorLevel="0" Project="PaletteControlSampleApp" Source="..\..\src\Samples\v0.3\PaletteControlSampleApp\PaletteControlSampleApp.csproj" Description="Scan complete: Upgrade not required for project files.">
+</Event><Event ErrorLevel="0" Project="DynamicDataDisplay" Source="..\..\src\DynamicDataDisplay\DynamicDataDisplay.csproj" Description="Scan complete: Upgrade not required for project files.">
+</Event><Event ErrorLevel="0" Project="DynamicDataDisplay.Maps" Source="..\..\src\DynamicDataDisplay.Maps\DynamicDataDisplay.Maps\DynamicDataDisplay.Maps.csproj" Description="Scan complete: Upgrade not required for project files.">
+</Event><Event ErrorLevel="0" Project="DynamicDataDisplay.Coastline" Source="..\..\src\DynamicDataDisplay.Coastline\DynamicDataDisplay.Coastline.csproj" Description="Scan complete: Upgrade not required for project files.">
+</Event><Event ErrorLevel="3" Project="" Source="Everything1.vsmdi" Description="Converted">
+</Event><Event ErrorLevel="0" Project="" Source="Everything1.vsmdi" Description="The file was converted to the current format.">
+</Event><Event ErrorLevel="3" Project="" Source="Everything5.vsmdi" Description="Converted">
+</Event><Event ErrorLevel="0" Project="" Source="Everything5.vsmdi" Description="The file was converted to the current format.">
+</Event><Event ErrorLevel="3" Project="" Source="LocalTestRun.testrunconfig" Description="Converted">
+</Event><Event ErrorLevel="0" Project="" Source="LocalTestRun.testrunconfig" Description="The file was converted to the current format.">
+</Event><Event ErrorLevel="0" Project="DynamicDataDisplayTest" Source="..\..\src\DynamicDataDisplayTest\DynamicDataDisplayTest.csproj" Description="Scan complete: Upgrade not required for project files.">
+</Event><Event ErrorLevel="0" Project="DynamicDataDisplay.Controls" Source="..\..\src\DynamicDataDisplay.Controls\DynamicDataDisplay.Controls.csproj" Description="Scan complete: Upgrade not required for project files.">
+</Event></UpgradeLog>

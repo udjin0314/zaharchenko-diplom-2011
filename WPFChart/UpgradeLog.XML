@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?><?xml-stylesheet type='text/xsl' href='_UpgradeReport_Files/UpgradeReport.xslt'?><UpgradeLog>
+<Properties><Property Name="Solution" Value="WPFChart">
+</Property><Property Name="Solution File" Value="C:\Users\Женька\Documents\Visual Studio 2010\Projects\DiplomWPF\WPFChart\WPFChart.sln">
+</Property><Property Name="User Options File" Value="C:\Users\Женька\Documents\Visual Studio 2010\Projects\DiplomWPF\WPFChart\WPFChart.suo">
+</Property><Property Name="Date" Value="18 октября 2010 г.">
+</Property><Property Name="Time" Value="0:13">
+</Property></Properties><Event ErrorLevel="0" Project="" Source="WPFChart.sln" Description="File successfully backed up as C:\Users\Женька\Documents\Visual Studio 2010\Projects\DiplomWPF\WPFChart\Backup\WPFChart.sln">
+</Event><Event ErrorLevel="0" Project="" Source="WPFChart.suo" Description="File successfully backed up as C:\Users\Женька\Documents\Visual Studio 2010\Projects\DiplomWPF\WPFChart\Backup\WPFChart.suo">
+</Event><Event ErrorLevel="0" Project="WPFChart" Source="WPFChart\WPFChart.csproj" Description="Project file successfully backed up as C:\Users\Женька\Documents\Visual Studio 2010\Projects\DiplomWPF\WPFChart\Backup\WPFChart\WPFChart.csproj">
+</Event><Event ErrorLevel="0" Project="WPFChart" Source="WPFChart\App.xaml.cs" Description="File successfully backed up as C:\Users\Женька\Documents\Visual Studio 2010\Projects\DiplomWPF\WPFChart\Backup\WPFChart\App.xaml.cs">
+</Event><Event ErrorLevel="0" Project="WPFChart" Source="WPFChart\Window1.xaml.cs" Description="File successfully backed up as C:\Users\Женька\Documents\Visual Studio 2010\Projects\DiplomWPF\WPFChart\Backup\WPFChart\Window1.xaml.cs">
+</Event><Event ErrorLevel="0" Project="WPFChart" Source="WPFChart\Bar3D.cs" Description="File successfully backed up as C:\Users\Женька\Documents\Visual Studio 2010\Projects\DiplomWPF\WPFChart\Backup\WPFChart\Bar3D.cs">
+</Event><Event ErrorLevel="0" Project="WPFChart" Source="WPFChart\Chart3D.cs" Description="File successfully backed up as C:\Users\Женька\Documents\Visual Studio 2010\Projects\DiplomWPF\WPFChart\Backup\WPFChart\Chart3D.cs">
+</Event><Event ErrorLevel="0" Project="WPFChart" Source="WPFChart\ColorMesh3D.cs" Description="File successfully backed up as C:\Users\Женька\Documents\Visual Studio 2010\Projects\DiplomWPF\WPFChart\Backup\WPFChart\ColorMesh3D.cs">
+</Event><Event ErrorLevel="0" Project="WPFChart" Source="WPFChart\Cone3D.cs" Description="File successfully backed up as C:\Users\Женька\Documents\Visual Studio 2010\Projects\DiplomWPF\WPFChart\Backup\WPFChart\Cone3D.cs">
+</Event><Event ErrorLevel="0" Project="WPFChart" Source="WPFChart\Cylinder3D.cs" Description="File successfully backed up as C:\Users\Женька\Documents\Visual Studio 2010\Projects\DiplomWPF\WPFChart\Backup\WPFChart\Cylinder3D.cs">
+</Event><Event ErrorLevel="0" Project="WPFChart" Source="WPFChart\Ellipse3D.cs" Description="File successfully backed up as C:\Users\Женька\Documents\Visual Studio 2010\Projects\DiplomWPF\WPFChart\Backup\WPFChart\Ellipse3D.cs">
+</Event><Event ErrorLevel="0" Project="WPFChart" Source="WPFChart\Mesh3D.cs" Description="File successfully backed up as C:\Users\Женька\Documents\Visual Studio 2010\Projects\DiplomWPF\WPFChart\Backup\WPFChart\Mesh3D.cs">
+</Event><Event ErrorLevel="0" Project="WPFChart" Source="WPFChart\Model3D.cs" Description="File successfully backed up as C:\Users\Женька\Documents\Visual Studio 2010\Projects\DiplomWPF\WPFChart\Backup\WPFChart\Model3D.cs">
+</Event><Event ErrorLevel="0" Project="WPFChart" Source="WPFChart\Properties\AssemblyInfo.cs" Description="File successfully backed up as C:\Users\Женька\Documents\Visual Studio 2010\Projects\DiplomWPF\WPFChart\Backup\WPFChart\Properties\AssemblyInfo.cs">
+</Event><Event ErrorLevel="0" Project="WPFChart" Source="WPFChart\Properties\Resources.Designer.cs" Description="File successfully backed up as C:\Users\Женька\Documents\Visual Studio 2010\Projects\DiplomWPF\WPFChart\Backup\WPFChart\Properties\Resources.Designer.cs">
+</Event><Event ErrorLevel="0" Project="WPFChart" Source="WPFChart\Properties\Settings.Designer.cs" Description="File successfully backed up as C:\Users\Женька\Documents\Visual Studio 2010\Projects\DiplomWPF\WPFChart\Backup\WPFChart\Properties\Settings.Designer.cs">
+</Event><Event ErrorLevel="0" Project="WPFChart" Source="WPFChart\Pyramid3D.cs" Description="File successfully backed up as C:\Users\Женька\Documents\Visual Studio 2010\Projects\DiplomWPF\WPFChart\Backup\WPFChart\Pyramid3D.cs">
+</Event><Event ErrorLevel="0" Project="WPFChart" Source="WPFChart\ScatterChart3D.cs" Description="File successfully backed up as C:\Users\Женька\Documents\Visual Studio 2010\Projects\DiplomWPF\WPFChart\Backup\WPFChart\ScatterChart3D.cs">
+</Event><Event ErrorLevel="0" Project="WPFChart" Source="WPFChart\ScatterPlotItem.cs" Description="File successfully backed up as C:\Users\Женька\Documents\Visual Studio 2010\Projects\DiplomWPF\WPFChart\Backup\WPFChart\ScatterPlotItem.cs">
+</Event><Event ErrorLevel="0" Project="WPFChart" Source="WPFChart\SurfaceChart3D.cs" Description="File successfully backed up as C:\Users\Женька\Documents\Visual Studio 2010\Projects\DiplomWPF\WPFChart\Backup\WPFChart\SurfaceChart3D.cs">
+</Event><Event ErrorLevel="0" Project="WPFChart" Source="WPFChart\TextureMapping.cs" Description="File successfully backed up as C:\Users\Женька\Documents\Visual Studio 2010\Projects\DiplomWPF\WPFChart\Backup\WPFChart\TextureMapping.cs">
+</Event><Event ErrorLevel="0" Project="WPFChart" Source="WPFChart\TransformMatrix.cs" Description="File successfully backed up as C:\Users\Женька\Documents\Visual Studio 2010\Projects\DiplomWPF\WPFChart\Backup\WPFChart\TransformMatrix.cs">
+</Event><Event ErrorLevel="0" Project="WPFChart" Source="WPFChart\Triangle3D.cs" Description="File successfully backed up as C:\Users\Женька\Documents\Visual Studio 2010\Projects\DiplomWPF\WPFChart\Backup\WPFChart\Triangle3D.cs">
+</Event><Event ErrorLevel="0" Project="WPFChart" Source="WPFChart\UniformSurfaceChart3D.cs" Description="File successfully backed up as C:\Users\Женька\Documents\Visual Studio 2010\Projects\DiplomWPF\WPFChart\Backup\WPFChart\UniformSurfaceChart3D.cs">
+</Event><Event ErrorLevel="0" Project="WPFChart" Source="WPFChart\Vertex3D.cs" Description="File successfully backed up as C:\Users\Женька\Documents\Visual Studio 2010\Projects\DiplomWPF\WPFChart\Backup\WPFChart\Vertex3D.cs">
+</Event><Event ErrorLevel="0" Project="WPFChart" Source="WPFChart\ViewportRect.cs" Description="File successfully backed up as C:\Users\Женька\Documents\Visual Studio 2010\Projects\DiplomWPF\WPFChart\Backup\WPFChart\ViewportRect.cs">
+</Event><Event ErrorLevel="0" Project="WPFChart" Source="WPFChart\Properties\Settings.settings" Description="File successfully backed up as C:\Users\Женька\Documents\Visual Studio 2010\Projects\DiplomWPF\WPFChart\Backup\WPFChart\Properties\Settings.settings">
+</Event><Event ErrorLevel="0" Project="WPFChart" Source="WPFChart\Properties\Resources.resx" Description="File successfully backed up as C:\Users\Женька\Documents\Visual Studio 2010\Projects\DiplomWPF\WPFChart\Backup\WPFChart\Properties\Resources.resx">
+</Event><Event ErrorLevel="0" Project="WPFChart" Source="WPFChart\App.xaml" Description="File successfully backed up as C:\Users\Женька\Documents\Visual Studio 2010\Projects\DiplomWPF\WPFChart\Backup\WPFChart\App.xaml">
+</Event><Event ErrorLevel="0" Project="WPFChart" Source="WPFChart\Window1.xaml" Description="File successfully backed up as C:\Users\Женька\Documents\Visual Studio 2010\Projects\DiplomWPF\WPFChart\Backup\WPFChart\Window1.xaml">
+</Event><Event ErrorLevel="0" Project="WPFChart" Source="WPFChart\WPFChart.csproj" Description="Project converted successfully">
+</Event><Event ErrorLevel="3" Project="WPFChart" Source="WPFChart\WPFChart.csproj" Description="Converted">
+</Event><Event ErrorLevel="0" Project="" Source="WPFChart.sln" Description="Solution converted successfully">
+</Event><Event ErrorLevel="3" Project="" Source="WPFChart.sln" Description="Converted">
+</Event><Event ErrorLevel="0" Project="WPFChart" Source="WPFChart\WPFChart.csproj" Description="Scan complete: Upgrade not required for project files.">
+</Event></UpgradeLog>
