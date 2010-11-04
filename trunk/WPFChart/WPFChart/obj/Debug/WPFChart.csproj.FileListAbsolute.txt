@@ -1,0 +1,7 @@
+C:\Users\Женька\Documents\Visual Studio 2010\Projects\DiplomWPF\WPFChart\WPFChart\obj\Debug\ResolveAssemblyReference.cache
+C:\Users\Женька\Documents\Visual Studio 2010\Projects\DiplomWPF\WPFChart\WPFChart\obj\Debug\Window1.baml
+C:\Users\Женька\Documents\Visual Studio 2010\Projects\DiplomWPF\WPFChart\WPFChart\obj\Debug\Window1.g.cs
+C:\Users\Женька\Documents\Visual Studio 2010\Projects\DiplomWPF\WPFChart\WPFChart\obj\Debug\App.g.cs
+C:\Users\Женька\Documents\Visual Studio 2010\Projects\DiplomWPF\WPFChart\WPFChart\obj\Debug\WPFChart_MarkupCompile.cache
+C:\Users\Женька\Documents\Visual Studio 2010\Projects\DiplomWPF\WPFChart\WPFChart\obj\Debug\WPFChart.g.resources
+C:\Users\Женька\Documents\Visual Studio 2010\Projects\DiplomWPF\WPFChart\WPFChart\obj\Debug\WPFChart.Properties.Resources.resources
