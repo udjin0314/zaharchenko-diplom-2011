@@ -111,6 +111,7 @@
     <Compile Include="Client\Chart3D\ViewportRect.cs" />
     <Compile Include="Client\UI\Chart2D.cs" />
     <Compile Include="Client\UI\Graph3D.cs" />
+    <Compile Include="Common\MatrixWriter.cs" />
     <Compile Include="ServerSide\ChislExecuter.cs" />
     <Compile Include="ServerSide\DataProcessProviderServer.cs" />
     <Compile Include="ServerSide\Executor.cs" />
