@@ -64,6 +64,9 @@
     <Reference Include="DynamicDataDisplay.Controls">
       <HintPath>..\D3\DynamicDataDisplay.Controls\DynamicDataDisplay.Controls.dll</HintPath>
     </Reference>
+    <Reference Include="OpenCLNet">
+      <HintPath>..\OpenCL.Net\OpenCLNet.dll</HintPath>
+    </Reference>
     <Reference Include="System">
       <EmbedInteropTypes>False</EmbedInteropTypes>
       <Private>True</Private>
@@ -88,7 +91,6 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
-    <Compile Include="Client\Bling\BlingHelper.cs" />
     <Compile Include="Client\Chart3D\Bar3D.cs" />
     <Compile Include="Client\Chart3D\Chart3D.cs" />
     <Compile Include="Client\Chart3D\ColorMesh3D.cs" />
@@ -109,7 +111,10 @@
     <Compile Include="Client\Chart3D\ViewportRect.cs" />
     <Compile Include="Client\UI\Chart2D.cs" />
     <Compile Include="Client\UI\Graph3D.cs" />
+    <Compile Include="ServerSide\ChislExecuter.cs" />
     <Compile Include="ServerSide\DataProcessProviderServer.cs" />
+    <Compile Include="ServerSide\Executor.cs" />
+    <Compile Include="ServerSide\ProcessChislExecuterOpenCLI.cs" />
     <Compile Include="ServerSide\ProcessExecutor.cs" />
     <Page Include="Client\MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
@@ -152,25 +157,9 @@
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
     </None>
     <AppDesigner Include="Properties\" />
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\Bling3\Bling.Core\Bling.Core.csproj">
-      <Project>{F6591754-1D10-4D4F-93DD-E61135AC33AD}</Project>
-      <Name>Bling.Core</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\Bling3\Bling.D3D10.Example\Bling.D3D10.Example.csproj">
-      <Project>{456B2638-57F6-4592-BA77-8C0859368865}</Project>
-      <Name>Bling.D3D10.Example</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\Bling3\Bling.D3D10\Bling.D3D10.csproj">
-      <Project>{1C684AE8-20F9-452A-9DF9-62EC0EC1E7A9}</Project>
-      <Name>Bling.D3D10</Name>
-      <EmbedInteropTypes>False</EmbedInteropTypes>
-    </ProjectReference>
-    <ProjectReference Include="..\Bling3\Bling.WPF\Bling.WPF.csproj">
-      <Project>{FAC48A9F-7986-4F88-8A34-AD49767FED51}</Project>
-      <Name>Bling.WPF</Name>
-    </ProjectReference>
+    <None Include="ServerSide\resolver.cl">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <BootstrapperPackage Include=".NETFramework,Version=v4.0">

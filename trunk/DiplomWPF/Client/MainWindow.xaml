@@ -3,29 +3,39 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d3="http://research.microsoft.com/DynamicDataDisplay/1.0" 
         KeyDown="OnKeyDown"
-        Title="Разработка Алгоритма численного моделирования теплового поля прозрачного оптического элемента с учетом неравномерности поглощения лазерного излучения" Height="768" Width="1366" Loaded="Window_Loaded" ResizeMode="NoResize" WindowState="Maximized" WindowStyle="SingleBorderWindow" xmlns:my="clr-namespace:Bling.Shapes;assembly=Bling.WPF" xmlns:my1="clr-namespace:Bling.WPF;assembly=Bling.WPF" xmlns:my2="clr-namespace:Bling.Slides;assembly=Bling.WPF">
+        Title="Разработка Алгоритма численного моделирования теплового поля прозрачного оптического элемента с учетом неравномерности поглощения лазерного излучения" Height="768" Width="1366" Loaded="Window_Loaded" ResizeMode="NoResize" WindowState="Maximized" WindowStyle="SingleBorderWindow">
 
     <Grid>
 
-        <GroupBox Header="Параметры" Height="Auto" HorizontalAlignment="Left" Margin="12,12,0,0" Name="groupBox2" VerticalAlignment="Top" Width="212">
-            <Grid Height="371">
-                <GroupBox Header="Параметры Процесса" Height="204" HorizontalAlignment="Left" Margin="6,8,0,0" Name="ParamGroupBox" VerticalAlignment="Top" Width="185">
+        <GroupBox Header="Параметры" Height="510" HorizontalAlignment="Left" Margin="12,12,0,0" Name="groupBox2" VerticalAlignment="Top" Width="212">
+            <Grid Height="482">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="55*" />
+                    <ColumnDefinition Width="145*" />
+                </Grid.ColumnDefinitions>
+                <GroupBox Header="Параметры Процесса" Height="315" HorizontalAlignment="Left" Margin="6,8,0,0" Name="ParamGroupBox" VerticalAlignment="Top" Width="185" Grid.ColumnSpan="2">
                     <Grid Width="170">
                         <Label Content="P" FontSize="12" FontWeight="Normal" Height="23" HorizontalAlignment="Left" Margin="6,6,0,0" Name="label1" Padding="2" VerticalAlignment="Top" Width="65" />
-                        <TextBox Height="23" HorizontalAlignment="Left" Margin="72,6,0,0" Name="parametrP" VerticalAlignment="Top" Width="92" Text="5" />
+                        <TextBox Height="23" HorizontalAlignment="Left" Margin="72,6,0,0" Name="parametrP" VerticalAlignment="Top" Width="92" Text="40" />
                         <Label Content="alpha R" FontSize="12" FontWeight="Normal" Height="23" HorizontalAlignment="Left" Margin="6,35,0,0" Name="label2" Padding="2" VerticalAlignment="Top" Width="65" />
-                        <TextBox Height="23" HorizontalAlignment="Left" Margin="72,35,0,0" Name="parametrAlphaR" VerticalAlignment="Top" Width="92" Text="5" />
+                        <TextBox Height="23" HorizontalAlignment="Left" Margin="72,35,0,0" Name="parametrAlphaR" VerticalAlignment="Top" Width="92" Text="0,005" />
                         <Label Content="alpha Z" FontSize="12" FontWeight="Normal" Height="23" HorizontalAlignment="Left" Margin="6,64,0,0" Name="label3" Padding="2" VerticalAlignment="Top" Width="65" />
-                        <TextBox Height="23" HorizontalAlignment="Left" Margin="72,64,0,0" Name="parametrAlphaZ" VerticalAlignment="Top" Width="92" Text="5" />
+                        <TextBox Height="23" HorizontalAlignment="Left" Margin="72,64,0,0" Name="parametrAlphaZ" VerticalAlignment="Top" Width="92" Text="0,005" />
                         <Label Content="R" FontSize="12" FontWeight="Normal" Height="23" HorizontalAlignment="Left" Margin="6,93,0,0" Name="label4" Padding="2" VerticalAlignment="Top" Width="65" />
-                        <TextBox Height="23" HorizontalAlignment="Left" Margin="72,93,0,0" Name="parametrR" VerticalAlignment="Top" Width="92" Text="5" />
+                        <TextBox Height="23" HorizontalAlignment="Left" Margin="72,93,0,0" Name="parametrR" VerticalAlignment="Top" Width="92" Text="3" />
                         <Label Content="l" FontSize="12" FontWeight="Normal" Height="23" HorizontalAlignment="Left" Margin="6,122,0,0" Name="label5" Padding="2" VerticalAlignment="Top" Width="65" />
-                        <TextBox Height="23" HorizontalAlignment="Left" Margin="72,122,0,0" Name="parametrL" VerticalAlignment="Top" Width="92" Text="5" />
-                        <Label Content="Время" FontSize="12" FontWeight="Normal" Height="23" HorizontalAlignment="Left" Margin="6,152,0,0" Name="label10" Padding="2" VerticalAlignment="Top" Width="65" />
+                        <TextBox Height="23" HorizontalAlignment="Left" Margin="72,122,0,0" Name="parametrL" VerticalAlignment="Top" Width="92" Text="1" />
+                        <Label Content="T" FontSize="12" FontWeight="Normal" Height="23" HorizontalAlignment="Left" Margin="6,152,0,0" Name="label10" Padding="2" VerticalAlignment="Top" Width="65" />
                         <TextBox Height="23" HorizontalAlignment="Left" Margin="72,152,0,0" Name="parametrExTime" Text=" 5" VerticalAlignment="Top" Width="92" />
+                        <Label Content="c" FontSize="12" FontWeight="Normal" Height="23" HorizontalAlignment="Left" Margin="6,181,0,0" Name="label17" Padding="2" VerticalAlignment="Top" Width="65" />
+                        <TextBox Height="23" HorizontalAlignment="Left" Margin="72,181,0,0" Name="parametrC" Text=" 1,35" VerticalAlignment="Top" Width="92" />
+                        <Label Content="K" FontSize="12" FontWeight="Normal" Height="23" HorizontalAlignment="Left" Margin="6,210,0,0" Name="label19" Padding="2" VerticalAlignment="Top" Width="65" />
+                        <TextBox Height="23" HorizontalAlignment="Left" Margin="72,210,0,0" Name="parametrK" Text=" 0,065" VerticalAlignment="Top" Width="92" />
+                        <Label Content="beta" FontSize="12" FontWeight="Normal" Height="23" HorizontalAlignment="Left" Margin="6,239,0,0" Name="label20" Padding="2" VerticalAlignment="Top" Width="65" />
+                        <TextBox Height="23" HorizontalAlignment="Left" Margin="72,239,0,0" Name="parametrBeta" Text=" 0,004" VerticalAlignment="Top" Width="92" />
                     </Grid>
                 </GroupBox>
-                <GroupBox Header="Параметры Схемы" Height="119" HorizontalAlignment="Left" Margin="6,218,0,0" Name="groupBox1" VerticalAlignment="Top" Width="185">
+                <GroupBox Header="Параметры Схемы" Height="119" HorizontalAlignment="Left" Margin="6,329,0,0" Name="groupBox1" VerticalAlignment="Top" Width="185" Grid.ColumnSpan="2">
                     <Grid Height="97" Width="170">
                         <Label Content="T" FontSize="12" FontWeight="Normal" Height="23" HorizontalAlignment="Left" Margin="6,6,0,0" Name="label6" Padding="2" VerticalAlignment="Top" Width="65" />
                         <TextBox Height="23" HorizontalAlignment="Left" Margin="72,6,0,0" Name="parametrT" VerticalAlignment="Top" Width="92" Text="100" />
@@ -35,7 +45,7 @@
                         <TextBox Height="23" HorizontalAlignment="Left" Margin="72,64,0,0" Name="parametrJ" VerticalAlignment="Top" Width="92" Text="100" />
                     </Grid>
                 </GroupBox>
-                <Button Content="Применить" Margin="6,343,0,0" Height="22" HorizontalAlignment="Left" Name="parametersExecuteButton" VerticalAlignment="Top" Width="185" Click="parametersExecuteButton_Click" />
+                <Button Content="Применить" Margin="7,454,0,0" Height="22" HorizontalAlignment="Left" Name="parametersExecuteButton" VerticalAlignment="Top" Width="185" Click="parametersExecuteButton_Click" Grid.ColumnSpan="2" />
             </Grid>
         </GroupBox>
         <TabControl Height="700" HorizontalAlignment="Left" Margin="230,17,0,0" Name="tabControl1" VerticalAlignment="Top" Width="1102">
@@ -133,14 +143,15 @@
             </TabItem>
             <TabItem Name="summaryTab" Header="Итоги" />
         </TabControl>
-        <GroupBox Header="Обозначения" Height="171" HorizontalAlignment="Left" Margin="15,412,0,0" Name="groupBox3" VerticalAlignment="Top" Width="203">
+        <GroupBox Header="Обозначения" Height="171" HorizontalAlignment="Left" Margin="16,528,0,0" Name="groupBox3" VerticalAlignment="Top" Width="203">
             <Grid>
+                <Rectangle Height="32" HorizontalAlignment="Left" Margin="82,31,0,0" Name="maxTRect" Stroke="{x:Null}" VerticalAlignment="Top" Width="71"  />
+                <Rectangle Height="32" HorizontalAlignment="Left" Margin="82,100,0,0" Name="minTRect" Stroke="{x:Null}" VerticalAlignment="Top" Width="71" />
                 <Label Content="Максимальная температура" Height="28" HorizontalAlignment="Left" Margin="3,6,0,0" Name="label9" VerticalAlignment="Top" />
                 <Label Content="" Height="28" HorizontalAlignment="Left" Margin="6,35,0,0" Name="MaxTLabel" VerticalAlignment="Top" />
                 <Label Content="Минимальная температура" Height="28" HorizontalAlignment="Left" Margin="6,69,0,0" Name="label18" VerticalAlignment="Top" />
                 <Label Content="" Height="28" HorizontalAlignment="Left" Margin="6,104,0,0" Name="MinTLabel" VerticalAlignment="Top" />
-                <Rectangle Height="32" HorizontalAlignment="Left" Margin="82,31,0,0" Name="maxTRect" Stroke="{x:Null}" VerticalAlignment="Top" Width="71"  />
-                <Rectangle Height="32" HorizontalAlignment="Left" Margin="82,100,0,0" Name="minTRect" Stroke="{x:Null}" VerticalAlignment="Top" Width="71" />
+
             </Grid>
         </GroupBox>
     </Grid>

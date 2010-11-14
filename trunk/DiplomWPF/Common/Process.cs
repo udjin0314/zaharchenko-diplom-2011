@@ -14,6 +14,13 @@ namespace DiplomWPF.Common
         public Double R { get; set; }
         public Double L { get; set; }
 
+        public Double a { get; set; }
+        public Double K { get; set; }
+
+        public Double c { get; set; }
+
+        public Double beta { get; set; }
+
         public Int32 T { get; set; }
 
         public Int32 N { get; set; }
