@@ -19,21 +19,9 @@ namespace DiplomWPF
         Chart2D chartUR;
         Graph3D graphURZ;
 
-        // transform class object for rotate the 3d model
-        public TransformMatrix m_transformMatrix = new TransformMatrix();
-
-        // ***************************** 3d chart ***************************
-        private Chart3D m_3dChart;       // data for 3d chart
-        public int m_nChartModelIndex = -1;         // model index in the Viewport3d
-        public int m_nSurfaceChartGridNo = 100;     // surface chart grid no. in each axis
-        public int m_nScatterPlotDataNo = 5000;     // total data number of the scatter plot
-
         private Process process;
 
-        // ***************************** selection rect ***************************
-        ViewportRect m_selectRect = new ViewportRect();
-        public int m_nRectModelIndex = -1;
-
+        
         public MainWindow()
         {
             InitializeComponent();
@@ -80,7 +68,9 @@ namespace DiplomWPF
             process.R = Double.Parse(parametrR.Text);
             process.L = Double.Parse(parametrL.Text);
             process.T = Int32.Parse(parametrExTime.Text);
-
+            process.c = Double.Parse(parametrC.Text);
+            process.beta = Double.Parse(parametrBeta.Text);
+            process.K = Double.Parse(parametrK.Text);
             process.I = Int32.Parse(parametrI.Text);
             process.J = Int32.Parse(parametrJ.Text);
             process.N = Int32.Parse(parametrT.Text);
@@ -154,15 +144,15 @@ namespace DiplomWPF
         private void graphURZTimeSlider_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
         {
 
-            Int32 zn = (int)graphURZZSlider.Value - 1;
+            Int32 zn = (int)graphURZZSlider.Value ;
             if (zn < 0) zn = 0;
 
-            Double len = process.hz * (zn + 1);
+            Double len = process.hz * (zn );
             graphURZZLabel.Content = len.ToString() + " мм";
             
-            Int32 tn = (int)graphURZTimeSlider.Value - 1;
+            Int32 tn = (int)graphURZTimeSlider.Value ;
             if (tn < 0) tn = 0;
-            Double time = process.ht * (tn + 1);
+            Double time = process.ht * (tn );
             graphURZTimeLabel.Content = time.ToString() + " c";
 
             graphURZ.reDrawNewValues(tn,zn);
@@ -170,14 +160,14 @@ namespace DiplomWPF
 
         private void chartUZ_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
         {
-            Int32 rn = (int)chartUZRSlider.Value - 1;
+            Int32 rn = (int)chartUZRSlider.Value ;
             if (rn < 0) rn = 0;
-            Int32 tn = (int)chartUZTimeSlider.Value - 1;
+            Int32 tn = (int)chartUZTimeSlider.Value ;
             if (tn < 0) tn = 0;
-            Double radius = process.hr * (rn + 1);
+            Double radius = process.hr * (rn );
             chartUZRLabel.Content = radius.ToString() + " мм";
 
-            Double time = process.ht * (tn + 1);
+            Double time = process.ht * (tn );
             chartUZTimeLabel.Content = time.ToString() + " c";
 
             chartUZ.reDrawNewValues(rn, tn);
@@ -185,14 +175,14 @@ namespace DiplomWPF
 
         private void chartUR_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
         {
-            Int32 zn = (int)chartURZSlider.Value - 1;
+            Int32 zn = (int)chartURZSlider.Value ;
             if (zn < 0) zn = 0;
-            Int32 tn = (int)chartURTimeSlider.Value - 1;
+            Int32 tn = (int)chartURTimeSlider.Value;
             if (tn < 0) tn = 0;
-            Double len = process.hz * (zn + 1);
+            Double len = process.hz * (zn );
             chartURZLabel.Content = len.ToString() + " мм";
 
-            Double time = process.ht * (tn + 1);
+            Double time = process.ht * (tn );
             chartURTimeLabel.Content = time.ToString() + " c";
 
             chartUR.reDrawNewValues(zn, tn);

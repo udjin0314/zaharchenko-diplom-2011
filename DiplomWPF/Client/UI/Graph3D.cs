@@ -12,6 +12,7 @@ namespace DiplomWPF.Client.UI
 {
     class Graph3D
     {
+        
         private Chart3D m_3dChart;
         private int m_nChartModelIndex = -1;
 

@@ -33,8 +33,8 @@ namespace DiplomWPF.Client.UI
             int K = process.I;
             if (variableZ) K = process.J;
            
-            chartX = new double[K];
-            chartY = new double[K];
+            chartX = new double[K+1];
+            chartY = new double[K+1];
 
             xSrc = new EnumerableDataSource<double>(chartX);
             xSrc.SetXMapping(x => x);
@@ -56,6 +56,8 @@ namespace DiplomWPF.Client.UI
 
         private void delGraph()
         {
+            //TODO find hot to remove old graphics
+            plotter.RemoveUserElements();
         }
 
         public void reDrawNewValues(int Rk, int Rn)
@@ -74,13 +76,13 @@ namespace DiplomWPF.Client.UI
         private void prepareData(int Rk, int Rn)
         {
             if (variableZ)
-                for (int j = 0; j < process.J; j++)
+                for (int j = 0; j <= process.J; j++)
                 {
                     chartX[j] = j * process.hz;
                     chartY[j] = process.values[Rk, j, Rn];
                 }
             else
-                for (int i = 0; i < process.I; i++)
+                for (int i = 0; i <= process.I; i++)
                 {
                     chartX[i] = i * process.hr;
                     chartY[i] = process.values[i, Rk, Rn];
