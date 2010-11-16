@@ -10,7 +10,7 @@ using System;
 
 namespace DiplomWPF.Client.UI
 {
-    class Graph3D
+    public class Graph3D
     {
         
         private Chart3D m_3dChart;
@@ -23,7 +23,7 @@ namespace DiplomWPF.Client.UI
 
         private Viewport3D mainViewport;
 
-        private Process process;
+        private AbstractProcess process;
 
         public Graph3D(Viewport3D viewport)
         {
@@ -31,13 +31,13 @@ namespace DiplomWPF.Client.UI
             initialize();
         }
 
-        public void reDrawNewProcess(Process processIn)
+        public void reDrawNewProcess(AbstractProcess processIn)
         {
             initWithProcess(processIn);
             reDrawNewValues(0,0);
         }
 
-        private void initWithProcess(Process processIn)
+        private void initWithProcess(AbstractProcess processIn)
         {
             process = processIn;
             int nXNo = process.I;
@@ -153,7 +153,7 @@ namespace DiplomWPF.Client.UI
                     if (j == nXNo - 1) j = nXNo;
                     vert.x = (float)(i * process.hr * Math.Cos(2 * j * Math.PI / nXNo));
                     vert.y = (float)(i * process.hr * Math.Sin(2 * j * Math.PI / nXNo));
-                    vert.z = (float)(process.getPoint(i, zn, time));
+                    vert.z = (float)(process.values[i,zn,time]);
 
                 }
             m_3dChart.GetDataRange();

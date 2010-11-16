@@ -111,7 +111,12 @@
     <Compile Include="Client\Chart3D\ViewportRect.cs" />
     <Compile Include="Client\UI\Chart2D.cs" />
     <Compile Include="Client\UI\Graph3D.cs" />
+    <Compile Include="Common\AbstractProcess.cs" />
+    <Compile Include="Common\MatrixHelper.cs" />
     <Compile Include="Common\MatrixWriter.cs" />
+    <Compile Include="Client\Components\ProcessControl.xaml.cs">
+      <DependentUpon>ProcessControl.xaml</DependentUpon>
+    </Compile>
     <Compile Include="ServerSide\ChislExecuter.cs" />
     <Compile Include="ServerSide\DataProcessProviderServer.cs" />
     <Compile Include="ServerSide\Executor.cs" />
@@ -130,10 +135,14 @@
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
+    <Page Include="Client\Components\ProcessControl.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Common\DataProcessProvider.cs" />
-    <Compile Include="Common\Process.cs" />
+    <Compile Include="Common\ChislProcess.cs" />
     <Compile Include="Common\ProcessValues.cs" />
     <Compile Include="Properties\AssemblyInfo.cs">
       <SubType>Code</SubType>

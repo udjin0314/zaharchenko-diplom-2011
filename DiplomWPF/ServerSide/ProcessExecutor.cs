@@ -24,13 +24,13 @@ namespace DiplomWPF.ServerSide
             }
         }
 
-        public Process process { get; set; }
+        public ChislProcess process { get; set; }
 
-        public Process getProcess(Process processIn)
+        public ChislProcess getProcess(ChislProcess processIn)
         {
             //ProcessChislExecuter procExec = new ProcessChislExecuter(processIn);
-            Executor executor = new ChislExecuter();
-            return executor.getProcess(processIn);
+            //Executor executor = new ChislExecuter();
+            //return executor.getProcess(processIn);
             /*Double maxT = 0;
             Double minT = Double.MaxValue;
             process = processIn;
@@ -59,6 +59,7 @@ namespace DiplomWPF.ServerSide
             process.maxTemperature = maxT;
             process.minTemperature = minT;
             return process;*/
+            return null;
         }
     }
 }

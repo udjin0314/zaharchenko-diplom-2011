@@ -17,9 +17,9 @@ namespace DiplomWPF.ServerSide
         Program procProgProgram;
         Kernel procProgKernel;
         Mem procProgMemBuffer;
-        Process process;
+        ChislProcess process;
 
-        public ProcessChislExecuterOpenCLI(Process process)
+        public ProcessChislExecuterOpenCLI(ChislProcess process)
         {
             openCLPlatform = OpenCL.GetPlatform(0);
             this.process = process;
@@ -43,7 +43,7 @@ namespace DiplomWPF.ServerSide
 
 
 
-        public Process getProcess(Process processIn)
+        public ChislProcess getProcess(ChislProcess processIn)
         {
             throw new NotImplementedException();
         }
