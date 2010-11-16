@@ -34,6 +34,7 @@ namespace DiplomWPF.ServerSide
         double gammaZ = 0;
         double gamma = 0;
         double sigm = 0;
+        double sigmZ = 0;
 
         /*matrix*/
         Double maxT = 0;
@@ -83,6 +84,7 @@ namespace DiplomWPF.ServerSide
             gamma = ht * K / (2 * hr * hr);
             gammaZ = ht * K / (2 * hz * hz);
             sigm = 2 * gamma * (1 + (1 + (double)1 / (2 * I)) * hr * alphaR / K);
+            sigmZ = 2 * gammaZ*(hz * alphaZ / K + 1);
         }
 
         double functionG(int i, int j)
@@ -230,12 +232,12 @@ namespace DiplomWPF.ServerSide
             double[,] Fl = getStdMatrix(I + 1, J + 1);
             for (int i = 0; i <= I; i++)
             {
-                Fl[i, 0] = (c - 2 * gammaZ * (1 + hz * alphaZ / K)) * neededLayer[i, 0] + 2 * gammaZ * (neededLayer[i, 1]);
+                Fl[i, 0] = (c - sigmZ) * neededLayer[i, 0] + 2 * gammaZ * (neededLayer[i, 1]);
             }
 
             for (int i = 0; i <= I; i++)
             {
-                Fl[i, J] = (c + 2 * gammaZ * (hz * alphaZ / K - 1)) * neededLayer[i, J] + 2 * gammaZ * (neededLayer[i, J - 1]);
+                Fl[i, J] = (c - sigmZ) * neededLayer[i, J] + 2 * gammaZ * (neededLayer[i, J - 1]);
             }
 
             for (int j = 1; j <= J - 1; j++)
@@ -270,10 +272,10 @@ namespace DiplomWPF.ServerSide
         double[,] prepareFFl()
         {
             double[,] Fr = getStdMatrix(J + 1, J + 1);
-            Fr[0, 0] = (c + 2 * gammaZ * (1 + hz * alphaZ / K));
+            Fr[0, 0] = (c + sigmZ);
             Fr[0, 1] = -2 * gammaZ;
             Fr[J, J - 1] = -2 * gammaZ;
-            Fr[J, J] = (c + 2 * gammaZ * (hz * alphaZ / K + 1));
+            Fr[J, J] = (c + sigmZ);
 
             for (int i = 1; i <= J - 1; i++)
             {
