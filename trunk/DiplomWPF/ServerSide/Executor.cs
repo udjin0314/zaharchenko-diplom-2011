@@ -8,6 +8,6 @@ namespace DiplomWPF.ServerSide
 {
     interface Executor
     {
-        Process getProcess(Process processIn);
+        ChislProcess getProcess(ChislProcess processIn);
     }
 }

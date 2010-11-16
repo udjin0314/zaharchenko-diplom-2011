@@ -48,7 +48,7 @@
                 <Button Content="Применить" Margin="7,454,0,0" Height="22" HorizontalAlignment="Left" Name="parametersExecuteButton" VerticalAlignment="Top" Width="185" Click="parametersExecuteButton_Click" Grid.ColumnSpan="2" />
             </Grid>
         </GroupBox>
-        <TabControl Height="700" HorizontalAlignment="Left" Margin="230,17,0,0" Name="tabControl1" VerticalAlignment="Top" Width="1102">
+        <TabControl Height="700" HorizontalAlignment="Left" Margin="230,17,0,0" Name="tabControl1" VerticalAlignment="Top" Width="960">
             <TabItem Header="Визуализация процесса" Name="visualisationTab">
                 <Grid>
                     <Grid MouseMove="OnViewportMouseMove" MouseUp="OnViewportMouseUp" MouseDown="OnViewportMouseDown" Margin="0,77,0,145">
@@ -90,15 +90,15 @@
                 MouseMove="OnViewportMouseMove" Margin="0,0,0,6"></Canvas>
                     </Grid>
                     <Slider Height="23" HorizontalAlignment="Left" Margin="91,625,0,0" Name="graphURZTimeSlider" VerticalAlignment="Top" IsSnapToTickEnabled="True"
-         Width="914" IsEnabled="False" ValueChanged="graphURZTimeSlider_ValueChanged" />
+         Width="764" IsEnabled="False" ValueChanged="graphURZTimeSlider_ValueChanged" />
                     <Button Content="Старт" Height="23" HorizontalAlignment="Left" Margin="6,625,0,0" Name="graphURZTimeStartButton" VerticalAlignment="Top" Width="75" IsEnabled="False"/>
                         
                     <Label Content="Шкала времени" HorizontalAlignment="Left" Margin="6,595,0,45" Name="label11" />
-                    <Label Content="0 c" Height="28" HorizontalAlignment="Right" Margin="0,622,6,0" Name="graphURZTimeLabel" VerticalAlignment="Top" Width="75" />
-                    <Slider Height="23" IsEnabled="False" IsSnapToTickEnabled="True" Name="graphURZZSlider" Width="914" Margin="91,566,87,79" ValueChanged="graphURZTimeSlider_ValueChanged" />
-                    <Button Content="Старт" Height="23" IsEnabled="False" Name="graphURZZStartButton" Width="75" Margin="5,566,1012,79" />
-                    <Label Content="Толщина диска" Name="label15" Margin="5,536,990,106" />
-                    <Label Content="0 мм" Height="28" Name="graphURZZLabel" Width="75" Margin="1011,563,6,77" />
+                    <Label Content="0 c" Height="28" HorizontalAlignment="Left" Margin="848,620,0,0" Name="graphURZTimeLabel" VerticalAlignment="Top" Width="75" />
+                    <Slider Height="23" IsEnabled="False" IsSnapToTickEnabled="True" Name="graphURZZSlider" Margin="91,566,0,79" ValueChanged="graphURZTimeSlider_ValueChanged" HorizontalAlignment="Left" Width="764" />
+                    <Button Content="Старт" Height="23" IsEnabled="False" Name="graphURZZStartButton" Margin="5,566,0,0" HorizontalAlignment="Left" Width="76" VerticalAlignment="Top" />
+                    <Label Content="Толщина диска" Name="label15" Margin="5,536,0,106" HorizontalAlignment="Left" Width="98" />
+                    <Label Content="0 мм" Height="28" Name="graphURZZLabel" Width="75" Margin="848,561,0,79" HorizontalAlignment="Left" />
                 </Grid>
 
             </TabItem>
@@ -112,11 +112,11 @@
                         <d3:VerticalAxisTitle>Температура</d3:VerticalAxisTitle>
                         <d3:HorizontalAxisTitle>Толщина диска</d3:HorizontalAxisTitle>
                     </d3:ChartPlotter>
-                    <Slider Height="23" HorizontalAlignment="Left" IsEnabled="False" IsSnapToTickEnabled="True" Margin="91,639,0,0" Name="chartUZTimeSlider" VerticalAlignment="Top" Width="914" ValueChanged="chartUZ_ValueChanged" />
+                    <Slider Height="23" HorizontalAlignment="Left" IsEnabled="False" IsSnapToTickEnabled="True" Margin="91,639,0,0" Name="chartUZTimeSlider" VerticalAlignment="Top" Width="772" ValueChanged="chartUZ_ValueChanged" />
                     <Button Content="Старт" Height="23" HorizontalAlignment="Left" IsEnabled="False" Margin="6,639,0,0" Name="chartUZTimeStartButton" VerticalAlignment="Top" Width="75"/>
                     <Label Content="Шкала времени" Height="28" HorizontalAlignment="Left" Margin="6,609,0,0" Name="label12" VerticalAlignment="Top" />
                     <Label Content="0 c" Height="28" HorizontalAlignment="Right" Margin="0,635,6,0" Name="chartUZTimeLabel" VerticalAlignment="Top" Width="75" />
-                    <Slider Height="23" HorizontalAlignment="Left" IsEnabled="False" IsSnapToTickEnabled="True" Margin="91,580,0,0" Name="chartUZRSlider" VerticalAlignment="Top" Width="914" ValueChanged="chartUZ_ValueChanged" />
+                    <Slider Height="23" HorizontalAlignment="Left" IsEnabled="False" IsSnapToTickEnabled="True" Margin="91,580,0,0" Name="chartUZRSlider" VerticalAlignment="Top" Width="772" ValueChanged="chartUZ_ValueChanged" />
                     <Button Content="Старт" Height="23" HorizontalAlignment="Left" IsEnabled="False" Margin="6,580,0,0" Name="chartUZRStartButton" VerticalAlignment="Top" Width="75"/>
                         
                     <Label Content="Радиус диска" Height="28" HorizontalAlignment="Left" Margin="6,550,0,0" Name="label14" VerticalAlignment="Top" />
@@ -130,11 +130,11 @@
                         <d3:VerticalAxisTitle Content="Температура" />
                         <d3:HorizontalAxisTitle Content="Радиус диска" />
                     </d3:ChartPlotter>
-                    <Slider Height="23" HorizontalAlignment="Left" IsEnabled="False" IsSnapToTickEnabled="True" Margin="101,629,0,0" Name="chartURTimeSlider" VerticalAlignment="Top" Width="914" ValueChanged="chartUR_ValueChanged" />
+                    <Slider Height="23" HorizontalAlignment="Left" IsEnabled="False" IsSnapToTickEnabled="True" Margin="101,629,0,0" Name="chartURTimeSlider" VerticalAlignment="Top" Width="772" ValueChanged="chartUR_ValueChanged" />
                     <Button Content="Старт" Height="23" HorizontalAlignment="Left" IsEnabled="False" Margin="16,629,0,0" Name="chartURTimeStartButton" VerticalAlignment="Top" Width="75"/>
                     <Label Content="Шкала времени" Height="28" HorizontalAlignment="Left" Margin="16,599,0,0" Name="label13" VerticalAlignment="Top" />
                     <Label Content="0 c" Height="28" HorizontalAlignment="Right" Margin="0,625,-4,0" Name="chartURTimeLabel" VerticalAlignment="Top" Width="75" />
-                    <Slider Height="23" HorizontalAlignment="Left" IsEnabled="False" IsSnapToTickEnabled="True" Margin="101,576,0,0" Name="chartURZSlider" VerticalAlignment="Top" Width="914" ValueChanged="chartUR_ValueChanged" />
+                    <Slider Height="23" HorizontalAlignment="Left" IsEnabled="False" IsSnapToTickEnabled="True" Margin="101,576,0,0" Name="chartURZSlider" VerticalAlignment="Top" Width="772" ValueChanged="chartUR_ValueChanged" />
                     <Button Content="Старт" Height="23" HorizontalAlignment="Left" IsEnabled="False" Margin="16,576,0,0" Name="chartURZStartButton" VerticalAlignment="Top" Width="75"/>
                         
                     <Label Content="Толщина диска" Height="28" HorizontalAlignment="Left" Margin="16,546,0,0" Name="label16" VerticalAlignment="Top" />
@@ -143,7 +143,7 @@
             </TabItem>
             <TabItem Name="summaryTab" Header="Итоги" />
         </TabControl>
-        <GroupBox Header="Обозначения" Height="171" HorizontalAlignment="Left" Margin="16,528,0,0" Name="groupBox3" VerticalAlignment="Top" Width="203">
+        <GroupBox Header="Процесс" Height="171" HorizontalAlignment="Left" Margin="16,528,0,0" Name="tempLegend" VerticalAlignment="Top" Width="203" IsEnabled="True" Visibility="Hidden">
             <Grid>
                 <Rectangle Height="32" HorizontalAlignment="Left" Margin="82,31,0,0" Name="maxTRect" Stroke="{x:Null}" VerticalAlignment="Top" Width="71"  />
                 <Rectangle Height="32" HorizontalAlignment="Left" Margin="82,100,0,0" Name="minTRect" Stroke="{x:Null}" VerticalAlignment="Top" Width="71" />
@@ -152,6 +152,10 @@
                 <Label Content="Минимальная температура" Height="28" HorizontalAlignment="Left" Margin="6,69,0,0" Name="label18" VerticalAlignment="Top" />
                 <Label Content="" Height="28" HorizontalAlignment="Left" Margin="6,104,0,0" Name="MinTLabel" VerticalAlignment="Top" />
 
+            </Grid>
+        </GroupBox>
+        <GroupBox Header="Процессы" Height="331" Margin="1193,17,0,0" Name="groupBox3" VerticalAlignment="Top" HorizontalAlignment="Left" Width="165">
+            <Grid Name="processesGrid">
             </Grid>
         </GroupBox>
     </Grid>

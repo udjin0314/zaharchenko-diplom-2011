@@ -6,9 +6,9 @@ using DiplomWPF.Common;
 
 namespace DiplomWPF.ServerSide
 {
-    class ChislExecuter : Executor
+    class ChislExecuter
     {
-        Process process;
+        AbstractProcess process;
 
         static String FILE_NAME = "log.txt";
 
@@ -40,7 +40,7 @@ namespace DiplomWPF.ServerSide
         Double maxT = 0;
         Double minT = Double.MaxValue;
 
-        public Process getProcess(Process processIn)
+        public AbstractProcess getProcess(AbstractProcess processIn)
         {
             process = processIn;
             initParams();
@@ -61,7 +61,7 @@ namespace DiplomWPF.ServerSide
             alphaZ = process.alphaZ;
             process.a = 0.15 * process.R;
             R = process.R;
-            l = process.L;
+            l = process.l;
             T = process.T;
             P = process.P;
             a = process.a;

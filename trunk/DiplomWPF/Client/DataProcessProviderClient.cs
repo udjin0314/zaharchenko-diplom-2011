@@ -9,7 +9,7 @@ namespace DiplomWPF.Client
 {
     class DataProcessProviderClient : DataProcessProvider
     {
-        public Process getProcessValues(Process process)
+        public ChislProcess getProcessValues(ChislProcess process)
         {
             DataProcessProviderServer processProvider = new DataProcessProviderServer();
             return processProvider.getProcessValues(process);

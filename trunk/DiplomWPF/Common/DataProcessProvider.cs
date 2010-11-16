@@ -7,6 +7,6 @@ namespace DiplomWPF.Common
 {
     interface DataProcessProvider
     {
-        Process getProcessValues(Process process);
+        ChislProcess getProcessValues(ChislProcess process);
     }
 }

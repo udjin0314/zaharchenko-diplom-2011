@@ -7,7 +7,7 @@ using Microsoft.Research.DynamicDataDisplay.Charts.Navigation;
 
 namespace DiplomWPF.Client.UI
 {
-    class Chart2D
+    public class Chart2D
     {
         private EnumerableDataSource<double> chartYDataSource = null;
         private EnumerableDataSource<double> xSrc = null;
@@ -15,7 +15,7 @@ namespace DiplomWPF.Client.UI
         private double[] chartX;
         private double[] chartY;
 
-        private Process process;
+        private AbstractProcess process;
 
         private Boolean variableZ = false;
 
@@ -26,8 +26,8 @@ namespace DiplomWPF.Client.UI
             plotter = plotterIn;
             if (variableZFactor) variableZ = true;
         }
-        
-        public void initilize(Process inProcess)
+
+        public void initilize(AbstractProcess inProcess)
         {
             process = inProcess;
             int K = process.I;
@@ -44,10 +44,10 @@ namespace DiplomWPF.Client.UI
 
         private void addGraph()
         {
-            String name = "u(r)";
-            if (variableZ) name = "u(z)";
+            String name = process.processName+" u(r)";
+            if (variableZ) name = process.processName+" u(z)";
             plotter.AddLineGraph(new CompositeDataSource(xSrc, chartYDataSource),
-                            new Pen(Brushes.Magenta, 3),
+                            new Pen(process.brush, 3),
                             new PenDescription(name));
             reDrawNewValues(0, 0);
             plotter.Children.Add(new CursorCoordinateGraph());
@@ -66,9 +66,9 @@ namespace DiplomWPF.Client.UI
             chartYDataSource.RaiseDataChanged();
         }
 
-        public void reDrawNewProcess(Process processIn)
+        public void reDrawNewProcess(AbstractProcess processIn)
         {
-            delGraph();
+            //delGraph();
             initilize(processIn);
             addGraph();
         }
