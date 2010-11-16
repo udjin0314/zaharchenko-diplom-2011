@@ -100,21 +100,12 @@ namespace DiplomWPF.ServerSide
             return new double[rows, cols];
         }
 
-        /*void cleanStdMatrix(double** A, int rows)
-        {
-            for (int i = 0; i < rows; i++)
-            {
-                delete * (A + i);
-            }
-            delete A;
-        }*/
 
         double[,] prepareMatrixG()
         {
             double[,] A = getStdMatrix(I + 1, J + 1);
             for (int j = 0; j <= J; j++)
                 for (int i = 0; i <= I; i++)
-                    //*(*(A+i)+j)=0.5*ht*functionG(i,j);
                     A[i, j] = 0.5 * ht * functionG(i, j);
             return A;
         }
@@ -128,7 +119,7 @@ namespace DiplomWPF.ServerSide
             double[,] B = getStdMatrix(I + 1, J + 1);
             for (int i = 0; i <= I; i++)
                 for (int j = 0; j <= J; j++)
-                    B[i, j] = (A1[i, j] + koef * A2[i, j]);
+                    B[i, j] = koef * (A1[i, j] + A2[i, j]);
             return B;
         }
 
@@ -145,39 +136,6 @@ namespace DiplomWPF.ServerSide
                 diff[i] = sum - B[i];
             }
             return diff;
-        }
-
-        double[] sweep(double[,] a, double[] b, int size)
-        {
-            double[] res = new double[size];
-            int i;
-            double znam;
-            a[0, 0] = -a[0, 0];
-
-            a[size - 1, size - 1] = -a[size - 1, size - 1];
-
-            b[0] /= a[0, 0];//Q1
-            a[0, 1] /= -a[0, 0];//P1
-
-            for (i = 1; i < size - 1; i++)
-            {
-                a[i, i] = -a[i, i];
-                znam = -a[i, i] - a[i, i - 1] * a[i - 1, i]; //общий знаменатель для формул нахождения Pi, Qi 
-                a[i, i + 1] /= znam; //Pi
-                b[i] = (a[i, i - 1] * b[i - 1] - b[i]) / znam; //Qi
-
-            }
-            //строка ниже для вычисления QN
-            b[size - 1] = (a[size - 1, size - 2] * b[size - 2] - b[size - 1]) / (-a[size - 1, size - 1] - a[size - 1, size - 2] * a[size - 2, size - 1]);
-            res[size -1] = b[size - 1];
-
-            //обратный ход
-            for (i = size - 2; i > -1; i--)
-            {
-                b[i] += b[i + 1] * a[i, i + 1];
-                res[i] = b[i];
-            }
-            return res;
         }
 
 
@@ -199,14 +157,6 @@ namespace DiplomWPF.ServerSide
                 betaPr[i + 1] = (B[i] - ci * betaPr[i]) / znam;
             }
 
-            //printVector(alphaPr,Nm, "alphaPr");
-            //printVector(betaPr,Nm,"betaPr");
-
-            /*double cN=(*(*(A+size-1)+size-2));
-            double dN=(*(*(A+size-1)+size-1));
-            double alphaN=(*(alphaPr+size-1));
-            double betaN=(*(betaPr+size-1));
-            double bN=(*(B+size-1));*/
             double cN = A[size - 1, size - 2];
             double dN = A[size - 1, size - 1];
             double alphaN = alphaPr[size - 1];
@@ -259,10 +209,6 @@ namespace DiplomWPF.ServerSide
         double[,] prepareFr()
         {
             double[,] Fr = getStdMatrix(I + 1, I + 1);
-            /***Fr=-(2*gamma/K+c);
-            *(*Fr+1)=-(2*gamma/K+c);
-            *(*(Fr+I-1)+I-2)=2*gamma;
-            *(*(Fr+I-1)+I-1)=-(sigm+c);*/
             Fr[0, 0] = -(4 * gamma + c);
             Fr[0, 1] = 4 * gamma;
             Fr[I, I - 1] = 2 * gamma;
@@ -270,9 +216,6 @@ namespace DiplomWPF.ServerSide
 
             for (int i = 1; i <= I - 1; i++)
             {
-                /**(*(Fr+i)+i-1)=gamma*(1-1/(2*i));
-                *(*(Fr+i)+i)=-(2*gamma/K+c);
-                *(*(Fr+i)+i+1)=gamma*(1+1/(2*i));*/
                 Fr[i, i - 1] = gamma * (double)(1 - (double)1 / (2 * i));
                 Fr[i, i] = -(2 * gamma + c);
                 Fr[i, i + 1] = gamma * (double)(1 + (double)1 / (2 * i));
@@ -287,21 +230,18 @@ namespace DiplomWPF.ServerSide
             double[,] Fl = getStdMatrix(I + 1, J + 1);
             for (int i = 0; i <= I; i++)
             {
-                //*(*(Fl+i)+0)=(c-2*gammaZ*(1+hz*alphaZ/K))*(*(*(neededLayer+i)))+2*gammaZ*(*(*(neededLayer+i)+1));
                 Fl[i, 0] = (c - 2 * gammaZ * (1 + hz * alphaZ / K)) * neededLayer[i, 0] + 2 * gammaZ * (neededLayer[i, 1]);
             }
 
             for (int i = 0; i <= I; i++)
             {
-                //*(*(Fl+i)+J-1)=(c+2*gammaZ*(1+hz*alphaZ/K))*(*(*(neededLayer+i)+J-1))+2*gammaZ*(*(*(neededLayer+i)+J-2));
                 Fl[i, J] = (c + 2 * gammaZ * (hz * alphaZ / K - 1)) * neededLayer[i, J] + 2 * gammaZ * (neededLayer[i, J - 1]);
             }
 
             for (int j = 1; j <= J - 1; j++)
                 for (int i = 0; i <= I; i++)
                 {
-                    //*(*(Fl+i)+j)=aFl* (*(*(neededLayer+i)+j-1))+bFl* (*(*(neededLayer+i)+j))+cFl* (*(*(neededLayer+i)+j+1));
-                    Fl[i, j] = gammaZ * neededLayer[i, j - 1] - (2 * gammaZ - c) * neededLayer[i, j] + gammaZ * neededLayer[i, j + 1];
+                    Fl[i, j] = gammaZ * neededLayer[i, j - 1] + (c-2 * gammaZ) * neededLayer[i, j] + gammaZ * neededLayer[i, j + 1];
                 }
             return Fl;
         }
@@ -311,20 +251,17 @@ namespace DiplomWPF.ServerSide
             double[,] Fl = getStdMatrix(I + 1, J + 1);
             for (int j = 0; j <= J; j++)
             {
-                //*(*(Fl+0)+j)=(c-gamma)*(*(*(neededLayer)+j))+gamma*(*(*(neededLayer+1)+j));
                 Fl[0, j] = (c - 4 * gamma) * (neededLayer[0, j]) + 4 * gamma * (neededLayer[1, j]);
             }
 
             for (int j = 0; j <= J; j++)
             {
-                //*(*(Fl+I-1)+j)=(2*gamma)*(*(*(neededLayer+I-2)+j))-(sigm+c)*(*(*(neededLayer+I-1)+j));
                 Fl[I, j] = (2 * gamma) * (neededLayer[I - 1, j]) - (sigm - c) * (neededLayer[I, j]);
             }
 
             for (int i = 1; i <= I - 1; i++)
                 for (int j = 0; j <= J; j++)
                 {
-                    //*(*(Fl+i)+j)=gamma*(1-2/i)* (*(*(neededLayer+i-1)+j))-(2*gamma/K+c)* (*(*(neededLayer+i)+j))+gamma*(1+2/i)* (*(*(neededLayer+i+1)+j));
                     Fl[i, j] = gamma * (1 - (double)1 / (2 * i)) * neededLayer[i - 1, j] - (2 * gamma - c) * neededLayer[i, j] + gamma * (1 + (double)1 / (2 * i)) * neededLayer[i + 1, j];
                 }
             return Fl;
@@ -333,20 +270,13 @@ namespace DiplomWPF.ServerSide
         double[,] prepareFFl()
         {
             double[,] Fr = getStdMatrix(J + 1, J + 1);
-            /***Fr=(c-2*gammaZ*(1+hz*alphaZ/K));
-            *(*Fr+1)=-2*gammaZ;
-            *(*(Fr+J-1)+J-2)=2*gammaZ;
-            *(*(Fr+J-1)+J-1)=(c+2*gammaZ*(hz*alphaZ/K-1));*/
-            Fr[0, 0] = (c - 2 * gammaZ * (1 + hz * alphaZ / K));
+            Fr[0, 0] = (c + 2 * gammaZ * (1 + hz * alphaZ / K));
             Fr[0, 1] = -2 * gammaZ;
-            Fr[J, J - 1] = 2 * gammaZ;
-            Fr[J, J] = (c + 2 * gammaZ * (hz * alphaZ / K - 1));
+            Fr[J, J - 1] = -2 * gammaZ;
+            Fr[J, J] = (c + 2 * gammaZ * (hz * alphaZ / K + 1));
 
             for (int i = 1; i <= J - 1; i++)
             {
-                /**(*(Fr+i-1)+i)=-gammaZ;
-                *(*(Fr+i)+i)=(2*gammaZ/K+c);
-                *(*(Fr+i+1)+i)=-gammaZ;*/
                 Fr[i, i - 1] = -gammaZ;
                 Fr[i, i] = (2 * gammaZ + c);
                 Fr[i, i + 1] = -gammaZ;
@@ -392,7 +322,6 @@ namespace DiplomWPF.ServerSide
                     double[] Bloc = getCol(B, j);
                     MatrixWriter.writeVectorAsString(FILE_NAME, "Bloc j=" + j + " n=" + n, Bloc, I + 1, false);
                     double[] Prloc = progonka(Fr, Bloc, I + 1);
-                    //double[] Prloc = sweep(Fr, Bloc, I + 1);
                     MatrixWriter.writeVectorAsString(FILE_NAME, "Prloc j=" + j + " n=" + n, Prloc, I + 1, false);
 
                     setCol(tempLayer, Prloc, j);
@@ -406,10 +335,9 @@ namespace DiplomWPF.ServerSide
                 {
 
                     double[] Bloc = getRow(B, i);
-                    MatrixWriter.writeVectorAsString(FILE_NAME, "Bloc i=" + i + " n=" + n, Bloc, I + 1, true);
+                    MatrixWriter.writeVectorAsString(FILE_NAME, "Bloc i=" + i + " n=" + n, Bloc, J + 1, true);
                     double[] Prloc = progonka(FFl, Bloc, J + 1);
-                    //double[] Prloc = sweep(FFl, Bloc, J + 1);
-                    MatrixWriter.writeVectorAsString(FILE_NAME, "Prloc i=" + i + " n=" + n, Prloc, I + 1, true);
+                    MatrixWriter.writeVectorAsString(FILE_NAME, "Prloc i=" + i + " n=" + n, Prloc, J + 1, true);
                     setRow(tempLayer, Prloc, i);
                     MatrixWriter.writeMatrixToFile(FILE_NAME, "u 1/2 n=" + n, tempLayer, I + 1, J + 1, false);
 

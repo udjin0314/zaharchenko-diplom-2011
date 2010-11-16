@@ -7,6 +7,8 @@ namespace DiplomWPF.Common
 {
     static class MatrixWriter
     {
+        public static Boolean logMode = false;
+        
         public static String makeMatrixAsString(String caption, double[,] matrix, int rows, int cols, Boolean transpon)
         {
             String s = "==============================" + caption + "==============================\n";
@@ -57,17 +59,17 @@ namespace DiplomWPF.Common
 
         public static void createFile(String filename)
         {
-            System.IO.File.WriteAllText(filename,"");
+            if (logMode) System.IO.File.WriteAllText(filename, "");
         }
 
         public static void writeMatrixToFile(String filename, String caption, double[,] matrix, int rows, int cols, Boolean transpon)
         {
-            System.IO.File.AppendAllText(filename, makeMatrixAsString(caption, matrix, rows, cols, transpon));
+            if (logMode) System.IO.File.AppendAllText(filename, makeMatrixAsString(caption, matrix, rows, cols, transpon));
         }
 
         public static void writeVectorAsString(String filename, String caption, double[] vector, int size, Boolean asRow)
         {
-            System.IO.File.AppendAllText(filename, makeVectorAsString(caption, vector, size, asRow));
+            if (logMode) System.IO.File.AppendAllText(filename, makeVectorAsString(caption, vector, size, asRow));
         }
     }
 }
