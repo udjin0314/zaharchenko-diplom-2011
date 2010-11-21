@@ -4,13 +4,20 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              mc:Ignorable="d" 
-             d:DesignHeight="300" d:DesignWidth="300">
+             d:DesignHeight="300" d:DesignWidth="300" Loaded="UserControl_Loaded">
     <Grid>
-        <GroupBox Header="Process Name" Height="59" HorizontalAlignment="Left" Margin="0,0,0,241" Name="processGroupBox" VerticalAlignment="Bottom" Width="155" BorderBrush="{x:Null}">
+        <GroupBox Header="Process Name" Height="105" HorizontalAlignment="Left" Margin="0,0,0,195" Name="processGroupBox" VerticalAlignment="Bottom" Width="155" BorderBrush="{x:Null}">
             <Grid>
-                <CheckBox Content="" Height="16" HorizontalAlignment="Left" Margin="7,9,0,0" Name="selectProcess" VerticalAlignment="Top" />
-                <Button Content="Выбрать" Height="23" HorizontalAlignment="Left" Margin="31,6,0,0" Name="setProcessButton" VerticalAlignment="Top" Width="107" />
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="68*" />
+                    <ColumnDefinition Width="75*" />
+                </Grid.ColumnDefinitions>
+                <Button Content="Выполнить" Height="23" HorizontalAlignment="Left" Margin="6,6,0,0" Name="setProcessButton" VerticalAlignment="Top" Width="132" IsDefault="True" Grid.ColumnSpan="2" Click="setProcessButton_Click" />
+                <ProgressBar Height="25" HorizontalAlignment="Left" Margin="7,50,0,0" Name="progressBar" VerticalAlignment="Top" Width="131" Grid.ColumnSpan="2" />
+                <Label Content="Параметры" Height="28" HorizontalAlignment="Left" Margin="61,27,0,0" Name="label1" VerticalAlignment="Top" Grid.ColumnSpan="2" Foreground="#FF1A1AFF" FontStyle="Italic" Cursor="Hand" MouseLeftButtonDown="label1_MouseLeftButtonDown" />
+                
             </Grid>
         </GroupBox>
+        <Image Height="15" HorizontalAlignment="Left" Margin="135,8,0,0" Name="closeButton" Stretch="Fill" VerticalAlignment="Top" Width="15" Source="/DiplomWPF;component/Client/UI/close.png" Cursor="Hand" MouseLeftButtonDown="closeButton_MouseLeftButtonDown" />
     </Grid>
 </UserControl>

@@ -20,6 +20,8 @@ namespace DiplomWPF.Common
         public Double R { get; set; }
         public Double l { get; set; }
 
+        public Boolean isVisible { get; set; }
+
         public Double a { get; set; }
         public Double K { get; set; }
 
