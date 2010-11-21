@@ -7,6 +7,10 @@ using DiplomWPF.Client;
 using DiplomWPF.Client.UI;
 using System.Windows.Media;
 using System.Collections.Generic;
+using System.ComponentModel;
+using System.Threading;
+using System.Windows.Input;
+using System.Windows.Controls;
 
 namespace DiplomWPF
 {
@@ -21,16 +25,26 @@ namespace DiplomWPF
 
         private List<AbstractProcess> processes;
 
+        private List<ProcessControl> processControls;
+
         private AbstractProcess paramProcess;
 
+        private BackgroundWorker backgroundWorker;
+
+        
 
         public MainWindow()
         {
+            
+            
             InitializeComponent();
+            initBackgroundWorker();
             processes = new List<AbstractProcess>();
+            processControls = new List<ProcessControl>();
             ChislProcess pismenProc = new ChislProcess("Писмена Рекфорда", Brushes.Magenta);
-            ProcessControl pismenControl = new ProcessControl(pismenProc);
-            processesGrid.Children.Add(pismenControl);
+            ProcessControl prc = new ProcessControl(pismenProc);
+            processesGrid.Children.Add(prc);
+            processControls.Add(prc);
             processes.Add(pismenProc);
             initializeGraphics();
             //chartUZ = new Chart2D(chartUZPlotter, true);
@@ -38,6 +52,20 @@ namespace DiplomWPF
             //graphURZ = new Graph3D(mainViewport);
             // selection rect
 
+        }
+
+        public void initBackgroundWorker()
+        {
+            backgroundWorker = new BackgroundWorker();
+            backgroundWorker.WorkerReportsProgress = true;
+            backgroundWorker.WorkerSupportsCancellation = true;
+            
+        }
+
+        public void deleteProcessControl(ProcessControl processCtrl)
+        {
+            processesGrid.Children.Remove(processCtrl);
+            processControls.Remove(processCtrl);
         }
 
         private void initializeGraphics()
@@ -53,6 +81,7 @@ namespace DiplomWPF
             // Prepare data in arrays
 
         }
+
 
         public void OnViewportMouseDown(object sender, System.Windows.Input.MouseButtonEventArgs args)
         {
@@ -95,6 +124,7 @@ namespace DiplomWPF
 
             foreach (AbstractProcess process in processes)
             {
+                
                 process.initialize(P, alphaR, alphaZ, R, l, K, c, beta, T, N, I, J);
                 process.executeProcess();
                 paramProcess=process;
@@ -209,6 +239,11 @@ namespace DiplomWPF
             chartURTimeLabel.Content = time.ToString() + " c";
             foreach (AbstractProcess process in processes)
                 process.chartUR.reDrawNewValues(zn, tn);
+        }
+
+        private void addProcessLabel_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
+        {
+            //TODO open Form
         }
     }
 

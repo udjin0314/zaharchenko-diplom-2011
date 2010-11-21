@@ -154,9 +154,13 @@
 
             </Grid>
         </GroupBox>
-        <GroupBox Header="Процессы" Height="331" Margin="1193,17,0,0" Name="groupBox3" VerticalAlignment="Top" HorizontalAlignment="Left" Width="165">
+        <GroupBox Header="Процессы" Height="678" Margin="1193,39,0,0" Name="groupBox3" VerticalAlignment="Top" HorizontalAlignment="Left" Width="165">
             <Grid Name="processesGrid">
             </Grid>
         </GroupBox>
+        <Grid Height="24" HorizontalAlignment="Left" Margin="1193,24,0,0" Name="addProcess" VerticalAlignment="Top" Width="151" Cursor="Hand">
+            <Image Height="15" Margin="6,0,0,6" Name="image1" Stretch="Fill" VerticalAlignment="Bottom" Source="/DiplomWPF;component/Client/UI/add.png" Cursor="Hand" HorizontalAlignment="Left" Width="15" />
+            <Label Content="Добавить процесс" Height="28" HorizontalAlignment="Right" Margin="0,0,12,0" Name="addProcessLabel" VerticalAlignment="Bottom" Cursor="Hand" FontStyle="Italic" Foreground="#FF0707FF" MouseLeftButtonDown="addProcessLabel_MouseLeftButtonDown" />
+        </Grid>
     </Grid>
 </Window>

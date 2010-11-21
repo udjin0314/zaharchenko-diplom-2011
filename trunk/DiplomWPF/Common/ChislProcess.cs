@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using DiplomWPF.ServerSide;
 using System.Windows.Media;
+using System.Threading;
 
 namespace DiplomWPF.Common
 {
@@ -204,8 +205,6 @@ namespace DiplomWPF.Common
 
         void copyToProc(double[,] res, int n)
         {
-
-
             for (int j = 0; j <= J; j++)
                 for (int i = 0; i <= I; i++)
                 {
