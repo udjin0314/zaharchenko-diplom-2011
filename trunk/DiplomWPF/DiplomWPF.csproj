@@ -85,6 +85,9 @@
     <Reference Include="WindowsBase" />
     <Reference Include="PresentationCore" />
     <Reference Include="PresentationFramework" />
+    <Reference Include="WPFToolkit.Extended">
+      <HintPath>.\WPFToolkit.Extended.dll</HintPath>
+    </Reference>
   </ItemGroup>
   <ItemGroup>
     <ApplicationDefinition Include="App.xaml">
@@ -109,6 +112,9 @@
     <Compile Include="Client\Chart3D\UniformSurfaceChart3D.cs" />
     <Compile Include="Client\Chart3D\Vertex3D.cs" />
     <Compile Include="Client\Chart3D\ViewportRect.cs" />
+    <Compile Include="Client\Components\AddProcess.xaml.cs">
+      <DependentUpon>AddProcess.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Client\UI\Chart2D.cs" />
     <Compile Include="Client\UI\Graph3D.cs" />
     <Compile Include="Common\AbstractProcess.cs" />
@@ -122,6 +128,10 @@
     <Compile Include="ServerSide\Executor.cs" />
     <Compile Include="ServerSide\ProcessChislExecuterOpenCLI.cs" />
     <Compile Include="ServerSide\ProcessExecutor.cs" />
+    <Page Include="Client\Components\AddProcess.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Client\MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>

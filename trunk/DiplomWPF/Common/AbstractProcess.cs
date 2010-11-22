@@ -92,6 +92,13 @@ namespace DiplomWPF.Common
             values = new double[I + 1, J + 1, N + 1];
         }
 
+        public virtual void initializeSchema(Int32 N, Int32 I, Int32 J)
+        {
+            this.N = N;
+            this.I = I;
+            this.J = J;
+        }
+
         public abstract void executeProcess();
     }
 }

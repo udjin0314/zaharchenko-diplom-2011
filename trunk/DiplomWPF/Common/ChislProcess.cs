@@ -31,6 +31,8 @@ namespace DiplomWPF.Common
             sigmZ = 2 * gammaZ * (hz * alphaZ / K + 1);
         }
 
+
+
         public void execute()
         {
             ChislExecuter chislExecutor = new ChislExecuter();
