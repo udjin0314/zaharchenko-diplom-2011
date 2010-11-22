@@ -4,9 +4,9 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              mc:Ignorable="d" 
-             d:DesignHeight="300" d:DesignWidth="300" Loaded="UserControl_Loaded">
+             d:DesignHeight="300" d:DesignWidth="300" Loaded="UserControl_Loaded" HorizontalAlignment="Left" VerticalAlignment="Top" Height="105" Width="155" VerticalContentAlignment="Top" HorizontalContentAlignment="Left" ClipToBounds="True" UseLayoutRounding="True">
     <Grid>
-        <GroupBox Header="Process Name" Height="105" HorizontalAlignment="Left" Margin="0,0,0,195" Name="processGroupBox" VerticalAlignment="Bottom" Width="155" BorderBrush="{x:Null}">
+        <GroupBox Header="Process Name" Height="105" HorizontalAlignment="Left" Name="processGroupBox" VerticalAlignment="Top" Width="155" BorderBrush="{x:Null}">
             <Grid>
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="68*" />

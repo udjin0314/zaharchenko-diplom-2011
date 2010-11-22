@@ -11,6 +11,7 @@ using System.ComponentModel;
 using System.Threading;
 using System.Windows.Input;
 using System.Windows.Controls;
+using DiplomWPF.Client.Components;
 
 namespace DiplomWPF
 {
@@ -241,9 +242,18 @@ namespace DiplomWPF
                 process.chartUR.reDrawNewValues(zn, tn);
         }
 
+        private void addNewProcess(AbstractProcess process)
+        {
+            ProcessControl prc = new ProcessControl(process);
+            processesGrid.Children.Add(prc);
+        }
+
         private void addProcessLabel_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
         {
             //TODO open Form
+            AddProcessWindow newProcessWindow = new AddProcessWindow();
+            newProcessWindow.ShowDialog();
+            addNewProcess(newProcessWindow.getProcess());
         }
     }
 
