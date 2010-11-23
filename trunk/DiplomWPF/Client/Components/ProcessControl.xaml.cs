@@ -33,24 +33,18 @@ namespace DiplomWPF
 
         }
 
-        private void selectProcess_Unchecked(object sender, RoutedEventArgs e)
-        {
-            process.isVisible = false;
-        }
-
-        private void selectProcess_Checked(object sender, RoutedEventArgs e)
-        {
-            process.isVisible = true;
-        }
-
         private void label1_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
         {
-            //TODO open parameters
+            
         }
 
         private void setProcessButton_Click(object sender, RoutedEventArgs e)
         {
+            parentWindow.initializeProcessParams(process);
             process.executeProcess();
+            process.reDrawNewProcess();
+            if (parentWindow.paramProcess == process) parentWindow.prepareTempLegend();
+            setProcessButton.IsEnabled = false;
         }
 
         private void closeButton_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
@@ -62,6 +56,23 @@ namespace DiplomWPF
         private void UserControl_Loaded(object sender, RoutedEventArgs e)
         {
             parentWindow = MainWindow.GetWindow(this) as MainWindow;
+        }
+
+        private void processGroupBox_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
+        {
+            parentWindow.setProcess(this);
+        }
+
+        private void closeButton_MouseLeave(object sender, MouseEventArgs e)
+        {
+            closeButton.Height = 15;
+            closeButton.Width = 15;
+        }
+
+        private void closeButton_MouseEnter(object sender, MouseEventArgs e)
+        {
+            closeButton.Height = 18;
+            closeButton.Width = 18;
         }
     }
 }

@@ -12,7 +12,7 @@ namespace DiplomWPF.Client.UI
 {
     public class Graph3D
     {
-        
+
         private Chart3D m_3dChart;
         private int m_nChartModelIndex = -1;
 
@@ -25,6 +25,8 @@ namespace DiplomWPF.Client.UI
 
         private AbstractProcess process;
 
+        private int globN = MainWindow.globN;
+
         public Graph3D(Viewport3D viewport)
         {
             mainViewport = viewport;
@@ -34,20 +36,20 @@ namespace DiplomWPF.Client.UI
         public void reDrawNewProcess(AbstractProcess processIn)
         {
             initWithProcess(processIn);
-            reDrawNewValues(0,0);
+            reDrawNewValues(0, 0);
         }
 
         private void initWithProcess(AbstractProcess processIn)
         {
             process = processIn;
-            int nXNo = process.I;
+            int nXNo = globN;
 
             m_3dChart = new UniformSurfaceChart3D();
             ((UniformSurfaceChart3D)m_3dChart).SetGrid(nXNo, nXNo, -100, 100, -100, 100);
             TransformChart();
         }
 
-        public void reDrawNewValues(int time, int zn)
+        public void reDrawNewValues(double zn, double time)
         {
             prepareData(time, zn);
             TransformChart();
@@ -141,19 +143,29 @@ namespace DiplomWPF.Client.UI
             group1.Children.Add(new MatrixTransform3D(m_transformMatrix.m_totalMatrix));
         }
 
-        private void prepareData(int time, int zn)
+        private void prepareData(double time, double zn)
         {
-            int nXNo = process.I;
-            int nYNo = process.I;
-
+            int nXNo = globN;
+            int nYNo = globN;
+            int timei = (int)Math.Round(time / process.ht);
+            int zni = (int)Math.Round(zn / process.hz);
             for (int i = 0; i < nXNo; i++)
                 for (int j = 0; j < nXNo; j++)
                 {
                     Vertex3D vert = m_3dChart[i * nYNo + j];
                     if (j == nXNo - 1) j = nXNo;
-                    vert.x = (float)(i * process.hr * Math.Cos(2 * j * Math.PI / nXNo));
-                    vert.y = (float)(i * process.hr * Math.Sin(2 * j * Math.PI / nXNo));
-                    vert.z = (float)(process.values[i,zn,time]);
+                    double i1 = (double)i * process.I / globN;
+                    int i1i = i * process.I / globN;
+                    vert.x = (float)(i1 * process.hr * Math.Cos(2 * j * Math.PI / nXNo));
+                    vert.y = (float)(i1 * process.hr * Math.Sin(2 * j * Math.PI / nXNo));
+                    int diff = globN / process.I;
+                    float z = (float)(process.values[i1i, zni, timei]);
+                    if ((i1i != nXNo - 1) && diff > 1)
+                    {
+                        float k = (float)((i1 - i1i) / globN * process.I * (process.values[i1i + 1, zni, timei] - process.values[i1i, zni, timei]));
+                        z += k;
+                    }
+                    vert.z = z;
 
                 }
             m_3dChart.GetDataRange();
@@ -175,7 +187,7 @@ namespace DiplomWPF.Client.UI
             UpdateModelSizeInfo(meshs);
 
             WPFChart3D.Model3D model3d = new WPFChart3D.Model3D();
-            Material backMaterial = new SpecularMaterial(new SolidColorBrush(Colors.Gray),5);
+            Material backMaterial = new SpecularMaterial(new SolidColorBrush(Colors.Gray), 5);
             m_nChartModelIndex = model3d.UpdateModel(meshs, backMaterial, m_nChartModelIndex, this.mainViewport);
 
             float xMin = m_3dChart.XMin();

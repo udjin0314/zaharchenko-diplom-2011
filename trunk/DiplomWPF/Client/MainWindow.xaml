@@ -6,49 +6,7 @@
         Title="Разработка Алгоритма численного моделирования теплового поля прозрачного оптического элемента с учетом неравномерности поглощения лазерного излучения" Height="768" Width="1366" Loaded="Window_Loaded" ResizeMode="NoResize" WindowState="Maximized" WindowStyle="SingleBorderWindow">
 
     <Grid>
-
-        <GroupBox Header="Параметры" Height="510" HorizontalAlignment="Left" Margin="12,12,0,0" Name="groupBox2" VerticalAlignment="Top" Width="212">
-            <Grid Height="482">
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="55*" />
-                    <ColumnDefinition Width="145*" />
-                </Grid.ColumnDefinitions>
-                <GroupBox Header="Параметры Процесса" Height="315" HorizontalAlignment="Left" Margin="6,8,0,0" Name="ParamGroupBox" VerticalAlignment="Top" Width="185" Grid.ColumnSpan="2">
-                    <Grid Width="170">
-                        <Label Content="P" FontSize="12" FontWeight="Normal" Height="23" HorizontalAlignment="Left" Margin="6,6,0,0" Name="label1" Padding="2" VerticalAlignment="Top" Width="65" />
-                        <TextBox Height="23" HorizontalAlignment="Left" Margin="72,6,0,0" Name="parametrP" VerticalAlignment="Top" Width="92" Text="40" />
-                        <Label Content="alpha R" FontSize="12" FontWeight="Normal" Height="23" HorizontalAlignment="Left" Margin="6,35,0,0" Name="label2" Padding="2" VerticalAlignment="Top" Width="65" />
-                        <TextBox Height="23" HorizontalAlignment="Left" Margin="72,35,0,0" Name="parametrAlphaR" VerticalAlignment="Top" Width="92" Text="0,005" />
-                        <Label Content="alpha Z" FontSize="12" FontWeight="Normal" Height="23" HorizontalAlignment="Left" Margin="6,64,0,0" Name="label3" Padding="2" VerticalAlignment="Top" Width="65" />
-                        <TextBox Height="23" HorizontalAlignment="Left" Margin="72,64,0,0" Name="parametrAlphaZ" VerticalAlignment="Top" Width="92" Text="0,005" />
-                        <Label Content="R" FontSize="12" FontWeight="Normal" Height="23" HorizontalAlignment="Left" Margin="6,93,0,0" Name="label4" Padding="2" VerticalAlignment="Top" Width="65" />
-                        <TextBox Height="23" HorizontalAlignment="Left" Margin="72,93,0,0" Name="parametrR" VerticalAlignment="Top" Width="92" Text="3" />
-                        <Label Content="l" FontSize="12" FontWeight="Normal" Height="23" HorizontalAlignment="Left" Margin="6,122,0,0" Name="label5" Padding="2" VerticalAlignment="Top" Width="65" />
-                        <TextBox Height="23" HorizontalAlignment="Left" Margin="72,122,0,0" Name="parametrL" VerticalAlignment="Top" Width="92" Text="1" />
-                        <Label Content="T" FontSize="12" FontWeight="Normal" Height="23" HorizontalAlignment="Left" Margin="6,152,0,0" Name="label10" Padding="2" VerticalAlignment="Top" Width="65" />
-                        <TextBox Height="23" HorizontalAlignment="Left" Margin="72,152,0,0" Name="parametrExTime" Text=" 5" VerticalAlignment="Top" Width="92" />
-                        <Label Content="c" FontSize="12" FontWeight="Normal" Height="23" HorizontalAlignment="Left" Margin="6,181,0,0" Name="label17" Padding="2" VerticalAlignment="Top" Width="65" />
-                        <TextBox Height="23" HorizontalAlignment="Left" Margin="72,181,0,0" Name="parametrC" Text=" 1,35" VerticalAlignment="Top" Width="92" />
-                        <Label Content="K" FontSize="12" FontWeight="Normal" Height="23" HorizontalAlignment="Left" Margin="6,210,0,0" Name="label19" Padding="2" VerticalAlignment="Top" Width="65" />
-                        <TextBox Height="23" HorizontalAlignment="Left" Margin="72,210,0,0" Name="parametrK" Text=" 0,065" VerticalAlignment="Top" Width="92" />
-                        <Label Content="beta" FontSize="12" FontWeight="Normal" Height="23" HorizontalAlignment="Left" Margin="6,239,0,0" Name="label20" Padding="2" VerticalAlignment="Top" Width="65" />
-                        <TextBox Height="23" HorizontalAlignment="Left" Margin="72,239,0,0" Name="parametrBeta" Text=" 0,004" VerticalAlignment="Top" Width="92" />
-                    </Grid>
-                </GroupBox>
-                <GroupBox Header="Параметры Схемы" Height="119" HorizontalAlignment="Left" Margin="6,329,0,0" Name="groupBox1" VerticalAlignment="Top" Width="185" Grid.ColumnSpan="2">
-                    <Grid Height="97" Width="170">
-                        <Label Content="T" FontSize="12" FontWeight="Normal" Height="23" HorizontalAlignment="Left" Margin="6,6,0,0" Name="label6" Padding="2" VerticalAlignment="Top" Width="65" />
-                        <TextBox Height="23" HorizontalAlignment="Left" Margin="72,6,0,0" Name="parametrT" VerticalAlignment="Top" Width="92" Text="100" />
-                        <Label Content="I" FontSize="12" FontWeight="Normal" Height="23" HorizontalAlignment="Left" Margin="6,35,0,0" Name="label7" Padding="2" VerticalAlignment="Top" Width="65" />
-                        <TextBox Height="23" HorizontalAlignment="Left" Margin="72,35,0,0" Name="parametrI" VerticalAlignment="Top" Width="92" Text="100" />
-                        <Label Content="J" FontSize="12" FontWeight="Normal" Height="23" HorizontalAlignment="Left" Margin="6,64,0,0" Name="label8" Padding="2" VerticalAlignment="Top" Width="65" />
-                        <TextBox Height="23" HorizontalAlignment="Left" Margin="72,64,0,0" Name="parametrJ" VerticalAlignment="Top" Width="92" Text="100" />
-                    </Grid>
-                </GroupBox>
-                <Button Content="Применить" Margin="7,454,0,0" Height="22" HorizontalAlignment="Left" Name="parametersExecuteButton" VerticalAlignment="Top" Width="185" Click="parametersExecuteButton_Click" Grid.ColumnSpan="2" />
-            </Grid>
-        </GroupBox>
-        <TabControl Height="700" HorizontalAlignment="Left" Margin="230,17,0,0" Name="tabControl1" VerticalAlignment="Top" Width="960">
+        <TabControl Height="700" HorizontalAlignment="Left" Margin="196,17,0,0" Name="tabControl1" VerticalAlignment="Top" Width="991">
             <TabItem Header="Визуализация процесса" Name="visualisationTab">
                 <Grid>
                     <Grid MouseMove="OnViewportMouseMove" MouseUp="OnViewportMouseUp" MouseDown="OnViewportMouseDown" Margin="0,77,0,145">
@@ -90,12 +48,12 @@
                 MouseMove="OnViewportMouseMove" Margin="0,0,0,6"></Canvas>
                     </Grid>
                     <Slider Height="23" HorizontalAlignment="Left" Margin="91,625,0,0" Name="graphURZTimeSlider" VerticalAlignment="Top" IsSnapToTickEnabled="True"
-         Width="764" IsEnabled="False" ValueChanged="graphURZTimeSlider_ValueChanged" />
+         Width="764" IsEnabled="True" ValueChanged="graphURZTimeSlider_ValueChanged" Maximum="100" />
                     <Button Content="Старт" Height="23" HorizontalAlignment="Left" Margin="6,625,0,0" Name="graphURZTimeStartButton" VerticalAlignment="Top" Width="75" IsEnabled="False"/>
                         
                     <Label Content="Шкала времени" HorizontalAlignment="Left" Margin="6,595,0,45" Name="label11" />
                     <Label Content="0 c" Height="28" HorizontalAlignment="Left" Margin="848,620,0,0" Name="graphURZTimeLabel" VerticalAlignment="Top" Width="75" />
-                    <Slider Height="23" IsEnabled="False" IsSnapToTickEnabled="True" Name="graphURZZSlider" Margin="91,566,0,79" ValueChanged="graphURZTimeSlider_ValueChanged" HorizontalAlignment="Left" Width="764" />
+                    <Slider Height="23" IsEnabled="True" IsSnapToTickEnabled="True" Name="graphURZZSlider" Margin="91,566,0,79" ValueChanged="graphURZTimeSlider_ValueChanged" HorizontalAlignment="Left" Width="764" Maximum="100" />
                     <Button Content="Старт" Height="23" IsEnabled="False" Name="graphURZZStartButton" Margin="5,566,0,0" HorizontalAlignment="Left" Width="76" VerticalAlignment="Top" />
                     <Label Content="Толщина диска" Name="label15" Margin="5,536,0,106" HorizontalAlignment="Left" Width="98" />
                     <Label Content="0 мм" Height="28" Name="graphURZZLabel" Width="75" Margin="848,561,0,79" HorizontalAlignment="Left" />
@@ -112,11 +70,11 @@
                         <d3:VerticalAxisTitle>Температура</d3:VerticalAxisTitle>
                         <d3:HorizontalAxisTitle>Толщина диска</d3:HorizontalAxisTitle>
                     </d3:ChartPlotter>
-                    <Slider Height="23" HorizontalAlignment="Left" IsEnabled="False" IsSnapToTickEnabled="True" Margin="91,639,0,0" Name="chartUZTimeSlider" VerticalAlignment="Top" Width="772" ValueChanged="chartUZ_ValueChanged" />
+                    <Slider Height="23" HorizontalAlignment="Left" IsEnabled="True" IsSnapToTickEnabled="True" Margin="91,639,0,0" Name="chartUZTimeSlider" VerticalAlignment="Top" Width="772" ValueChanged="chartUZ_ValueChanged" Maximum="100" />
                     <Button Content="Старт" Height="23" HorizontalAlignment="Left" IsEnabled="False" Margin="6,639,0,0" Name="chartUZTimeStartButton" VerticalAlignment="Top" Width="75"/>
                     <Label Content="Шкала времени" Height="28" HorizontalAlignment="Left" Margin="6,609,0,0" Name="label12" VerticalAlignment="Top" />
                     <Label Content="0 c" Height="28" HorizontalAlignment="Right" Margin="0,635,6,0" Name="chartUZTimeLabel" VerticalAlignment="Top" Width="75" />
-                    <Slider Height="23" HorizontalAlignment="Left" IsEnabled="False" IsSnapToTickEnabled="True" Margin="91,580,0,0" Name="chartUZRSlider" VerticalAlignment="Top" Width="772" ValueChanged="chartUZ_ValueChanged" />
+                    <Slider Height="23" HorizontalAlignment="Left" IsEnabled="True" IsSnapToTickEnabled="True" Margin="91,580,0,0" Name="chartUZRSlider" VerticalAlignment="Top" Width="772" ValueChanged="chartUZ_ValueChanged" Maximum="100" />
                     <Button Content="Старт" Height="23" HorizontalAlignment="Left" IsEnabled="False" Margin="6,580,0,0" Name="chartUZRStartButton" VerticalAlignment="Top" Width="75"/>
                         
                     <Label Content="Радиус диска" Height="28" HorizontalAlignment="Left" Margin="6,550,0,0" Name="label14" VerticalAlignment="Top" />
@@ -130,11 +88,11 @@
                         <d3:VerticalAxisTitle Content="Температура" />
                         <d3:HorizontalAxisTitle Content="Радиус диска" />
                     </d3:ChartPlotter>
-                    <Slider Height="23" HorizontalAlignment="Left" IsEnabled="False" IsSnapToTickEnabled="True" Margin="101,629,0,0" Name="chartURTimeSlider" VerticalAlignment="Top" Width="772" ValueChanged="chartUR_ValueChanged" />
+                    <Slider Height="23" HorizontalAlignment="Left" IsEnabled="True" IsSnapToTickEnabled="True" Margin="101,629,0,0" Name="chartURTimeSlider" VerticalAlignment="Top" Width="772" ValueChanged="chartUR_ValueChanged" Maximum="100" />
                     <Button Content="Старт" Height="23" HorizontalAlignment="Left" IsEnabled="False" Margin="16,629,0,0" Name="chartURTimeStartButton" VerticalAlignment="Top" Width="75"/>
                     <Label Content="Шкала времени" Height="28" HorizontalAlignment="Left" Margin="16,599,0,0" Name="label13" VerticalAlignment="Top" />
                     <Label Content="0 c" Height="28" HorizontalAlignment="Right" Margin="0,625,-4,0" Name="chartURTimeLabel" VerticalAlignment="Top" Width="75" />
-                    <Slider Height="23" HorizontalAlignment="Left" IsEnabled="False" IsSnapToTickEnabled="True" Margin="101,576,0,0" Name="chartURZSlider" VerticalAlignment="Top" Width="772" ValueChanged="chartUR_ValueChanged" />
+                    <Slider Height="23" HorizontalAlignment="Left" IsEnabled="True" IsSnapToTickEnabled="True" Margin="101,576,0,0" Name="chartURZSlider" VerticalAlignment="Top" Width="772" ValueChanged="chartUR_ValueChanged" />
                     <Button Content="Старт" Height="23" HorizontalAlignment="Left" IsEnabled="False" Margin="16,576,0,0" Name="chartURZStartButton" VerticalAlignment="Top" Width="75"/>
                         
                     <Label Content="Толщина диска" Height="28" HorizontalAlignment="Left" Margin="16,546,0,0" Name="label16" VerticalAlignment="Top" />
@@ -143,7 +101,7 @@
             </TabItem>
             <TabItem Name="summaryTab" Header="Итоги" />
         </TabControl>
-        <GroupBox Header="Процесс" Height="171" HorizontalAlignment="Left" Margin="16,528,0,0" Name="tempLegend" VerticalAlignment="Top" Width="203" IsEnabled="True" Visibility="Hidden">
+        <GroupBox Header="Процесс" Height="171" HorizontalAlignment="Left" Margin="16,528,0,0" Name="tempLegend" VerticalAlignment="Top" Width="170" IsEnabled="True" Visibility="Hidden">
             <Grid>
                 <Rectangle Height="32" HorizontalAlignment="Left" Margin="82,31,0,0" Name="maxTRect" Stroke="{x:Null}" VerticalAlignment="Top" Width="71"  />
                 <Rectangle Height="32" HorizontalAlignment="Left" Margin="82,100,0,0" Name="minTRect" Stroke="{x:Null}" VerticalAlignment="Top" Width="71" />
@@ -155,12 +113,37 @@
             </Grid>
         </GroupBox>
         <GroupBox Header="Процессы" Height="678" Margin="1193,39,0,0" Name="groupBox3" VerticalAlignment="Top" HorizontalAlignment="Left" Width="165">
-            <Grid Name="processesGrid">
+            <Grid Name="processesGrid" ShowGridLines="False">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto" />
+                </Grid.ColumnDefinitions>
             </Grid>
         </GroupBox>
         <Grid Height="24" HorizontalAlignment="Left" Margin="1193,24,0,0" Name="addProcess" VerticalAlignment="Top" Width="151" Cursor="Hand">
             <Image Height="15" Margin="6,0,0,6" Name="image1" Stretch="Fill" VerticalAlignment="Bottom" Source="/DiplomWPF;component/Client/UI/add.png" Cursor="Hand" HorizontalAlignment="Left" Width="15" MouseLeftButtonDown="addProcessLabel_MouseLeftButtonDown" />
             <Label Content="Добавить процесс" Height="28" HorizontalAlignment="Right" Margin="0,0,12,0" Name="addProcessLabel" VerticalAlignment="Bottom" Cursor="Hand" FontStyle="Italic" Foreground="#FF0707FF" MouseLeftButtonDown="addProcessLabel_MouseLeftButtonDown" />
         </Grid>
+        <GroupBox Header="Параметры Процесса" Height="315" HorizontalAlignment="Left" Margin="10,10,0,0" Name="ParamGroupBox" VerticalAlignment="Top" Width="180">
+            <Grid Width="170">
+                <Label Content="P" FontSize="12" FontWeight="Normal" Height="23" HorizontalAlignment="Left" Margin="6,6,0,0" Name="label1" Padding="2" VerticalAlignment="Top" Width="65" />
+                <TextBox Height="23" HorizontalAlignment="Left" Margin="72,6,0,0" Name="parametrP" Text="40" VerticalAlignment="Top" Width="92" />
+                <Label Content="alpha R" FontSize="12" FontWeight="Normal" Height="23" HorizontalAlignment="Left" Margin="6,35,0,0" Name="label2" Padding="2" VerticalAlignment="Top" Width="65" />
+                <TextBox Height="23" HorizontalAlignment="Left" Margin="72,35,0,0" Name="parametrAlphaR" Text="0,005" VerticalAlignment="Top" Width="92" />
+                <Label Content="alpha Z" FontSize="12" FontWeight="Normal" Height="23" HorizontalAlignment="Left" Margin="6,64,0,0" Name="label3" Padding="2" VerticalAlignment="Top" Width="65" />
+                <TextBox Height="23" HorizontalAlignment="Left" Margin="72,64,0,0" Name="parametrAlphaZ" Text="0,005" VerticalAlignment="Top" Width="92" />
+                <Label Content="R" FontSize="12" FontWeight="Normal" Height="23" HorizontalAlignment="Left" Margin="6,93,0,0" Name="label4" Padding="2" VerticalAlignment="Top" Width="65" />
+                <TextBox Height="23" HorizontalAlignment="Left" Margin="72,93,0,0" Name="parametrR" Text="3" VerticalAlignment="Top" Width="92" />
+                <Label Content="l" FontSize="12" FontWeight="Normal" Height="23" HorizontalAlignment="Left" Margin="6,122,0,0" Name="label5" Padding="2" VerticalAlignment="Top" Width="65" />
+                <TextBox Height="23" HorizontalAlignment="Left" Margin="72,122,0,0" Name="parametrL" Text="1" VerticalAlignment="Top" Width="92" />
+                <Label Content="T" FontSize="12" FontWeight="Normal" Height="23" HorizontalAlignment="Left" Margin="6,152,0,0" Name="label10" Padding="2" VerticalAlignment="Top" Width="65" />
+                <TextBox Height="23" HorizontalAlignment="Left" Margin="72,152,0,0" Name="parametrExTime" Text=" 5" VerticalAlignment="Top" Width="92" />
+                <Label Content="c" FontSize="12" FontWeight="Normal" Height="23" HorizontalAlignment="Left" Margin="6,181,0,0" Name="label17" Padding="2" VerticalAlignment="Top" Width="65" />
+                <TextBox Height="23" HorizontalAlignment="Left" Margin="72,181,0,0" Name="parametrC" Text=" 1,35" VerticalAlignment="Top" Width="92" />
+                <Label Content="K" FontSize="12" FontWeight="Normal" Height="23" HorizontalAlignment="Left" Margin="6,210,0,0" Name="label19" Padding="2" VerticalAlignment="Top" Width="65" />
+                <TextBox Height="23" HorizontalAlignment="Left" Margin="72,210,0,0" Name="parametrK" Text=" 0,065" VerticalAlignment="Top" Width="92" />
+                <Label Content="beta" FontSize="12" FontWeight="Normal" Height="23" HorizontalAlignment="Left" Margin="6,239,0,0" Name="label20" Padding="2" VerticalAlignment="Top" Width="65" />
+                <TextBox Height="23" HorizontalAlignment="Left" Margin="72,239,0,0" Name="parametrBeta" Text=" 0,004" VerticalAlignment="Top" Width="92" />
+            </Grid>
+        </GroupBox>
     </Grid>
 </Window>
