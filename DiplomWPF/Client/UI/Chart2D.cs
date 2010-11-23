@@ -21,31 +21,38 @@ namespace DiplomWPF.Client.UI
 
         private ChartPlotter plotter;
 
+        private int globN = MainWindow.globN;
+
         public Chart2D(ChartPlotter plotterIn, Boolean variableZFactor)
         {
             plotter = plotterIn;
             if (variableZFactor) variableZ = true;
         }
 
-        public void initilize(AbstractProcess inProcess)
+        private void initilize(AbstractProcess inProcess)
         {
             process = inProcess;
-            int K = process.I;
-            if (variableZ) K = process.J;
-           
-            chartX = new double[K+1];
-            chartY = new double[K+1];
+            int K = globN;
+            
+            chartX = new double[K + 1];
+            chartY = new double[K + 1];
 
             xSrc = new EnumerableDataSource<double>(chartX);
             xSrc.SetXMapping(x => x);
             chartYDataSource = new EnumerableDataSource<double>(chartY);
             chartYDataSource.SetYMapping(y => y);
+            addGraph();
+        }
+
+        public void reinitialize(AbstractProcess inProcess)
+        {
+            process = inProcess;
         }
 
         private void addGraph()
         {
-            String name = process.processName+" u(r)";
-            if (variableZ) name = process.processName+" u(z)";
+            String name = process.processName + " u(r)";
+            if (variableZ) name = process.processName + " u(z)";
             plotter.AddLineGraph(new CompositeDataSource(xSrc, chartYDataSource),
                             new Pen(process.brush, 3),
                             new PenDescription(name));
@@ -60,7 +67,7 @@ namespace DiplomWPF.Client.UI
             plotter.RemoveUserElements();
         }
 
-        public void reDrawNewValues(int Rk, int Rn)
+        public void reDrawNewValues(double Rk, double Rn)
         {
             prepareData(Rk, Rn);
             chartYDataSource.RaiseDataChanged();
@@ -69,24 +76,51 @@ namespace DiplomWPF.Client.UI
         public void reDrawNewProcess(AbstractProcess processIn)
         {
             //delGraph();
-            initilize(processIn);
-            addGraph();
+            if (chartX == null) initilize(processIn);
+            else reinitialize(processIn);
         }
 
-        private void prepareData(int Rk, int Rn)
+        private void prepareData(double Rk, double Rn)
         {
+            int rni = (int)Math.Round(Rn / process.ht);
             if (variableZ)
-                for (int j = 0; j <= process.J; j++)
+            {
+                int rki = (int)Math.Round(Rk / process.hr);
+                for (int j = 0; j <= globN; j++)
                 {
-                    chartX[j] = j * process.hz;
-                    chartY[j] = process.values[Rk, j, Rn];
+                    chartX[j] = j * process.l / globN;
+                    int jint = j * process.J / globN;
+
+                    int diff = globN / process.J;
+                    double z = process.values[rki, jint, rni];
+                    if ((jint != process.J) && diff > 1)
+                    {
+                        float k = (float)((chartX[j] - jint) / globN * process.J * (process.values[rki, jint + 1, rni] - process.values[rki, jint, rni]));
+                        z += k;
+                    }
+
+                    chartY[j] = z;
                 }
+            }
             else
-                for (int i = 0; i <= process.I; i++)
+            {
+                int rki = (int)Math.Round(Rk / process.hz);
+                for (int i = 0; i <= globN; i++)
                 {
-                    chartX[i] = i * process.hr;
-                    chartY[i] = process.values[i, Rk, Rn];
+                    chartX[i] = i * process.R / globN;
+                    int jint = i * process.I / globN;
+
+                    int diff = globN / process.I;
+                    double z = process.values[jint, rki, rni];
+                    if ((jint != process.I) && diff > 1)
+                    {
+                        float k = (float)((chartX[i] - jint) / globN * process.I * (process.values[jint+1, rki, rni] - process.values[jint, rki, rni]));
+                        z += k;
+                    }
+
+                    chartY[i] = z;
                 }
+            }
         }
 
     }

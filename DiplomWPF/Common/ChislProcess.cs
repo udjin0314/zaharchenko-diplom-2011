@@ -31,10 +31,20 @@ namespace DiplomWPF.Common
             sigmZ = 2 * gammaZ * (hz * alphaZ / K + 1);
         }
 
+        public override void initializeParams(Double P, Double alphaR, Double alphaZ, Double R, Double l, Double K, Double c, Double beta, Double T)
+        {
+            base.initializeParams(P, alphaR, alphaZ, R, l, K, c, beta, T);
+            gamma = ht * K / (2 * hr * hr);
+            gammaZ = ht * K / (2 * hz * hz);
+            sigm = 2 * gamma * (1 + (1 + (double)1 / (2 * I)) * hr * alphaR / K);
+            sigmZ = 2 * gammaZ * (hz * alphaZ / K + 1);
+        }
+
 
 
         public void execute()
         {
+            //executeAlg();
             ChislExecuter chislExecutor = new ChislExecuter();
             chislExecutor.getProcess(this);
         }
@@ -89,7 +99,7 @@ namespace DiplomWPF.Common
         {
             //execute();
             executeAlg();
-
+            base.executeProcess();
         }
 
         double functionG(int i, int j)

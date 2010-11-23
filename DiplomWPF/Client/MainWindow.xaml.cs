@@ -28,25 +28,23 @@ namespace DiplomWPF
 
         private List<ProcessControl> processControls;
 
-        private AbstractProcess paramProcess;
+        public AbstractProcess paramProcess { get; set; }
 
         private BackgroundWorker backgroundWorker;
 
-        
+        public static int globN = 100;
+
+
 
         public MainWindow()
         {
-            
-            
+
+
             InitializeComponent();
             initBackgroundWorker();
             processes = new List<AbstractProcess>();
             processControls = new List<ProcessControl>();
-            ChislProcess pismenProc = new ChislProcess("Писмена Рекфорда", Brushes.Magenta);
-            ProcessControl prc = new ProcessControl(pismenProc);
-            processesGrid.Children.Add(prc);
-            processControls.Add(prc);
-            processes.Add(pismenProc);
+
             initializeGraphics();
             //chartUZ = new Chart2D(chartUZPlotter, true);
             //chartUR = new Chart2D(chartURPlotter, false);
@@ -60,7 +58,23 @@ namespace DiplomWPF
             backgroundWorker = new BackgroundWorker();
             backgroundWorker.WorkerReportsProgress = true;
             backgroundWorker.WorkerSupportsCancellation = true;
-            
+
+        }
+
+        public void initSliders()
+        {
+            setSliderParam(graphURZZSlider);
+            setSliderParam(graphURZTimeSlider);
+            setSliderParam(chartURTimeSlider);
+            setSliderParam(chartURZSlider);
+            setSliderParam(chartUZRSlider);
+            setSliderParam(chartUZTimeSlider);
+
+        }
+
+        public void setSliderParam(Slider slider)
+        {
+            slider.Maximum = globN;
         }
 
         public void deleteProcessControl(ProcessControl processCtrl)
@@ -105,10 +119,8 @@ namespace DiplomWPF
             if (paramProcess != null) paramProcess.graphURZ.OnKeyDown(sender, args);
         }
 
-        private void parametersExecuteButton_Click(object sender, RoutedEventArgs e)
+        public void initializeProcessParams(AbstractProcess proc)
         {
-
-            //if (process == null) process = new ChislProcess();
             Double alphaR = Double.Parse(parametrAlphaR.Text);
             Double P = Double.Parse(parametrP.Text);
             Double alphaZ = Double.Parse(parametrAlphaZ.Text);
@@ -118,57 +130,49 @@ namespace DiplomWPF
             Double c = Double.Parse(parametrC.Text);
             Double beta = Double.Parse(parametrBeta.Text);
             Double K = Double.Parse(parametrK.Text);
-            Int32 I = Int32.Parse(parametrI.Text);
-            Int32 J = Int32.Parse(parametrJ.Text);
-            Int32 N = Int32.Parse(parametrT.Text);
+            proc.initializeParams(P, alphaR, alphaZ, R, l, K, c, beta, T);
+        }
 
+
+        //TODO deprecated
+        private void parametersExecuteButton_Click(object sender, RoutedEventArgs e)
+        {
+
+            //if (process == null) process = new ChislProcess();
+            Double alphaR = Double.Parse(parametrAlphaR.Text);
+            Double P = Double.Parse(parametrP.Text);
+            Double alphaZ = Double.Parse(parametrAlphaZ.Text);
+            Double R = Double.Parse(parametrR.Text);
+            Double l = Double.Parse(parametrL.Text);
+            Double T = Double.Parse(parametrExTime.Text);
+            Double c = Double.Parse(parametrC.Text);
+            Double beta = Double.Parse(parametrBeta.Text);
+            Double K = Double.Parse(parametrK.Text);
 
             foreach (AbstractProcess process in processes)
             {
-                
-                process.initialize(P, alphaR, alphaZ, R, l, K, c, beta, T, N, I, J);
+
+                process.initializeParams(P, alphaR, alphaZ, R, l, K, c, beta, T);
                 process.executeProcess();
-                paramProcess=process;
             }
             processApply();
 
-
         }
 
-        public void prepareChartUZ()
+        public void resetProcessControls()
         {
-            chartUZTimeSlider.Maximum = paramProcess.N;
-            chartUZTimeSlider.TickFrequency = 1;
-            chartUZTimeSlider.IsEnabled = true;
-            chartUZRSlider.Maximum = paramProcess.I;
-            chartUZRSlider.TickFrequency = 1;
-            chartUZRSlider.IsEnabled = true;
+            foreach (ProcessControl proCtrl in processControls)
+            {
+                proCtrl.processGroupBox.BorderBrush = null;
+                proCtrl.processGroupBox.BorderThickness = new Thickness(0);
+            }
         }
 
-        public void prepareChartUR()
-        {
-            chartURTimeSlider.Maximum = paramProcess.N;
-            chartURTimeSlider.TickFrequency = 1;
-            chartURTimeSlider.IsEnabled = true;
-            chartURZSlider.Maximum = paramProcess.J;
-            chartURZSlider.TickFrequency = 1;
-            chartURZSlider.IsEnabled = true;
-        }
 
-        public void prepareGraphURZ()
-        {
-            graphURZTimeSlider.Maximum = paramProcess.N;
-            graphURZTimeSlider.TickFrequency = 1;
-            graphURZTimeSlider.IsEnabled = true;
-
-            graphURZZSlider.Maximum = paramProcess.J;
-            graphURZZSlider.TickFrequency = 1;
-            graphURZZSlider.IsEnabled = true;
-        }
 
 
         //TODO make it foreach
-        private void prepareTempLegend()
+        public void prepareTempLegend()
         {
             tempLegend.Header = paramProcess.processName;
             tempLegend.Visibility = System.Windows.Visibility.Visible;
@@ -183,10 +187,10 @@ namespace DiplomWPF
         {
             foreach (AbstractProcess process in processes)
                 process.reDrawNewProcess();
-            prepareChartUR();
-            prepareChartUZ();
-            prepareGraphURZ();
-            prepareTempLegend();
+            //prepareChartUR();
+            //prepareChartUZ();
+            //prepareGraphURZ();
+            
 
         }
 
@@ -198,16 +202,24 @@ namespace DiplomWPF
             Int32 zn = (int)graphURZZSlider.Value;
             if (zn < 0) zn = 0;
 
-            Double len = paramProcess.hz * (zn);
+            Double len = Double.Parse(parametrL.Text) * (zn) / globN;
             graphURZZLabel.Content = len.ToString() + " мм";
 
             Int32 tn = (int)graphURZTimeSlider.Value;
             if (tn < 0) tn = 0;
-            Double time = paramProcess.ht * (tn);
+            Double time = Double.Parse(parametrExTime.Text) * (tn) / globN;
             graphURZTimeLabel.Content = time.ToString() + " c";
-            foreach (AbstractProcess process in processes)
-                process.graphURZ.reDrawNewValues(tn, zn);
+            foreach (AbstractProcess process in getActiveProcesses())
+                process.graphURZ.reDrawNewValues(len, time);
 
+        }
+
+        private List<AbstractProcess> getActiveProcesses()
+        {
+            List<AbstractProcess> processes = new List<AbstractProcess>();
+            foreach (ProcessControl processCtrl in processControls)
+                if (processCtrl.process.isExecuted) processes.Add(processCtrl.process);
+            return processes;
         }
 
         private void chartUZ_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
@@ -216,14 +228,14 @@ namespace DiplomWPF
             if (rn < 0) rn = 0;
             Int32 tn = (int)chartUZTimeSlider.Value;
             if (tn < 0) tn = 0;
-            Double radius = paramProcess.hr * (rn);
+            Double radius = Double.Parse(parametrR.Text) * (rn) / globN;
             chartUZRLabel.Content = radius.ToString() + " мм";
 
-            Double time = paramProcess.ht * (tn);
+            Double time = Double.Parse(parametrExTime.Text) * (tn) / globN;
             chartUZTimeLabel.Content = time.ToString() + " c";
 
-            foreach (AbstractProcess process in processes)
-                process.chartUZ.reDrawNewValues(rn, tn);
+            foreach (AbstractProcess process in getActiveProcesses())
+                process.chartUZ.reDrawNewValues(radius, time);
 
         }
 
@@ -233,19 +245,40 @@ namespace DiplomWPF
             if (zn < 0) zn = 0;
             Int32 tn = (int)chartURTimeSlider.Value;
             if (tn < 0) tn = 0;
-            Double len = paramProcess.hz * (zn);
+            Double len = Double.Parse(parametrL.Text) * (zn) / globN;
             chartURZLabel.Content = len.ToString() + " мм";
 
-            Double time = paramProcess.ht * (tn);
+            Double time = Double.Parse(parametrExTime.Text) * (tn) / globN;
             chartURTimeLabel.Content = time.ToString() + " c";
-            foreach (AbstractProcess process in processes)
-                process.chartUR.reDrawNewValues(zn, tn);
+            foreach (AbstractProcess process in getActiveProcesses())
+                process.chartUR.reDrawNewValues(len, time);
         }
 
         private void addNewProcess(AbstractProcess process)
         {
+            initializeProcessParams(process);
+            process.initializeGraphics(chartUZPlotter, chartURPlotter, mainViewport);
             ProcessControl prc = new ProcessControl(process);
-            processesGrid.Children.Add(prc);
+            processControls.Add(prc);
+            drawProcessesToGrid();
+            setProcess(prc);
+            
+        }
+
+        private void drawProcessesToGrid()
+        {
+            processesGrid.RowDefinitions.Clear();
+            processesGrid.Children.Clear();
+            foreach (ProcessControl prCtrl in processControls)
+            {
+
+                RowDefinition rowDef1 = new RowDefinition();
+                rowDef1.Height = GridLength.Auto;
+                processesGrid.RowDefinitions.Add(rowDef1);
+                Grid.SetRow(prCtrl, processesGrid.RowDefinitions.Count - 1);
+                Grid.SetColumn(prCtrl, 0);
+                processesGrid.Children.Add(prCtrl);
+            }
         }
 
         private void addProcessLabel_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
@@ -253,7 +286,16 @@ namespace DiplomWPF
             //TODO open Form
             AddProcessWindow newProcessWindow = new AddProcessWindow();
             newProcessWindow.ShowDialog();
-            addNewProcess(newProcessWindow.getProcess());
+            if (newProcessWindow.getProcess() != null) addNewProcess(newProcessWindow.getProcess());
+        }
+
+        public void setProcess(ProcessControl processCtrl)
+        {
+            paramProcess = processCtrl.process;
+            resetProcessControls();
+            processCtrl.processGroupBox.BorderBrush = Brushes.DarkGreen;
+            processCtrl.processGroupBox.BorderThickness = new Thickness(2);
+            
         }
     }
 

@@ -20,7 +20,7 @@ namespace DiplomWPF.Common
         public Double R { get; set; }
         public Double l { get; set; }
 
-        public Boolean isVisible { get; set; }
+        public Boolean isExecuted { get; private set; }
 
         public Double a { get; set; }
         public Double K { get; set; }
@@ -53,6 +53,7 @@ namespace DiplomWPF.Common
         {
             this.processName = processName;
             this.brush = brush;
+            this.isExecuted = false;
         }
 
         public void reDrawNewProcess()
@@ -92,6 +93,26 @@ namespace DiplomWPF.Common
             values = new double[I + 1, J + 1, N + 1];
         }
 
+        public virtual void initializeParams(Double P, Double alphaR, Double alphaZ, Double R, Double l, Double K, Double c, Double beta, Double T)
+        {
+            this.P = P;
+            this.alphaR = alphaR;
+            this.alphaZ = alphaZ;
+            this.R = R;
+            this.l = l;
+            this.K = alphaZ;
+            this.c = c;
+            this.beta = beta;
+            this.T = T;
+            this.maxTemperature = 0;
+            this.minTemperature = Int32.MaxValue;
+            this.a = 0.15 * R;
+            this.hr = R / I;
+            this.hz = l / J;
+            this.ht = T / N;
+            values = new double[I + 1, J + 1, N + 1];
+        }
+
         public virtual void initializeSchema(Int32 N, Int32 I, Int32 J)
         {
             this.N = N;
@@ -99,6 +120,9 @@ namespace DiplomWPF.Common
             this.J = J;
         }
 
-        public abstract void executeProcess();
+        public virtual void executeProcess()
+        {
+            isExecuted = true;
+        }
     }
 }
