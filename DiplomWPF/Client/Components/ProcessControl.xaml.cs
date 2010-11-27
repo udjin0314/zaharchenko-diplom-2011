@@ -43,7 +43,13 @@ namespace DiplomWPF
             parentWindow.initializeProcessParams(process);
             process.executeProcess();
             process.reDrawNewProcess();
-            if (parentWindow.paramProcess == process) parentWindow.prepareTempLegend();
+            parentWindow.chartUR_ValueChanged(null, null);
+            parentWindow.chartUZ_ValueChanged(null, null);
+            if (parentWindow.paramProcess == process)
+            {
+                //process.reDrawViewport();
+                parentWindow.prepareTempLegend();
+            }
             setProcessButton.IsEnabled = false;
         }
 
