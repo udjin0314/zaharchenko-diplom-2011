@@ -47,7 +47,6 @@ namespace DiplomWPF.Common
 
         public Chart2D chartUZ { get; set; }
         public Chart2D chartUR { get; set; }
-        public Graph3D graphURZ { get; set; }
 
         public AbstractProcess(String processName, Brush brush)
         {
@@ -60,14 +59,14 @@ namespace DiplomWPF.Common
         {
             chartUZ.reDrawNewProcess(this);
             chartUR.reDrawNewProcess(this);
-            graphURZ.reDrawNewProcess(this);
+            
         }
+
 
         public void initializeGraphics(ChartPlotter chartUZPlotter, ChartPlotter chartURPlotter, Viewport3D viewport)
         {
             chartUZ = new Chart2D(chartUZPlotter, true);
             chartUR = new Chart2D(chartURPlotter, false);
-            graphURZ = new Graph3D(viewport);
         }
 
         public virtual void initialize(Double P, Double alphaR, Double alphaZ, Double R, Double l, Double K, Double c, Double beta, Double T, Int32 N, Int32 I, Int32 J)
@@ -123,6 +122,14 @@ namespace DiplomWPF.Common
         public virtual void executeProcess()
         {
             isExecuted = true;
+        }
+
+        public virtual void delete()
+        {
+            chartUR.delete();
+            chartUZ.delete();
+            chartUR = null;
+            chartUZ = null;
         }
     }
 }

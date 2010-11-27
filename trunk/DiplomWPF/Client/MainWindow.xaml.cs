@@ -12,6 +12,7 @@ using System.Threading;
 using System.Windows.Input;
 using System.Windows.Controls;
 using DiplomWPF.Client.Components;
+using System.Windows.Media.Media3D;
 
 namespace DiplomWPF
 {
@@ -23,6 +24,8 @@ namespace DiplomWPF
 
         //Chart2D chartUZ;
         //Chart2D chartUR;
+
+        public Graph3D graphURZ { get; set; }
 
         private List<AbstractProcess> processes;
 
@@ -79,8 +82,17 @@ namespace DiplomWPF
 
         public void deleteProcessControl(ProcessControl processCtrl)
         {
+            
             processesGrid.Children.Remove(processCtrl);
             processControls.Remove(processCtrl);
+            processCtrl.process.delete();
+            if (processCtrl.process == paramProcess)
+            {
+                ModelVisual3D m = (ModelVisual3D)mainViewport.Children[graphURZ.getModelNumber()];
+                mainViewport.Children.Remove(m);
+                paramProcess = null;
+            }
+            processCtrl.process = null;
         }
 
         private void initializeGraphics()
@@ -89,6 +101,7 @@ namespace DiplomWPF
             {
                 process.initializeGraphics(chartUZPlotter, chartURPlotter, mainViewport);
             }
+            graphURZ = new Graph3D(mainViewport);
         }
 
         private void Window_Loaded(object sender, RoutedEventArgs e)
@@ -100,23 +113,23 @@ namespace DiplomWPF
 
         public void OnViewportMouseDown(object sender, System.Windows.Input.MouseButtonEventArgs args)
         {
-            if (paramProcess != null) paramProcess.graphURZ.OnMouseDown(sender, args);
+            if (paramProcess != null) graphURZ.OnMouseDown(sender, args);
         }
 
         public void OnViewportMouseMove(object sender, System.Windows.Input.MouseEventArgs args)
         {
-            if (paramProcess != null) paramProcess.graphURZ.OnMouseMove(sender, args);
+            if (paramProcess != null) graphURZ.OnMouseMove(sender, args);
         }
 
         public void OnViewportMouseUp(object sender, System.Windows.Input.MouseButtonEventArgs args)
         {
-            if (paramProcess != null) paramProcess.graphURZ.OnMouseUp(sender, args);
+            if (paramProcess != null) graphURZ.OnMouseUp(sender, args);
         }
 
         // zoom in 3d display
         public void OnKeyDown(object sender, System.Windows.Input.KeyEventArgs args)
         {
-            if (paramProcess != null) paramProcess.graphURZ.OnKeyDown(sender, args);
+            if (paramProcess != null) graphURZ.OnKeyDown(sender, args);
         }
 
         public void initializeProcessParams(AbstractProcess proc)
@@ -134,30 +147,7 @@ namespace DiplomWPF
         }
 
 
-        //TODO deprecated
-        private void parametersExecuteButton_Click(object sender, RoutedEventArgs e)
-        {
-
-            //if (process == null) process = new ChislProcess();
-            Double alphaR = Double.Parse(parametrAlphaR.Text);
-            Double P = Double.Parse(parametrP.Text);
-            Double alphaZ = Double.Parse(parametrAlphaZ.Text);
-            Double R = Double.Parse(parametrR.Text);
-            Double l = Double.Parse(parametrL.Text);
-            Double T = Double.Parse(parametrExTime.Text);
-            Double c = Double.Parse(parametrC.Text);
-            Double beta = Double.Parse(parametrBeta.Text);
-            Double K = Double.Parse(parametrK.Text);
-
-            foreach (AbstractProcess process in processes)
-            {
-
-                process.initializeParams(P, alphaR, alphaZ, R, l, K, c, beta, T);
-                process.executeProcess();
-            }
-            processApply();
-
-        }
+        
 
         public void resetProcessControls()
         {
@@ -174,24 +164,16 @@ namespace DiplomWPF
         //TODO make it foreach
         public void prepareTempLegend()
         {
-            tempLegend.Header = paramProcess.processName;
-            tempLegend.Visibility = System.Windows.Visibility.Visible;
-            MaxTLabel.Content = Math.Round(paramProcess.maxTemperature, 3);
-            MinTLabel.Content = Math.Round(paramProcess.minTemperature, 3);
-            minTRect.Fill = new SolidColorBrush(Color.FromRgb(0, 0, 255));
-            maxTRect.Fill = new SolidColorBrush(Color.FromRgb(255, 0, 0));
-        }
-
-        //TODO make it foreach
-        private void processApply()
-        {
-            foreach (AbstractProcess process in processes)
-                process.reDrawNewProcess();
-            //prepareChartUR();
-            //prepareChartUZ();
-            //prepareGraphURZ();
-            
-
+            if (paramProcess.isExecuted)
+            {
+                tempLegend.Header = paramProcess.processName;
+                tempLegend.Visibility = System.Windows.Visibility.Visible;
+                MaxTLabel.Content = Math.Round(paramProcess.maxTemperature, 3);
+                MinTLabel.Content = Math.Round(paramProcess.minTemperature, 3);
+                minTRect.Fill = new SolidColorBrush(Color.FromRgb(0, 0, 255));
+                maxTRect.Fill = new SolidColorBrush(Color.FromRgb(255, 0, 0));
+                graphURZ.reDrawNewProcess(paramProcess);
+            }
         }
 
 
@@ -209,8 +191,7 @@ namespace DiplomWPF
             if (tn < 0) tn = 0;
             Double time = Double.Parse(parametrExTime.Text) * (tn) / globN;
             graphURZTimeLabel.Content = time.ToString() + " c";
-            foreach (AbstractProcess process in getActiveProcesses())
-                process.graphURZ.reDrawNewValues(len, time);
+            graphURZ.reDrawNewValues(len, time);
 
         }
 
@@ -222,7 +203,7 @@ namespace DiplomWPF
             return processes;
         }
 
-        private void chartUZ_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
+        public void chartUZ_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
         {
             Int32 rn = (int)chartUZRSlider.Value;
             if (rn < 0) rn = 0;
@@ -239,7 +220,7 @@ namespace DiplomWPF
 
         }
 
-        private void chartUR_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
+        public void chartUR_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
         {
             Int32 zn = (int)chartURZSlider.Value;
             if (zn < 0) zn = 0;
@@ -262,6 +243,8 @@ namespace DiplomWPF
             processControls.Add(prc);
             drawProcessesToGrid();
             setProcess(prc);
+            chartUR_ValueChanged(null, null);
+            chartUZ_ValueChanged(null, null);
             
         }
 
@@ -291,10 +274,18 @@ namespace DiplomWPF
 
         public void setProcess(ProcessControl processCtrl)
         {
+           
             paramProcess = processCtrl.process;
+            
+            if (paramProcess.isExecuted)
+            {
+                graphURZ.reDrawNewProcess(paramProcess);
+                graphURZTimeSlider_ValueChanged(null, null);
+            }
             resetProcessControls();
             processCtrl.processGroupBox.BorderBrush = Brushes.DarkGreen;
             processCtrl.processGroupBox.BorderThickness = new Thickness(2);
+            prepareTempLegend();
             
         }
     }

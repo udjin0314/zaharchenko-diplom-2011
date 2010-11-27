@@ -11,9 +11,12 @@ namespace DiplomWPF.Client.UI
     {
         private EnumerableDataSource<double> chartYDataSource = null;
         private EnumerableDataSource<double> xSrc = null;
+        private CompositeDataSource dataSrc=null;
 
         private double[] chartX;
         private double[] chartY;
+
+        LineGraph lineGraph=null;
 
         private AbstractProcess process;
 
@@ -29,11 +32,21 @@ namespace DiplomWPF.Client.UI
             if (variableZFactor) variableZ = true;
         }
 
+        public void delete()
+        {
+            //chartX = null;
+            //chartY = null;
+            //dataSrc = null;
+            //chartYDataSource = null;
+            //xSrc = null;
+            plotter.Children.Remove(lineGraph);
+        }
+
         private void initilize(AbstractProcess inProcess)
         {
             process = inProcess;
             int K = globN;
-            
+
             chartX = new double[K + 1];
             chartY = new double[K + 1];
 
@@ -53,7 +66,8 @@ namespace DiplomWPF.Client.UI
         {
             String name = process.processName + " u(r)";
             if (variableZ) name = process.processName + " u(z)";
-            plotter.AddLineGraph(new CompositeDataSource(xSrc, chartYDataSource),
+            dataSrc =new CompositeDataSource(xSrc, chartYDataSource);
+            lineGraph = plotter.AddLineGraph(dataSrc,
                             new Pen(process.brush, 3),
                             new PenDescription(name));
             reDrawNewValues(0, 0);
@@ -95,7 +109,7 @@ namespace DiplomWPF.Client.UI
                     double z = process.values[rki, jint, rni];
                     if ((jint != process.J) && diff > 1)
                     {
-                        float k = (float)((chartX[j] - jint) / globN * process.J * (process.values[rki, jint + 1, rni] - process.values[rki, jint, rni]));
+                        float k = (float)((chartX[j] - jint * process.hz) / process.hz * (process.values[rki, jint + 1, rni] - process.values[rki, jint, rni]));
                         z += k;
                     }
 
@@ -114,7 +128,7 @@ namespace DiplomWPF.Client.UI
                     double z = process.values[jint, rki, rni];
                     if ((jint != process.I) && diff > 1)
                     {
-                        float k = (float)((chartX[i] - jint) / globN * process.I * (process.values[jint+1, rki, rni] - process.values[jint, rki, rni]));
+                        float k = (float)((chartX[i] - jint * process.hr) / process.hr * (process.values[jint + 1, rki, rni] - process.values[jint, rki, rni]));
                         z += k;
                     }
 

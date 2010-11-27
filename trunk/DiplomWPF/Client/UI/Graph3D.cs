@@ -16,6 +16,8 @@ namespace DiplomWPF.Client.UI
         private Chart3D m_3dChart;
         private int m_nChartModelIndex = -1;
 
+        private WPFChart3D.Model3D model3d;
+
         private TransformMatrix m_transformMatrix = new TransformMatrix();
 
         private ViewportRect m_selectRect = new ViewportRect();
@@ -30,6 +32,12 @@ namespace DiplomWPF.Client.UI
         public Graph3D(Viewport3D viewport)
         {
             mainViewport = viewport;
+            //initialize();
+        }
+
+        public void setViewport(Viewport3D viewport)
+        {
+            mainViewport = viewport;
             initialize();
         }
 
@@ -37,6 +45,22 @@ namespace DiplomWPF.Client.UI
         {
             initWithProcess(processIn);
             reDrawNewValues(0, 0);
+        }
+
+        public WPFChart3D.Model3D getModel()
+        {
+            return model3d;
+        }
+
+        public int getModelNumber()
+        {
+            return m_nChartModelIndex;
+        }
+
+        public void delete()
+        {
+            m_3dChart = null;
+            m_transformMatrix = null;
         }
 
         private void initWithProcess(AbstractProcess processIn)
@@ -55,10 +79,10 @@ namespace DiplomWPF.Client.UI
             TransformChart();
         }
 
-        private void initialize()
+        public void initialize()
         {
             m_selectRect.SetRect(new Point(-0.5, -0.5), new Point(-0.5, -0.5));
-            WPFChart3D.Model3D model3d = new WPFChart3D.Model3D();
+           model3d = new WPFChart3D.Model3D();
             ArrayList meshs = m_selectRect.GetMeshes();
             m_nRectModelIndex = model3d.UpdateModel(meshs, null, m_nRectModelIndex, mainViewport);
         }
@@ -154,15 +178,15 @@ namespace DiplomWPF.Client.UI
                 {
                     Vertex3D vert = m_3dChart[i * nYNo + j];
                     if (j == nXNo - 1) j = nXNo;
-                    double i1 = (double)i * process.I / globN;
+                    double i1 = i * process.R / globN;
                     int i1i = i * process.I / globN;
-                    vert.x = (float)(i1 * process.hr * Math.Cos(2 * j * Math.PI / nXNo));
-                    vert.y = (float)(i1 * process.hr * Math.Sin(2 * j * Math.PI / nXNo));
+                    vert.x = (float)(i1 * Math.Cos(2 * j * Math.PI / nXNo));
+                    vert.y = (float)(i1 * Math.Sin(2 * j * Math.PI / nXNo));
                     int diff = globN / process.I;
                     float z = (float)(process.values[i1i, zni, timei]);
                     if ((i1i != nXNo - 1) && diff > 1)
                     {
-                        float k = (float)((i1 - i1i) / globN * process.I * (process.values[i1i + 1, zni, timei] - process.values[i1i, zni, timei]));
+                        float k = (float)((i1 - i1i * process.hr) / process.hr * (process.values[i1i + 1, zni, timei] - process.values[i1i, zni, timei]));
                         z += k;
                     }
                     vert.z = z;
