@@ -9,12 +9,12 @@ namespace DiplomWPF.Client.UI
 {
     public class Chart2D
     {
-        private EnumerableDataSource<double> chartYDataSource = null;
-        private EnumerableDataSource<double> xSrc = null;
+        private EnumerableDataSource<float> chartYDataSource = null;
+        private EnumerableDataSource<float> xSrc = null;
         private CompositeDataSource dataSrc=null;
 
-        private double[] chartX;
-        private double[] chartY;
+        private float[] chartX;
+        private float[] chartY;
 
         LineGraph lineGraph=null;
 
@@ -47,12 +47,12 @@ namespace DiplomWPF.Client.UI
             process = inProcess;
             int K = globN;
 
-            chartX = new double[K + 1];
-            chartY = new double[K + 1];
+            chartX = new float[K + 1];
+            chartY = new float[K + 1];
 
-            xSrc = new EnumerableDataSource<double>(chartX);
+            xSrc = new EnumerableDataSource<float>(chartX);
             xSrc.SetXMapping(x => x);
-            chartYDataSource = new EnumerableDataSource<double>(chartY);
+            chartYDataSource = new EnumerableDataSource<float>(chartY);
             chartYDataSource.SetYMapping(y => y);
             addGraph();
         }
@@ -106,7 +106,7 @@ namespace DiplomWPF.Client.UI
                     int jint = j * process.J / globN;
 
                     int diff = globN / process.J;
-                    double z = process.values[rki, jint, rni];
+                    float z = process.values[rki, jint, rni];
                     if ((jint != process.J) && diff > 1)
                     {
                         float k = (float)((chartX[j] - jint * process.hz) / process.hz * (process.values[rki, jint + 1, rni] - process.values[rki, jint, rni]));
@@ -125,7 +125,7 @@ namespace DiplomWPF.Client.UI
                     int jint = i * process.I / globN;
 
                     int diff = globN / process.I;
-                    double z = process.values[jint, rki, rni];
+                    float z = process.values[jint, rki, rni];
                     if ((jint != process.I) && diff > 1)
                     {
                         float k = (float)((chartX[i] - jint * process.hr) / process.hr * (process.values[jint + 1, rki, rni] - process.values[jint, rki, rni]));

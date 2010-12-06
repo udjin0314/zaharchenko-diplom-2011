@@ -124,7 +124,6 @@
       <DependentUpon>ProcessControl.xaml</DependentUpon>
     </Compile>
     <Compile Include="Common\YavnSchema.cs" />
-    <Compile Include="ServerSide\ChislExecuter.cs" />
     <Compile Include="ServerSide\DataProcessProviderServer.cs" />
     <Compile Include="ServerSide\Executor.cs" />
     <Compile Include="ServerSide\ProcessChislExecuterOpenCLI.cs" />

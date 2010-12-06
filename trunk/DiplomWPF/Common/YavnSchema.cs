@@ -10,16 +10,16 @@ namespace DiplomWPF.Common
     {
         public static String FILE_NAME = "log.txt";
 
-        private double gamma0 = 0;
-        private double gamma = 0;
-        private double gammaR = 0;
+        private float gamma0 = 0;
+        private float gamma = 0;
+        private float gammaR = 0;
 
         public YavnSchema(String name, Brush brush)
             : base(name, brush)
         {
         }
 
-        public override void initialize(Double P, Double alphaR, Double alphaZ, Double R, Double l, Double K, Double c, Double beta, Double T, Int32 N, Int32 I, Int32 J)
+        public override void initialize(float P, float alphaR, float alphaZ, float R, float l, float K, float c, float beta, float T, Int32 N, Int32 I, Int32 J)
         {
             base.initialize(P, alphaR, alphaZ, R, l, K, c, beta, T, N, I, J);
             gammaR = K * ht / (c * hr * hr);
@@ -27,7 +27,7 @@ namespace DiplomWPF.Common
             gamma0 = 1 - (4 * gammaR) - (2 * alphaR * ht / (l * c));
         }
 
-        public override void initializeParams(Double P, Double alphaR, Double alphaZ, Double R, Double l, Double K, Double c, Double beta, Double T)
+        public override void initializeParams(float P, float alphaR, float alphaZ, float R, float l, float K, float c, float beta, float T)
         {
             base.initializeParams(P, alphaR, alphaZ, R, l, K, c, beta, T);
             gammaR = K * ht / (c * hr * hr);
@@ -42,24 +42,24 @@ namespace DiplomWPF.Common
             base.executeProcess();
         }
 
-        double functionG(int i)
+        float functionG(int i)
         {
-            double r = i * hr;
-            double res = P * beta * ht / (Math.PI * a * a * c) * Math.Exp(-(r * r / (a * a)));
+            float r = i * hr;
+            float res = (float)(P * beta * ht / (Math.PI * a * a * c) * Math.Exp(-(r * r / (a * a))));
             return res;
         }
 
         public void executeAlg()
         {
-            double[] ilayer = new double[I + 1];
+            float[] ilayer = new float[I + 1];
             for (int n = 0; n <= N - 1; n++)
             {
                 ilayer[0] = values[1, 0, n] * 4 * gammaR + gamma0 * values[0, 0, n] + functionG(0);
                 for (int i = 1; i < I; i++)
                 {
-                    ilayer[i] = values[i + 1, 0, n] * gammaR * (1 + (double)1 / (2 * i)) + values[i, 0, n] * gamma + values[i - 1, 0, n] * gammaR * (1 - (double)1 / (2 * i)) + functionG(i);
+                    ilayer[i] = values[i + 1, 0, n] * gammaR * (1 + (float)1 / (2 * i)) + values[i, 0, n] * gamma + values[i - 1, 0, n] * gammaR * (1 - (float)1 / (2 * i)) + functionG(i);
                 }
-                ilayer[I] = values[I - 1, 0, n] * gammaR + values[I, 0, n] * (gamma - gammaR * 2 * hr * alphaR / K * (1 + (double)1 / (2 * I)));
+                ilayer[I] = values[I - 1, 0, n] * gammaR + values[I, 0, n] * (gamma - gammaR * 2 * hr * alphaR / K * (1 + (float)1 / (2 * I)));
                 for (int i = 0; i <= I; i++)
                     for (int j = 0; j <= J; j++)
                     {

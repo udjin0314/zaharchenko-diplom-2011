@@ -7,17 +7,17 @@ namespace DiplomWPF.Common
 {
     class MatrixHelper
     {
-        public static double[,] getStdMatrix(int rows, int cols)
+        public static float[,] getStdMatrix(int rows, int cols)
         {
-            return new double[rows, cols];
+            return new float[rows, cols];
         }
 
-        public static double[] proverka(double[,] A, int size, double[] X, double[] B)
+        public static float[] proverka(float[,] A, int size, float[] X, float[] B)
         {
-            double[] diff = new double[size];
+            float[] diff = new float[size];
             for (int i = 0; i < size; i++)
             {
-                double sum = 0;
+                float sum = 0;
                 for (int j = 0; j < size; j++)
                 {
                     sum += A[i, j] * X[j];
@@ -27,29 +27,29 @@ namespace DiplomWPF.Common
             return diff;
         }
 
-        public static double[] progonka(double[,] A, double[] B, int size)
+        public static float[] progonka(float[,] A, float[] B, int size)
         {
-            double[] alphaPr = new double[size];
-            double[] betaPr = new double[size];
-            double[] X = new double[size];
+            float[] alphaPr = new float[size];
+            float[] betaPr = new float[size];
+            float[] X = new float[size];
             alphaPr[1] = -(A[0, 1]) / A[0, 0];
             betaPr[1] = B[0] / A[0, 0];
 
             for (int i = 1; i < size - 1; i++)
             {
-                double ei = A[i, i + 1];
-                double ci = A[i, i - 1];
-                double di = A[i, i];
-                double znam = (di + ci * alphaPr[i]);
+                float ei = A[i, i + 1];
+                float ci = A[i, i - 1];
+                float di = A[i, i];
+                float znam = (di + ci * alphaPr[i]);
                 alphaPr[i + 1] = (-ei) / znam;
                 betaPr[i + 1] = (B[i] - ci * betaPr[i]) / znam;
             }
 
-            double cN = A[size - 1, size - 2];
-            double dN = A[size - 1, size - 1];
-            double alphaN = alphaPr[size - 1];
-            double betaN = betaPr[size - 1];
-            double bN = B[size - 1];
+            float cN = A[size - 1, size - 2];
+            float dN = A[size - 1, size - 1];
+            float alphaN = alphaPr[size - 1];
+            float betaN = betaPr[size - 1];
+            float bN = B[size - 1];
 
             X[size - 1] = (bN - cN * betaN) / (dN + cN * alphaN);
 
@@ -61,23 +61,23 @@ namespace DiplomWPF.Common
             return X;
         }
 
-        public static double[] getRow(double[,] A, int i, int rows)
+        public static float[] getRow(float[,] A, int i, int rows)
         {
-            double[] res = new double[rows];
+            float[] res = new float[rows];
             for (int j = 0; j < rows; j++)
                 res[j] = A[i, j];
             return res;
         }
 
-        public static void setRow(double[,] A, double[] Bloc, int i, int rows)
+        public static void setRow(float[,] A, float[] Bloc, int i, int rows)
         {
             for (int j = 0; j < rows; j++)
                 A[i, j] = Bloc[j];
         }
 
-        public static double[] getCol(double[,] A, int j, int cols)
+        public static float[] getCol(float[,] A, int j, int cols)
         {
-            double[] ret = new double[cols];
+            float[] ret = new float[cols];
             for (int i = 0; i < cols; i++)
             {
                 ret[i] = A[i, j];
@@ -85,7 +85,7 @@ namespace DiplomWPF.Common
             return ret;
         }
 
-        public static void setCol(double[,] A, double[] Bloc, int j, int cols)
+        public static void setCol(float[,] A, float[] Bloc, int j, int cols)
         {
             for (int i = 0; i < cols; i++)
             {
