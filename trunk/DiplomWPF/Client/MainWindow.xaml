@@ -92,11 +92,28 @@
                     <Button Content="Старт" Height="23" HorizontalAlignment="Left" IsEnabled="False" Margin="16,629,0,0" Name="chartURTimeStartButton" VerticalAlignment="Top" Width="75"/>
                     <Label Content="Шкала времени" Height="28" HorizontalAlignment="Left" Margin="16,599,0,0" Name="label13" VerticalAlignment="Top" />
                     <Label Content="0 c" Height="28" HorizontalAlignment="Right" Margin="0,625,-4,0" Name="chartURTimeLabel" VerticalAlignment="Top" Width="75" />
-                    <Slider Height="23" HorizontalAlignment="Left" IsEnabled="True" IsSnapToTickEnabled="True" Margin="101,576,0,0" Name="chartURZSlider" VerticalAlignment="Top" Width="772" ValueChanged="chartUR_ValueChanged" />
+                    <Slider Height="23" HorizontalAlignment="Left" IsEnabled="True" IsSnapToTickEnabled="True" Margin="101,576,0,0" Name="chartURZSlider" VerticalAlignment="Top" Width="772" ValueChanged="chartUR_ValueChanged" Maximum="100" />
                     <Button Content="Старт" Height="23" HorizontalAlignment="Left" IsEnabled="False" Margin="16,576,0,0" Name="chartURZStartButton" VerticalAlignment="Top" Width="75"/>
                         
                     <Label Content="Толщина диска" Height="28" HorizontalAlignment="Left" Margin="16,546,0,0" Name="label16" VerticalAlignment="Top" />
                     <Label Content="0 мм" Height="28" HorizontalAlignment="Right" Margin="0,573,-4,0" Name="chartURZLabel" VerticalAlignment="Top" Width="75" />
+                </Grid>
+            </TabItem>
+            <TabItem Name="depenceTtoTime" Header="Зависисимость температуры от времени">
+                <Grid HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
+                    <d3:ChartPlotter Margin="10,10,6,104" Name="chartUTimePlotter">
+                        <d3:Header Content="Зависимость температуры от времени" TextBlock.FontSize="20" />
+                        <d3:VerticalAxisTitle Content="Температура" />
+                        <d3:HorizontalAxisTitle Content="Время" />
+                    </d3:ChartPlotter>
+                    <Slider Height="23" HorizontalAlignment="Left" IsEnabled="True" IsSnapToTickEnabled="True" Margin="101,639,0,0" Maximum="100" Name="chartUTimeRSlider" VerticalAlignment="Top" Width="772" ValueChanged="chartUTime_ValueChanged" />
+                    <Button Content="Старт" Height="23" HorizontalAlignment="Left" IsEnabled="False" Margin="16,639,0,0" Name="button1" VerticalAlignment="Top" Width="75" />
+                    <Label Content="Радиус Диска" Height="28" HorizontalAlignment="Left" Margin="16,609,0,0" Name="label6" VerticalAlignment="Top" />
+                    <Label Content="0 мм" Height="28" HorizontalAlignment="Right" Margin="0,635,-4,0" Name="chartUTimeRLabel" VerticalAlignment="Top" Width="75" />
+                    <Slider Height="23" HorizontalAlignment="Left" IsEnabled="True" IsSnapToTickEnabled="True" Margin="101,586,0,0" Name="chartUTimeZSlider" VerticalAlignment="Top" Width="772" ValueChanged="chartUTime_ValueChanged" />
+                    <Button Content="Старт" Height="23" HorizontalAlignment="Left" IsEnabled="False" Margin="16,586,0,0" Name="button2" VerticalAlignment="Top" Width="75" />
+                    <Label Content="Толщина диска" Height="28" HorizontalAlignment="Left" Margin="16,556,0,0" Name="label8" VerticalAlignment="Top" />
+                    <Label Content="0 мм" Height="28" HorizontalAlignment="Right" Margin="0,583,-4,0" Name="chartUTimeZLabel" VerticalAlignment="Top" Width="75" />
                 </Grid>
             </TabItem>
             <TabItem Name="summaryTab" Header="Итоги" />
