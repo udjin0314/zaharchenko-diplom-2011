@@ -72,6 +72,8 @@ namespace DiplomWPF
             setSliderParam(chartURZSlider);
             setSliderParam(chartUZRSlider);
             setSliderParam(chartUZTimeSlider);
+            setSliderParam(chartUTimeRSlider);
+            setSliderParam(chartUTimeZSlider);
 
         }
 
@@ -99,7 +101,7 @@ namespace DiplomWPF
         {
             foreach (AbstractProcess process in processes)
             {
-                process.initializeGraphics(chartUZPlotter, chartURPlotter, mainViewport);
+                process.initializeGraphics(chartUZPlotter, chartURPlotter, chartUTimePlotter);
             }
             graphURZ = new Graph3D(mainViewport);
         }
@@ -235,16 +237,32 @@ namespace DiplomWPF
                 process.chartUR.reDrawNewValues(len, time);
         }
 
+        public void chartUTime_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
+        {
+            Int32 zn = (int)chartUTimeZSlider.Value;
+            if (zn < 0) zn = 0;
+            Int32 rn = (int)chartUTimeRSlider.Value;
+            if (rn < 0) rn = 0;
+            Double len = Double.Parse(parametrL.Text) * (zn) / globN;
+            chartUTimeZLabel.Content = len.ToString() + " мм";
+
+            Double radius = Double.Parse(parametrR.Text) * (rn) / globN;
+            chartUTimeRLabel.Content = radius.ToString() + " мм";
+            foreach (AbstractProcess process in getActiveProcesses())
+                process.chartUTime.reDrawNewValues(len, radius);
+        }
+
         private void addNewProcess(AbstractProcess process)
         {
             initializeProcessParams(process);
-            process.initializeGraphics(chartUZPlotter, chartURPlotter, mainViewport);
+            process.initializeGraphics(chartUZPlotter, chartURPlotter, chartUTimePlotter);
             ProcessControl prc = new ProcessControl(process);
             processControls.Add(prc);
             drawProcessesToGrid();
             setProcess(prc);
             chartUR_ValueChanged(null, null);
             chartUZ_ValueChanged(null, null);
+            chartUTime_ValueChanged(null, null);
             
         }
 

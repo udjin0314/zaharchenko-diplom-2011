@@ -20,16 +20,16 @@ namespace DiplomWPF.Client.UI
 
         private AbstractProcess process;
 
-        private Boolean variableZ = false;
+        private int mode = 0;
 
         private ChartPlotter plotter;
 
         private int globN = MainWindow.globN;
 
-        public Chart2D(ChartPlotter plotterIn, Boolean variableZFactor)
+        public Chart2D(ChartPlotter plotterIn, int mode)
         {
             plotter = plotterIn;
-            if (variableZFactor) variableZ = true;
+            this.mode = mode;
         }
 
         public void delete()
@@ -65,7 +65,8 @@ namespace DiplomWPF.Client.UI
         private void addGraph()
         {
             String name = process.processName + " u(r)";
-            if (variableZ) name = process.processName + " u(z)";
+            if (mode==1) name = process.processName + " u(z)";
+            if (mode == 2) name = process.processName + " u(t)";
             dataSrc =new CompositeDataSource(xSrc, chartYDataSource);
             lineGraph = plotter.AddLineGraph(dataSrc,
                             new Pen(process.brush, 3),
@@ -97,7 +98,7 @@ namespace DiplomWPF.Client.UI
         private void prepareData(double Rk, double Rn)
         {
             int rni = (int)Math.Round(Rn / process.ht);
-            if (variableZ)
+            if (mode==1)
             {
                 int rki = (int)Math.Round(Rk / process.hr);
                 for (int j = 0; j <= globN; j++)
@@ -105,15 +106,34 @@ namespace DiplomWPF.Client.UI
                     chartX[j] = j * process.l / globN;
                     int jint = j * process.J / globN;
 
-                    int diff = globN / process.J;
+                    float diff = (float)globN / process.J;
                     float z = process.values[rki, jint, rni];
-                    if ((jint != process.J) && diff > 1)
+                    if ((jint != process.J) )
                     {
                         float k = (float)((chartX[j] - jint * process.hz) / process.hz * (process.values[rki, jint + 1, rni] - process.values[rki, jint, rni]));
                         z += k;
                     }
 
                     chartY[j] = z;
+                }
+            }
+            else if (mode == 2)
+            {
+                rni = (int)Math.Round(Rk / process.hz);
+                int rki = (int)Math.Round(Rn / process.hr);
+                for (int t = 0; t <= globN; t++)
+                {
+                    chartX[t] = t * process.T / globN;
+                    int tint = t * process.N / globN;
+
+                    float z = process.values[rki, rni, tint];
+                    if ((tint != process.N))
+                    {
+                        float k = (float)((chartX[t] - tint * process.ht) / process.ht * (process.values[rki, rni, tint + 1] - process.values[rki, rni, tint]));
+                        z += k;
+                    }
+
+                    chartY[t] = z;
                 }
             }
             else
@@ -124,9 +144,8 @@ namespace DiplomWPF.Client.UI
                     chartX[i] = i * process.R / globN;
                     int jint = i * process.I / globN;
 
-                    int diff = globN / process.I;
                     float z = process.values[jint, rki, rni];
-                    if ((jint != process.I) && diff > 1)
+                    if ((jint != process.I) )
                     {
                         float k = (float)((chartX[i] - jint * process.hr) / process.hr * (process.values[jint + 1, rki, rni] - process.values[jint, rki, rni]));
                         z += k;
