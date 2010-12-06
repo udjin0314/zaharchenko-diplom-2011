@@ -13,35 +13,35 @@ namespace DiplomWPF.Common
     {
         public String processName { get; set; }
         public Brush brush { get; set; }
-        public Double[, ,] values { get; set; }
-        public Double P { get; set; }
-        public Double alphaR { get; set; }
-        public Double alphaZ { get; set; }
-        public Double R { get; set; }
-        public Double l { get; set; }
+        public float[, ,] values { get; set; }
+        public float P { get; set; }
+        public float alphaR { get; set; }
+        public float alphaZ { get; set; }
+        public float R { get; set; }
+        public float l { get; set; }
 
         public Boolean isExecuted { get; private set; }
 
-        public Double a { get; set; }
-        public Double K { get; set; }
+        public float a { get; set; }
+        public float K { get; set; }
 
-        public Double c { get; set; }
+        public float c { get; set; }
 
-        public Double beta { get; set; }
+        public float beta { get; set; }
 
-        public Double T { get; set; }
+        public float T { get; set; }
 
         public Int32 N { get; set; }
         public Int32 I { get; set; }
         public Int32 J { get; set; }
 
-        public Double ht { get; set; }
-        public Double hz { get; set; }
-        public Double hr { get; set; }
+        public float ht { get; set; }
+        public float hz { get; set; }
+        public float hr { get; set; }
 
-        public Double maxTemperature { get; set; }
+        public float maxTemperature { get; set; }
 
-        public Double minTemperature { get; set; }
+        public float minTemperature { get; set; }
 
         //graphics elements
 
@@ -69,7 +69,7 @@ namespace DiplomWPF.Common
             chartUR = new Chart2D(chartURPlotter, false);
         }
 
-        public virtual void initialize(Double P, Double alphaR, Double alphaZ, Double R, Double l, Double K, Double c, Double beta, Double T, Int32 N, Int32 I, Int32 J)
+        public virtual void initialize(float P, float alphaR, float alphaZ, float R, float l, float K, float c, float beta, float T, Int32 N, Int32 I, Int32 J)
         {
             this.P = P;
             this.alphaR = alphaR;
@@ -85,14 +85,14 @@ namespace DiplomWPF.Common
             this.J = J;
             this.maxTemperature = 0;
             this.minTemperature = Int32.MaxValue;
-            this.a = 0.15 * R;
+            this.a = 0.15F * R;
             this.hr = R / I;
             this.hz = l / J;
             this.ht = T / N;
-            values = new double[I + 1, J + 1, N + 1];
+            values = new float[I + 1, J + 1, N + 1];
         }
 
-        public virtual void initializeParams(Double P, Double alphaR, Double alphaZ, Double R, Double l, Double K, Double c, Double beta, Double T)
+        public virtual void initializeParams(float P, float alphaR, float alphaZ, float R, float l, float K, float c, float beta, float T)
         {
             this.P = P;
             this.alphaR = alphaR;
@@ -105,11 +105,11 @@ namespace DiplomWPF.Common
             this.T = T;
             this.maxTemperature = 0;
             this.minTemperature = Int32.MaxValue;
-            this.a = 0.15 * R;
+            this.a = 0.15F * R;
             this.hr = R / I;
             this.hz = l / J;
             this.ht = T / N;
-            values = new double[I + 1, J + 1, N + 1];
+            values = new float[I + 1, J + 1, N + 1];
         }
 
         public virtual void initializeSchema(Int32 N, Int32 I, Int32 J)

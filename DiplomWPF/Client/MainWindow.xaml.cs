@@ -134,15 +134,15 @@ namespace DiplomWPF
 
         public void initializeProcessParams(AbstractProcess proc)
         {
-            Double alphaR = Double.Parse(parametrAlphaR.Text);
-            Double P = Double.Parse(parametrP.Text);
-            Double alphaZ = Double.Parse(parametrAlphaZ.Text);
-            Double R = Double.Parse(parametrR.Text);
-            Double l = Double.Parse(parametrL.Text);
-            Int32 T = Int32.Parse(parametrExTime.Text);
-            Double c = Double.Parse(parametrC.Text);
-            Double beta = Double.Parse(parametrBeta.Text);
-            Double K = Double.Parse(parametrK.Text);
+            float alphaR = (float)Double.Parse(parametrAlphaR.Text);
+            float P = (float)Double.Parse(parametrP.Text);
+            float alphaZ = (float)Double.Parse(parametrAlphaZ.Text);
+            float R = (float)Double.Parse(parametrR.Text);
+            float l = (float)Double.Parse(parametrL.Text);
+            float T = (float)Double.Parse(parametrExTime.Text);
+            float c = (float)Double.Parse(parametrC.Text);
+            float beta = (float)Double.Parse(parametrBeta.Text);
+            float K = (float)Double.Parse(parametrK.Text);
             proc.initializeParams(P, alphaR, alphaZ, R, l, K, c, beta, T);
         }
 
