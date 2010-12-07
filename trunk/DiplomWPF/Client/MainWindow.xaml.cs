@@ -13,6 +13,9 @@ using System.Windows.Input;
 using System.Windows.Controls;
 using DiplomWPF.Client.Components;
 using System.Windows.Media.Media3D;
+using DiplomWPF.Common.Comparators;
+using DiplomWPF.Common.Helpers;
+using System.Windows.Threading;
 
 namespace DiplomWPF
 {
@@ -37,7 +40,13 @@ namespace DiplomWPF
 
         public static int globN = 100;
 
+        private DThreadPool comparatorsPool;
 
+        private List<SchemaComparator> comparators;
+
+        DispatcherTimer _timer;
+
+        private int comparatorsValue = 0;
 
         public MainWindow()
         {
@@ -49,11 +58,50 @@ namespace DiplomWPF
             processControls = new List<ProcessControl>();
 
             initializeGraphics();
+
+            _timer = new DispatcherTimer();
+            _timer.Tick += new EventHandler(delegate(object s, EventArgs a)
+            {
+                checkThreads();
+                foreach (ProcessControl prcCtrl in processControls)
+                {
+                    prcCtrl.processTimer();
+                }
+            });
+            _timer.Interval = TimeSpan.FromMilliseconds(500);
+
+            // Запуск таймера
+            _timer.Start();
             //chartUZ = new Chart2D(chartUZPlotter, true);
             //chartUR = new Chart2D(chartURPlotter, false);
             //graphURZ = new Graph3D(mainViewport);
             // selection rect
 
+        }
+
+        public delegate void increaseComparatorProgressBar();
+
+        public void increaseComparatorProgressBarMethod()
+        {
+            comparatorsValue++;
+        }
+
+        private void checkThreads()
+        {
+            if (comparators != null && comparatorsPool != null && !comparatorsPool.isClean() && comparators.Count > 0)
+            {
+                if (comparatorsPool.allThreadsCompleted())
+                {
+                    foreach (SchemaComparator comparator in comparators)
+                    {
+                        comparator.apply();
+                        comparatorsValue = 0;
+                        comparatorProgressBar.Value = 0;
+                        applyButton.IsEnabled = true;
+                    }
+                }
+                else comparatorProgressBar.Value = comparatorsValue;
+            }
         }
 
         public void initBackgroundWorker()
@@ -84,7 +132,7 @@ namespace DiplomWPF
 
         public void deleteProcessControl(ProcessControl processCtrl)
         {
-            
+
             processesGrid.Children.Remove(processCtrl);
             processControls.Remove(processCtrl);
             processCtrl.process.delete();
@@ -149,7 +197,7 @@ namespace DiplomWPF
         }
 
 
-        
+
 
         public void resetProcessControls()
         {
@@ -263,7 +311,7 @@ namespace DiplomWPF
             chartUR_ValueChanged(null, null);
             chartUZ_ValueChanged(null, null);
             chartUTime_ValueChanged(null, null);
-            
+
         }
 
         private void drawProcessesToGrid()
@@ -292,9 +340,9 @@ namespace DiplomWPF
 
         public void setProcess(ProcessControl processCtrl)
         {
-           
+
             paramProcess = processCtrl.process;
-            
+
             if (paramProcess.isExecuted)
             {
                 graphURZ.reDrawNewProcess(paramProcess);
@@ -304,7 +352,40 @@ namespace DiplomWPF
             processCtrl.processGroupBox.BorderBrush = Brushes.DarkGreen;
             processCtrl.processGroupBox.BorderThickness = new Thickness(2);
             prepareTempLegend();
-            
+
+        }
+
+        private void applyButton_Click(object sender, RoutedEventArgs e)
+        {
+            applyButton.IsEnabled = false;
+            float r = (float)Double.Parse(approxRParam.Text);
+            float z = (float)Double.Parse(approxZParam.Text);
+            float t = (float)Double.Parse(approxTParam.Text);
+            Int32 maxSize = Int32.Parse(approxMaxSParam.Text);
+            Int32 minSize = Int32.Parse(approxMinSParam.Text);
+            int mode = 0;
+            if (radioButtonR.IsChecked == true) mode = 0;
+            if (radioButtonZ.IsChecked == true) mode = 1;
+            if (radioButtonT.IsChecked == true) mode = 2;
+            comparatorsPool = new DThreadPool();
+            comparators = new List<SchemaComparator>();
+            comparatorProgressBar.Maximum = globN * processControls.Count - 1;
+            foreach (ProcessControl prCtrl in processControls)
+            {
+                AbstractProcess process = prCtrl.process;
+                if (process != paramProcess)
+                {
+                    SchemaComparator comparator = new SchemaComparator(paramProcess, process, minSize, maxSize, r, z, t, mode);
+                    comparator.initializeGraphics(comparatorChartPlotter);
+                    comparators.Add(comparator);
+                    Thread thread = new Thread(new ParameterizedThreadStart(comparator.execute));
+                    comparatorsPool.addThread(thread);
+                    increaseComparatorProgressBar handler = increaseComparatorProgressBarMethod;
+                    thread.Start(handler);
+                }
+
+            }
+
         }
     }
 
