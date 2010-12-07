@@ -116,18 +116,20 @@
       <DependentUpon>AddProcess.xaml</DependentUpon>
     </Compile>
     <Compile Include="Client\UI\Chart2D.cs" />
+    <Compile Include="Client\UI\ComparatorChart.cs" />
     <Compile Include="Client\UI\Graph3D.cs" />
-    <Compile Include="Common\AbstractProcess.cs" />
-    <Compile Include="Common\MatrixHelper.cs" />
-    <Compile Include="Common\MatrixWriter.cs" />
+    <Compile Include="Common\Comparators\SchemaComparator.cs" />
+    <Compile Include="Common\Helpers\MathHelper.cs" />
+    <Compile Include="Common\Helpers\DThreadPool.cs" />
+    <Compile Include="Common\Schemas\AbstractProcess.cs" />
+    <Compile Include="Common\Schemas\AnalitProcess.cs" />
+    <Compile Include="Common\Helpers\MatrixHelper.cs" />
+    <Compile Include="Common\Helpers\MatrixWriter.cs" />
     <Compile Include="Client\Components\ProcessControl.xaml.cs">
       <DependentUpon>ProcessControl.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Common\YavnSchema.cs" />
-    <Compile Include="ServerSide\DataProcessProviderServer.cs" />
-    <Compile Include="ServerSide\Executor.cs" />
-    <Compile Include="ServerSide\ProcessChislExecuterOpenCLI.cs" />
-    <Compile Include="ServerSide\ProcessExecutor.cs" />
+    <Compile Include="Common\Schemas\YavnSchema.cs" />
+    <Compile Include="Common\Schemas\ProcessChislExecuterOpenCLI.cs" />
     <Page Include="Client\Components\AddProcess.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -140,7 +142,6 @@
       <DependentUpon>App.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Client\DataProcessProviderClient.cs" />
     <Compile Include="Client\MainWindow.xaml.cs">
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>
@@ -151,9 +152,7 @@
     </Page>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Common\DataProcessProvider.cs" />
-    <Compile Include="Common\ChislProcess.cs" />
-    <Compile Include="Common\ProcessValues.cs" />
+    <Compile Include="Common\Schemas\ChislProcess.cs" />
     <Compile Include="Properties\AssemblyInfo.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -177,9 +176,6 @@
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
     </None>
     <AppDesigner Include="Properties\" />
-    <None Include="ServerSide\resolver.cl">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
   </ItemGroup>
   <ItemGroup>
     <BootstrapperPackage Include=".NETFramework,Version=v4.0">
@@ -208,6 +204,9 @@
   </ItemGroup>
   <ItemGroup>
     <Resource Include="Client\UI\add.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Client\UI\wait.gif" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

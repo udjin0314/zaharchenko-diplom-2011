@@ -12,6 +12,8 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 using DiplomWPF.Common;
+using DiplomWPF.Common.Helpers;
+using System.Threading;
 
 namespace DiplomWPF
 {
@@ -21,7 +23,10 @@ namespace DiplomWPF
     public partial class ProcessControl : UserControl
     {
         public AbstractProcess process { get; set; }
-        public MainWindow parentWindow; 
+        public MainWindow parentWindow;
+        private int progressBarValue = 0;
+
+        DThreadPool pool;
 
 
         public ProcessControl(AbstractProcess processIn)
@@ -33,24 +38,55 @@ namespace DiplomWPF
 
         }
 
+        public void processTimer()
+        {
+            if (process != null && pool != null && !pool.isClean())
+            {
+                if (pool.allThreadsCompleted())
+                {
+                    progressBar.Value = 0;
+                    pool.Clear();
+                    process.reDrawNewProcess();
+                    parentWindow.chartUR_ValueChanged(null, null);
+                    parentWindow.chartUZ_ValueChanged(null, null);
+                    if (parentWindow.paramProcess == process)
+                    {
+                        //process.reDrawViewport();
+                        parentWindow.prepareTempLegend();
+                    }
+                    
+                }
+                else progressBar.Value = progressBarValue;
+            }
+
+        }
+
+        public delegate void increaseProgressBar();
+
+        public void increaseProgressBarMethod()
+        {
+            progressBarValue++;
+        }
+
         private void label1_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
         {
-            
+
         }
 
         private void setProcessButton_Click(object sender, RoutedEventArgs e)
         {
-            parentWindow.initializeProcessParams(process);
-            process.executeProcess();
-            process.reDrawNewProcess();
-            parentWindow.chartUR_ValueChanged(null, null);
-            parentWindow.chartUZ_ValueChanged(null, null);
-            if (parentWindow.paramProcess == process)
-            {
-                //process.reDrawViewport();
-                parentWindow.prepareTempLegend();
-            }
+            pool = new DThreadPool();
             setProcessButton.IsEnabled = false;
+            parentWindow.initializeProcessParams(process);
+            progressBar.Maximum = process.N;
+
+            Thread thread = new Thread(new ParameterizedThreadStart(process.executeProcess));
+            pool.addThread(thread);
+            increaseProgressBar handler = increaseProgressBarMethod;
+            thread.Start(handler);
+
+            //process.executeProcess();
+
         }
 
         private void closeButton_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
