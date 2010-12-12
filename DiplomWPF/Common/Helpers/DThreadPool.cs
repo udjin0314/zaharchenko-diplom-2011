@@ -36,5 +36,13 @@ namespace DiplomWPF.Common.Helpers
         {
             return threads.Count == 0;
         }
+
+        public void closeAll()
+        {
+            foreach (Thread thread in threads)
+            {
+                thread.Abort();
+            }
+        }
     }
 }

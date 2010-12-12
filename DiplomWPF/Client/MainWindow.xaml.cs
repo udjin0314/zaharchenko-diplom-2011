@@ -68,7 +68,7 @@ namespace DiplomWPF
                     prcCtrl.processTimer();
                 }
             });
-            _timer.Interval = TimeSpan.FromMilliseconds(500);
+            _timer.Interval = TimeSpan.FromMilliseconds(100);
 
             // Запуск таймера
             _timer.Start();
@@ -136,7 +136,7 @@ namespace DiplomWPF
             processesGrid.Children.Remove(processCtrl);
             processControls.Remove(processCtrl);
             processCtrl.process.delete();
-            if (processCtrl.process == paramProcess)
+            if (processCtrl.process == paramProcess && processCtrl.process.isExecuted)
             {
                 ModelVisual3D m = (ModelVisual3D)mainViewport.Children[graphURZ.getModelNumber()];
                 mainViewport.Children.Remove(m);
@@ -163,23 +163,23 @@ namespace DiplomWPF
 
         public void OnViewportMouseDown(object sender, System.Windows.Input.MouseButtonEventArgs args)
         {
-            if (paramProcess != null) graphURZ.OnMouseDown(sender, args);
+            if (paramProcess != null && paramProcess.isExecuted) graphURZ.OnMouseDown(sender, args);
         }
 
         public void OnViewportMouseMove(object sender, System.Windows.Input.MouseEventArgs args)
         {
-            if (paramProcess != null) graphURZ.OnMouseMove(sender, args);
+            if (paramProcess != null && paramProcess.isExecuted) graphURZ.OnMouseMove(sender, args);
         }
 
         public void OnViewportMouseUp(object sender, System.Windows.Input.MouseButtonEventArgs args)
         {
-            if (paramProcess != null) graphURZ.OnMouseUp(sender, args);
+            if (paramProcess != null && paramProcess.isExecuted) graphURZ.OnMouseUp(sender, args);
         }
 
         // zoom in 3d display
         public void OnKeyDown(object sender, System.Windows.Input.KeyEventArgs args)
         {
-            if (paramProcess != null) graphURZ.OnKeyDown(sender, args);
+            if (paramProcess != null && paramProcess.isExecuted) graphURZ.OnKeyDown(sender, args);
         }
 
         public void initializeProcessParams(AbstractProcess proc)
@@ -363,6 +363,7 @@ namespace DiplomWPF
             float t = (float)Double.Parse(approxTParam.Text);
             Int32 maxSize = Int32.Parse(approxMaxSParam.Text);
             Int32 minSize = Int32.Parse(approxMinSParam.Text);
+            Int32 shag = Int32.Parse(shagTextBox.Text);
             int mode = 0;
             if (radioButtonR.IsChecked == true) mode = 0;
             if (radioButtonZ.IsChecked == true) mode = 1;
@@ -375,7 +376,7 @@ namespace DiplomWPF
                 AbstractProcess process = prCtrl.process;
                 if (process != paramProcess)
                 {
-                    SchemaComparator comparator = new SchemaComparator(paramProcess, process, minSize, maxSize, r, z, t, mode);
+                    SchemaComparator comparator = new SchemaComparator(paramProcess, process, minSize, maxSize, shag, r, z, t, mode);
                     comparator.initializeGraphics(comparatorChartPlotter);
                     comparators.Add(comparator);
                     Thread thread = new Thread(new ParameterizedThreadStart(comparator.execute));

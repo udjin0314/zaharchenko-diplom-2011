@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using OpenCLNet;
+//using OpenCLNet;
 using DiplomWPF.Common;
 using System.IO;
 
@@ -10,7 +10,7 @@ namespace DiplomWPF.ServerSide
 {
     class ProcessChislExecuterOpenCLI
     {
-        Platform openCLPlatform;
+        /*Platform openCLPlatform;
         Device[] openCLDevices;
         Context openCLContext;
         CommandQueue openCLCQ;
@@ -46,6 +46,6 @@ namespace DiplomWPF.ServerSide
         public ChislProcess getProcess(ChislProcess processIn)
         {
             throw new NotImplementedException();
-        }
+        }*/
     }
 }

@@ -11,6 +11,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
 using DiplomWPF.Common;
+using DiplomWPF.Common.Schemas;
 
 namespace DiplomWPF.Client.Components
 {
@@ -48,13 +49,19 @@ namespace DiplomWPF.Client.Components
             if ("yavn" == processType)
             {
                 process = new YavnSchema(processName, new SolidColorBrush(selectedColor));
-                process.initializeSchema( I, J,N);
+                process.initializeSchema( I, 1,N);
             }
             if ("analytic" == processType)
             {
                 process = new AnalitProcess(processName, new SolidColorBrush(selectedColor));
                 process.initializeSchema(I, J,N);
             }
+            if ("parpismen" == processType)
+            {
+                process = new ParallelChislSchema(processName, new SolidColorBrush(selectedColor));
+                process.initializeSchema(I, J,N);
+            }
+            
             this.Close();
         }
     }

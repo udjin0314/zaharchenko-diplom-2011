@@ -46,7 +46,7 @@ namespace DiplomWPF.Client.UI
         private void initilize(SchemaComparator inSchemaComparator)
         {
             schemaComparator = inSchemaComparator;
-            int K = globN;
+            int K = schemaComparator.pointsN;
 
             chartX = new double[K + 1];
             chartY = new double[K + 1];
@@ -97,7 +97,7 @@ namespace DiplomWPF.Client.UI
 
         private void prepareData()
         {
-            for (int i = 0; i <= globN; i++)
+            for (int i = 0; i <= schemaComparator.pointsN; i++)
             {
                 chartX[i] = schemaComparator.values[i,0];
                 chartY[i] = schemaComparator.values[i,1];

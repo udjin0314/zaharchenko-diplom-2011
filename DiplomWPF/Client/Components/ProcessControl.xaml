@@ -4,20 +4,22 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              mc:Ignorable="d" 
-             d:DesignHeight="300" d:DesignWidth="300" Loaded="UserControl_Loaded" HorizontalAlignment="Left" VerticalAlignment="Top" Height="105" Width="155" VerticalContentAlignment="Top" HorizontalContentAlignment="Left" ClipToBounds="True" UseLayoutRounding="True" AllowDrop="True">
+             d:DesignHeight="300" d:DesignWidth="300" Loaded="UserControl_Loaded" HorizontalAlignment="Left" VerticalAlignment="Top" Height="161" Width="155" VerticalContentAlignment="Top" HorizontalContentAlignment="Left" ClipToBounds="True" UseLayoutRounding="True" AllowDrop="True">
     <Grid>
-        <GroupBox Header="Process Name" Height="105" HorizontalAlignment="Left" Name="processGroupBox" VerticalAlignment="Top" Width="155" BorderBrush="{x:Null}" MouseLeftButtonDown="processGroupBox_MouseLeftButtonDown">
+        <GroupBox Header="Process Name" Height="160" HorizontalAlignment="Left" Name="processGroupBox" VerticalAlignment="Top" Width="155" BorderBrush="{x:Null}" MouseLeftButtonDown="processGroupBox_MouseLeftButtonDown">
             <Grid>
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="Auto" />
                     <ColumnDefinition Width="75*" />
                 </Grid.ColumnDefinitions>
                 <Button Content="Выполнить" Height="23" HorizontalAlignment="Left" Margin="6,6,0,0" Name="setProcessButton" VerticalAlignment="Top" Width="132" IsDefault="True" Grid.ColumnSpan="2" Click="setProcessButton_Click" />
-                <ProgressBar Height="25" HorizontalAlignment="Left" Margin="7,50,0,0" Name="progressBar" VerticalAlignment="Top" Width="131" Grid.ColumnSpan="2" />
-                <Label Content="Параметры" Height="28" HorizontalAlignment="Left" Margin="61,27,0,0" Name="label1" VerticalAlignment="Top" Grid.ColumnSpan="2" Foreground="#FF1A1AFF" FontStyle="Italic" Cursor="Hand" MouseLeftButtonDown="label1_MouseLeftButtonDown" />
-                
+                <ProgressBar Height="25" HorizontalAlignment="Left" Margin="7,107,0,0" Name="progressBar" VerticalAlignment="Top" Width="131" Grid.Column="1" />
+                <Label Content="Время" Grid.Column="1" Height="28" HorizontalAlignment="Left" Margin="0,35,0,0" Name="label1" VerticalAlignment="Top" Width="46" FontStretch="Condensed" />
+                <Label Content="0" Grid.Column="1" Height="28" HorizontalAlignment="Left" Margin="43,35,0,0" Name="executionTimeLabel" VerticalAlignment="Top" Width="100" />
+                <Rectangle Grid.Column="1" Height="16" HorizontalAlignment="Left" Margin="7,85,0,0" Name="colorRect" Stroke="Black" VerticalAlignment="Top" Width="130" />
+                <Label Content="" FontStretch="Condensed" Grid.Column="1" Height="28" HorizontalAlignment="Left" Margin="0,57,0,0" Name="parametersLabel" VerticalAlignment="Top" Width="143" />
             </Grid>
         </GroupBox>
-        <Image Margin="0,0,5,88" Name="closeButton" Stretch="Fill" Source="/DiplomWPF;component/Client/UI/close.png" Cursor="Hand" MouseLeftButtonDown="closeButton_MouseLeftButtonDown" MouseLeave="closeButton_MouseLeave" MouseEnter="closeButton_MouseEnter" Height="15" VerticalAlignment="Bottom" HorizontalAlignment="Right" Width="15" />
+        <Image Margin="0,0,0,0" Name="closeButton" Stretch="Fill" Source="/DiplomWPF;component/Client/UI/close.png" Cursor="Hand" MouseLeftButtonDown="closeButton_MouseLeftButtonDown" MouseLeave="closeButton_MouseLeave" MouseEnter="closeButton_MouseEnter" HorizontalAlignment="Right" Width="15" Height="15" VerticalAlignment="Top" />
     </Grid>
 </UserControl>

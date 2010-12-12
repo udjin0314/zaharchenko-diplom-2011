@@ -22,12 +22,15 @@ namespace DiplomWPF.Common.Comparators
 
         public Int32 maxSchemaSize { get; set; }
         public Int32 minSchemaSize { get; set; }
+        public Int32 shag { get; set; }
 
         public float r { get; set; }
         public float z { get; set; }
         public float t { get; set; }
 
         private int globN = MainWindow.globN;
+        public Int32 pointsN { get; set; }
+
 
 
         public SchemaComparator(AbstractProcess mainProc, AbstractProcess comparableProc)
@@ -43,7 +46,7 @@ namespace DiplomWPF.Common.Comparators
             chartComparator = new ComparatorChart(chartComparatorPlotter);
         }
 
-        public SchemaComparator(AbstractProcess mainProc, AbstractProcess comparableProc, Int32 minSchemaSize, Int32 maxSchemaSize, float r, float z, float t, int mode)
+        public SchemaComparator(AbstractProcess mainProc, AbstractProcess comparableProc, Int32 minSchemaSize, Int32 maxSchemaSize, Int32 shag, float r, float z, float t, int mode)
         {
             this.comparatorName = mainProc.processName + " - " + comparableProc.processName;
             this.brush = comparableProc.brush;
@@ -51,10 +54,12 @@ namespace DiplomWPF.Common.Comparators
             this.comparableProc = (AbstractProcess)comparableProc.Clone();
             this.minSchemaSize = minSchemaSize;
             this.maxSchemaSize = maxSchemaSize;
+            this.shag = shag;
             this.r = r;
             this.z = z;
             this.t = t;
             this.mode = mode;
+            this.pointsN = (Int32)(Math.Round((double)(maxSchemaSize - minSchemaSize)) / shag);
 
         }
 
@@ -76,11 +81,11 @@ namespace DiplomWPF.Common.Comparators
         public void execute()
         {
             if (!mainProc.isExecuted) mainProc.executeProcess();
-            values = new Double[globN+1, 2];
-            int interval = (maxSchemaSize - minSchemaSize) / globN;
-            for (int i = 0; i <= globN; i++)
+
+            values = new Double[pointsN+1, 2];
+            for (int i = 0; i <= pointsN; i++)
             {
-                Int32 schemParameter = i * interval+minSchemaSize;
+                Int32 schemParameter = i * shag+minSchemaSize;
                 processSchemaParam(schemParameter, i);
             }
         }
@@ -89,11 +94,10 @@ namespace DiplomWPF.Common.Comparators
         {
             DiplomWPF.MainWindow.increaseComparatorProgressBar handler = (DiplomWPF.MainWindow.increaseComparatorProgressBar)parameters;
             if (!mainProc.isExecuted) mainProc.executeProcess();
-            values = new Double[globN + 1, 2];
-            int interval = (maxSchemaSize - minSchemaSize) / globN;
-            for (int i = 0; i <= globN; i++)
+            values = new Double[pointsN + 1, 2];
+            for (int i = 0; i <= pointsN; i++)
             {
-                Int32 schemParameter = i * interval + minSchemaSize;
+                Int32 schemParameter = i * shag + minSchemaSize;
                 processSchemaParam(schemParameter, i);
                 handler();
             }

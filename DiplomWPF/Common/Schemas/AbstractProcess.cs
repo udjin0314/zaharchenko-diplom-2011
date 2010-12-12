@@ -13,7 +13,8 @@ namespace DiplomWPF.Common
     {
         public String processName { get; set; }
         public Brush brush { get; set; }
-        public float[, ,] values { get; set; }
+     //   public float[, ,] values { get; set; }
+        public ProcessValues values;
         public float P { get; set; }
         public float alphaR { get; set; }
         public float alphaZ { get; set; }
@@ -94,7 +95,6 @@ namespace DiplomWPF.Common
             this.hr = R / I;
             this.hz = l / J;
             this.ht = T / N;
-            values = new float[I + 1, J + 1, N + 1];
         }
 
         public virtual void initializeParams(float P, float alphaR, float alphaZ, float R, float l, float K, float c, float beta, float T)
@@ -114,7 +114,6 @@ namespace DiplomWPF.Common
             this.hr = R / I;
             this.hz = l / J;
             this.ht = T / N;
-            values = new float[I + 1, J + 1, N + 1];
         }
 
         public virtual void initializeSchema( Int32 I, Int32 J,Int32 N)
@@ -126,17 +125,19 @@ namespace DiplomWPF.Common
             this.hr = R / I;
             this.hz = l / J;
             this.ht = T / N;
-            values = new float[I + 1, J + 1, N + 1];
+            
         }
 
         public virtual void executeProcess()
         {
-            
+            //values = new float[I + 1, J + 1, N + 1];
+            values = new ProcessValues(I, J, N);
         }
 
         public virtual void executeProcess(object parameters)
         {
-            
+            //values = new float[I + 1, J + 1, N + 1];
+            values = new ProcessValues(I, J, N);
             handler = (DiplomWPF.ProcessControl.increaseProgressBar)parameters;
         }
 

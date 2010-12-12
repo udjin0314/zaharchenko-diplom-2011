@@ -79,10 +79,10 @@ namespace WPFChart3D
                 case Key.Home:
                      m_viewMatrix.SetIdentity();
                      break;
-                case Key.OemPlus:
+                case Key.Add:
                      m_viewMatrix.Scale(new Vector3D(m_scaleFactor, m_scaleFactor, m_scaleFactor));
                      break;
-                case Key.OemMinus:
+                case Key.Subtract:
                      m_viewMatrix.Scale(new Vector3D(1/m_scaleFactor, 1/m_scaleFactor, 1/m_scaleFactor));
                      break;
                 default:

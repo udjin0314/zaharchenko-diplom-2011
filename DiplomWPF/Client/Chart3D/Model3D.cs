@@ -75,6 +75,8 @@ namespace WPFChart3D
                     vx[n2] += vN.X;
                     vy[n2] += vN.Y;
                     vz[n2] += vN.Z;
+
+
                 }
                 for (int i = 0; i < nVertNo; i++)
                 {
