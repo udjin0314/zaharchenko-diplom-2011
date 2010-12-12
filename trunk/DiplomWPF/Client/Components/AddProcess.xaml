@@ -19,10 +19,11 @@
         <Label Content="Название" Height="28" HorizontalAlignment="Left" Name="label1" VerticalAlignment="Top" Margin="12,12,0,0" />
         <TextBox Height="23" HorizontalAlignment="Left" Margin="92,14,0,0" Name="processNameTextbox" VerticalAlignment="Top" Width="174" />
         <Label Content="Цвет" Height="28" HorizontalAlignment="Left" Margin="12,42,0,0" Name="label2" VerticalAlignment="Top" />
-        <extToolkit:ColorPicker Margin="92,46,19,0" SelectedColor="{Binding FavoriteColor}" Height="24" VerticalAlignment="Top" Name="colorPicker" IsManipulationEnabled="True" />
+        <extToolkit:ColorPicker Margin="92,46,19,0" SelectedColor="{Binding FavoriteColor}" Height="24" VerticalAlignment="Top" Name="colorPicker" IsManipulationEnabled="False" />
         <Label Content="Тип" Height="28" HorizontalAlignment="Left" Margin="12,72,0,0" Name="label3" VerticalAlignment="Top" />
         <ComboBox Height="23" HorizontalAlignment="Left" Margin="92,77,0,0" Name="processTypeBox" VerticalAlignment="Top" Width="174">
-            <ComboBoxItem Name="pismen" Content="Писмена - Рекфорда" />
+            <ComboBoxItem Name="pismen" Content="Писмена - Рекфорда" IsSelected="True" />
+            <ComboBoxItem Name="parpismen" Content="Пар. Писмена Рекфорда" />
             <ComboBoxItem Name="yavn" Content="Явная схема" />
             <ComboBoxItem Name="analytic" Content="Аналитическое решение" />
         </ComboBox>

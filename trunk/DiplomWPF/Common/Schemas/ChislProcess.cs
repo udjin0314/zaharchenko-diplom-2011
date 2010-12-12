@@ -12,12 +12,11 @@ namespace DiplomWPF.Common
     class ChislProcess : AbstractProcess
     {
         public static String FILE_NAME = "log.txt";
-        private int threadsN = 1;
         private float gammaZ = 0;
         private float gamma = 0;
         private float sigm = 0;
         private float sigmZ = 0;
-        float[,] tempLayer;
+        protected float[,] tempLayer;
 
         public ChislProcess(String name, Brush brush)
             : base(name, brush)
@@ -42,44 +41,7 @@ namespace DiplomWPF.Common
             sigmZ = 2 * gammaZ * (hz * alphaZ / K + 1);
         }
 
-        private void firstrun(object parameters)
-        {
-            Dictionary<String, Object> prms = (Dictionary<String, Object>)parameters;
-            float[,] B = (float[,])prms["B"];
-            int j1 = (int)prms["j1"];
-            int j2 = (int)prms["j2"];
-            float[,] Fr = (float[,])prms["Fr"];
-            for (int j = j1; j <= j2; j++)
-            {
-                float[] Bloc = MatrixHelper.getCol(B, j, I + 1);
-                float[] Prloc = MatrixHelper.progonka(Fr, Bloc, I + 1);
-                lock (tempLayer)
-                {
-                    MatrixHelper.setCol(tempLayer, Prloc, j, I + 1);
-                }
-            }
-        }
-
-        private void secondrun(object parameters)
-        {
-            Dictionary<String, Object> prms = (Dictionary<String, Object>)parameters;
-            float[,] B = (float[,])prms["B"];
-            int i1 = (int)prms["i1"];
-            int i2 = (int)prms["i2"];
-            float[,] FFl = (float[,])prms["FFl"];
-            for (int i = i1; i <= i2; i++)
-            {
-                float[] Bloc = MatrixHelper.getRow(B, i, J + 1);
-                float[] Prloc = MatrixHelper.progonka(FFl, Bloc, J + 1);
-                lock (tempLayer)
-                {
-                    MatrixHelper.setRow(tempLayer, Prloc, i, J + 1);
-                }
-            }
-        }
-
-
-        public void executeAlg()
+        public virtual void executeAlg()
         {
             float[,] Gsh = prepareMatrixG();
             tempLayer = MatrixHelper.getStdMatrix(I + 1, J + 1);
@@ -89,52 +51,24 @@ namespace DiplomWPF.Common
             {
                 float[,] Fl = prepareFl(tempLayer);
                 float[,] B = prepareB(Fl, Gsh, -1);
-                DThreadPool pool = new DThreadPool(); ;
-                int intervalJ = J / threadsN;
-                //for (int j = 0; j <= J; j++)
-                for (int j = 0; j < threadsN; j++)
+                for (int j = 0; j <= J; j++)
                 {
-                    Thread thread = new Thread(new ParameterizedThreadStart(firstrun));
-                    Dictionary<String, Object> firstParams = new Dictionary<string, object>();
-                    firstParams.Add("Fr", Fr.Clone());
-                    firstParams.Add("B", B.Clone());
-                    if (j == 0) firstParams.Add("j1", j * intervalJ);
-                    else firstParams.Add("j1", j * intervalJ + 1);
-                    if (j == threadsN - 1) firstParams.Add("j2", J);
-                    else firstParams.Add("j2", (j + 1) * intervalJ);
-                    pool.addThread(thread);
-                    thread.Start(firstParams);
-                    /*float[] Bloc = MatrixHelper.getCol(B, j, I + 1);
+                    float[] Bloc = MatrixHelper.getCol(B, j, I + 1);
                     float[] Prloc = MatrixHelper.progonka(Fr, Bloc, I + 1);
 
-                    MatrixHelper.setCol(tempLayer, Prloc, j, I + 1);*/
+                    MatrixHelper.setCol(tempLayer, Prloc, j, I + 1);
                 }
-                while (!pool.allThreadsCompleted()) ;
-                pool.Clear();
 
                 Fl = prepareFFr(tempLayer);
                 B = prepareB(Fl, Gsh, 1);
 
-                int intervalI = I / threadsN;
-                //for (int i = 0; i <= I; i++)
-                for (int i = 0; i < threadsN; i++)
+                for (int i = 0; i <= I; i++)
                 {
-                    Thread thread = new Thread(new ParameterizedThreadStart(secondrun));
-                    Dictionary<String, Object> secondParams = new Dictionary<string, object>();
-                    secondParams.Add("FFl", FFl.Clone());
-                    secondParams.Add("B", B.Clone());
-                    if (i == 0) secondParams.Add("i1", i * intervalI);
-                    else secondParams.Add("i1", i * intervalI+1);
-                    if (i == threadsN - 1) secondParams.Add("i2", I);
-                    else secondParams.Add("i2", (i + 1) * intervalI);
-                    pool.addThread(thread);
-                    thread.Start(secondParams);
-                    /*float[] Bloc = MatrixHelper.getRow(B, i, J + 1);
+                    float[] Bloc = MatrixHelper.getRow(B, i, J + 1);
                     float[] Prloc = MatrixHelper.progonka(FFl, Bloc, J + 1);
-                    MatrixHelper.setRow(tempLayer, Prloc, i, J + 1);*/
+                    MatrixHelper.setRow(tempLayer, Prloc, i, J + 1);
 
                 }
-                while (!pool.allThreadsCompleted()) ;
                 copyToProc(tempLayer, n + 1);
             }
         }
@@ -158,21 +92,19 @@ namespace DiplomWPF.Common
            
         }
 
-        
 
-        float functionG(int i, int j)
+
+        protected float functionG(int i, int j)
         {
             float r = i * hr;
             float z = j * hz;
-            //TODO replace exponenta and pi
             float res = (float)(P * beta / (Math.PI * a * a) * Math.Exp(-(beta * z + (r * r / (a * a)))));
-            //double res = P  / (Math.PI * a * a) * Math.Exp(- (r * r / (a * a)));
             return res;
         }
 
 
 
-        float[,] prepareMatrixG()
+        protected float[,] prepareMatrixG()
         {
             float[,] A = MatrixHelper.getStdMatrix(I + 1, J + 1);
             for (int j = 0; j <= J; j++)
@@ -185,7 +117,7 @@ namespace DiplomWPF.Common
 
 
 
-        float[,] prepareB(float[,] A1, float[,] A2, int koef)
+        protected float[,] prepareB(float[,] A1, float[,] A2, int koef)
         {
             float[,] B = MatrixHelper.getStdMatrix(I + 1, J + 1);
             for (int i = 0; i <= I; i++)
@@ -194,7 +126,7 @@ namespace DiplomWPF.Common
             return B;
         }
 
-        float[,] prepareFr()
+        protected float[,] prepareFr()
         {
             float[,] Fr = MatrixHelper.getStdMatrix(I + 1, I + 1);
             Fr[0, 0] = -(4 * gamma + c);
@@ -213,7 +145,7 @@ namespace DiplomWPF.Common
 
         }
 
-        float[,] prepareFl(float[,] neededLayer)
+        protected float[,] prepareFl(float[,] neededLayer)
         {
             float[,] Fl = MatrixHelper.getStdMatrix(I + 1, J + 1);
             for (int i = 0; i <= I; i++)
@@ -234,7 +166,7 @@ namespace DiplomWPF.Common
             return Fl;
         }
 
-        float[,] prepareFFr(float[,] neededLayer)
+        protected float[,] prepareFFr(float[,] neededLayer)
         {
             float[,] Fl = MatrixHelper.getStdMatrix(I + 1, J + 1);
             for (int j = 0; j <= J; j++)
@@ -255,7 +187,7 @@ namespace DiplomWPF.Common
             return Fl;
         }
 
-        float[,] prepareFFl()
+        protected float[,] prepareFFl()
         {
             float[,] Fr = MatrixHelper.getStdMatrix(J + 1, J + 1);
             Fr[0, 0] = (c + sigmZ);
@@ -273,7 +205,7 @@ namespace DiplomWPF.Common
 
         }
 
-        void copyToProc(float[,] res, int n)
+        protected void copyToProc(float[,] res, int n)
         {
             for (int j = 0; j <= J; j++)
                 for (int i = 0; i <= I; i++)
@@ -284,7 +216,8 @@ namespace DiplomWPF.Common
                     if (res[i, j] < minTemperature)
                         minTemperature = res[i, j];
                 }
-            if (handler != null) handler();
+            //if (handler != null) handler();
+            if (handler != null) handler.DynamicInvoke();
 
         }
 

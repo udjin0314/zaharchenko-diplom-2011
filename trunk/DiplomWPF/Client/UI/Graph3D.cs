@@ -69,7 +69,7 @@ namespace DiplomWPF.Client.UI
             int nXNo = globN;
 
             m_3dChart = new UniformSurfaceChart3D();
-            ((UniformSurfaceChart3D)m_3dChart).SetGrid(nXNo, nXNo, -100, 100, -100, 100);
+            ((UniformSurfaceChart3D)m_3dChart).SetGrid(nXNo, nXNo, 100, -100, 100, -100);
             TransformChart();
         }
 
@@ -176,7 +176,7 @@ namespace DiplomWPF.Client.UI
             for (int i = 0; i < nXNo; i++)
                 for (int j = 0; j < nXNo; j++)
                 {
-                    Vertex3D vert = m_3dChart[i * nYNo + j];
+                    Vertex3D vert = m_3dChart[j * nYNo + i];
                     if (j == nXNo - 1) j = nXNo;
                     double i1 = i * process.R / globN;
                     int i1i = i * process.I / globN;
@@ -192,6 +192,7 @@ namespace DiplomWPF.Client.UI
 
                 }
             m_3dChart.GetDataRange();
+            m_3dChart.SetAxes(); 
 
             double zMin = m_3dChart.ZMin();
             double zMax = m_3dChart.ZMax();
@@ -209,13 +210,16 @@ namespace DiplomWPF.Client.UI
 
             UpdateModelSizeInfo(meshs);
 
+           
+
             WPFChart3D.Model3D model3d = new WPFChart3D.Model3D();
-            Material backMaterial = new SpecularMaterial(new SolidColorBrush(Colors.Gray), 5);
+            Material backMaterial = new DiffuseMaterial(new SolidColorBrush(Colors.Gray));
             m_nChartModelIndex = model3d.UpdateModel(meshs, backMaterial, m_nChartModelIndex, this.mainViewport);
 
             float xMin = m_3dChart.XMin();
             float xMax = m_3dChart.XMax();
             m_transformMatrix.CalculateProjectionMatrix(xMin, xMax, xMin, xMax, zMin, zMax, 0.5);
+
         }
 
 
