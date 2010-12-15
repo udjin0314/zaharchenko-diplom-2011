@@ -126,8 +126,14 @@
     <Compile Include="Client\UI\ComparatorChart.cs" />
     <Compile Include="Client\UI\Graph3D.cs" />
     <Compile Include="Common\Comparators\SchemaComparator.cs" />
-    <Compile Include="Common\Helpers\MathHelper.cs" />
+    <Compile Include="Common\Mathem\Dihotomy.cs" />
+    <Compile Include="Common\Mathem\Functions\Function.cs" />
+    <Compile Include="Common\Mathem\Functions\MkrFunction.cs" />
+    <Compile Include="Common\Mathem\MathHelper.cs" />
     <Compile Include="Common\Helpers\DThreadPool.cs" />
+    <Compile Include="Common\Mathem\Functions\MnzFunction.cs" />
+    <Compile Include="Common\Mathem\Functions\ResolveMkrFunction.cs" />
+    <Compile Include="Common\Mathem\Functions\ResolveMnzFunction.cs" />
     <Compile Include="Common\ProcessValues.cs" />
     <Compile Include="Common\Schemas\AbstractProcess.cs" />
     <Compile Include="Common\Schemas\AnalitProcess.cs" />
