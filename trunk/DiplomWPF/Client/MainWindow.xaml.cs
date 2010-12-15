@@ -40,6 +40,8 @@ namespace DiplomWPF
 
         public static int globN = 100;
 
+        private Boolean compExecute = false;
+
         private DThreadPool comparatorsPool;
 
         private List<SchemaComparator> comparators;
@@ -90,17 +92,21 @@ namespace DiplomWPF
         {
             if (comparators != null && comparatorsPool != null && !comparatorsPool.isClean() && comparators.Count > 0)
             {
-                if (comparatorsPool.allThreadsCompleted())
+                if (!compExecute)
                 {
-                    foreach (SchemaComparator comparator in comparators)
+                    if (comparatorsPool.allThreadsCompleted())
                     {
-                        comparator.apply();
-                        comparatorsValue = 0;
-                        comparatorProgressBar.Value = 0;
-                        applyButton.IsEnabled = true;
+                        foreach (SchemaComparator comparator in comparators)
+                        {
+                            comparator.apply();
+                            comparatorsValue = 0;
+                            comparatorProgressBar.Value = 0;
+                            applyButton.IsEnabled = true;
+                            compExecute = true;
+                        }
                     }
+                    else comparatorProgressBar.Value = comparatorsValue;
                 }
-                else comparatorProgressBar.Value = comparatorsValue;
             }
         }
 
@@ -358,6 +364,7 @@ namespace DiplomWPF
         private void applyButton_Click(object sender, RoutedEventArgs e)
         {
             applyButton.IsEnabled = false;
+            compExecute = false;
             float r = (float)Double.Parse(approxRParam.Text);
             float z = (float)Double.Parse(approxZParam.Text);
             float t = (float)Double.Parse(approxTParam.Text);
@@ -368,9 +375,13 @@ namespace DiplomWPF
             if (radioButtonR.IsChecked == true) mode = 0;
             if (radioButtonZ.IsChecked == true) mode = 1;
             if (radioButtonT.IsChecked == true) mode = 2;
+            if (comparators!=null) foreach (SchemaComparator comparator in comparators)
+            {
+                comparator.chartComparator.delete();
+            }
             comparatorsPool = new DThreadPool();
             comparators = new List<SchemaComparator>();
-            comparatorProgressBar.Maximum = globN * processControls.Count - 1;
+            comparatorProgressBar.Maximum = (maxSize-minSize)/shag * processControls.Count - 1;
             foreach (ProcessControl prCtrl in processControls)
             {
                 AbstractProcess process = prCtrl.process;
@@ -380,6 +391,7 @@ namespace DiplomWPF
                     comparator.initializeGraphics(comparatorChartPlotter);
                     comparators.Add(comparator);
                     Thread thread = new Thread(new ParameterizedThreadStart(comparator.execute));
+                    thread.Name = comparator.comparatorName;
                     comparatorsPool.addThread(thread);
                     increaseComparatorProgressBar handler = increaseComparatorProgressBarMethod;
                     thread.Start(handler);

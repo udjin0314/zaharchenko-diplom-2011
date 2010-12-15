@@ -28,6 +28,7 @@ using System.Windows.Media.Media3D;
 using System.Windows.Media.TextFormatting;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using System.Windows.Shell;
 
 
 namespace WPFChart3D {
@@ -36,10 +37,12 @@ namespace WPFChart3D {
     /// <summary>
     /// Window1
     /// </summary>
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("PresentationBuildTasks", "4.0.0.0")]
     public partial class Window1 : System.Windows.Window, System.Windows.Markup.IComponentConnector {
         
         
         #line 15 "..\..\Window1.xaml"
+        [System.Diagnostics.CodeAnalysis.SuppressMessageAttribute("Microsoft.Performance", "CA1823:AvoidUnusedPrivateFields")]
         internal System.Windows.Controls.Viewport3D mainViewport;
         
         #line default
@@ -47,6 +50,7 @@ namespace WPFChart3D {
         
         
         #line 22 "..\..\Window1.xaml"
+        [System.Diagnostics.CodeAnalysis.SuppressMessageAttribute("Microsoft.Performance", "CA1823:AvoidUnusedPrivateFields")]
         internal System.Windows.Media.Media3D.OrthographicCamera camera;
         
         #line default
@@ -54,6 +58,7 @@ namespace WPFChart3D {
         
         
         #line 30 "..\..\Window1.xaml"
+        [System.Diagnostics.CodeAnalysis.SuppressMessageAttribute("Microsoft.Performance", "CA1823:AvoidUnusedPrivateFields")]
         internal System.Windows.Media.Media3D.ModelVisual3D Light1;
         
         #line default
@@ -61,6 +66,7 @@ namespace WPFChart3D {
         
         
         #line 35 "..\..\Window1.xaml"
+        [System.Diagnostics.CodeAnalysis.SuppressMessageAttribute("Microsoft.Performance", "CA1823:AvoidUnusedPrivateFields")]
         internal System.Windows.Media.Media3D.ModelVisual3D Light2;
         
         #line default
@@ -68,6 +74,7 @@ namespace WPFChart3D {
         
         
         #line 40 "..\..\Window1.xaml"
+        [System.Diagnostics.CodeAnalysis.SuppressMessageAttribute("Microsoft.Performance", "CA1823:AvoidUnusedPrivateFields")]
         internal System.Windows.Media.Media3D.ModelVisual3D Light3;
         
         #line default
@@ -75,6 +82,7 @@ namespace WPFChart3D {
         
         
         #line 48 "..\..\Window1.xaml"
+        [System.Diagnostics.CodeAnalysis.SuppressMessageAttribute("Microsoft.Performance", "CA1823:AvoidUnusedPrivateFields")]
         internal System.Windows.Controls.Canvas canvasOn3D;
         
         #line default
@@ -82,6 +90,7 @@ namespace WPFChart3D {
         
         
         #line 59 "..\..\Window1.xaml"
+        [System.Diagnostics.CodeAnalysis.SuppressMessageAttribute("Microsoft.Performance", "CA1823:AvoidUnusedPrivateFields")]
         internal System.Windows.Controls.TextBlock statusPane;
         
         #line default
@@ -89,6 +98,7 @@ namespace WPFChart3D {
         
         
         #line 65 "..\..\Window1.xaml"
+        [System.Diagnostics.CodeAnalysis.SuppressMessageAttribute("Microsoft.Performance", "CA1823:AvoidUnusedPrivateFields")]
         internal System.Windows.Controls.Canvas controlPane;
         
         #line default
@@ -96,6 +106,7 @@ namespace WPFChart3D {
         
         
         #line 76 "..\..\Window1.xaml"
+        [System.Diagnostics.CodeAnalysis.SuppressMessageAttribute("Microsoft.Performance", "CA1823:AvoidUnusedPrivateFields")]
         internal System.Windows.Controls.Label label1;
         
         #line default
@@ -103,6 +114,7 @@ namespace WPFChart3D {
         
         
         #line 77 "..\..\Window1.xaml"
+        [System.Diagnostics.CodeAnalysis.SuppressMessageAttribute("Microsoft.Performance", "CA1823:AvoidUnusedPrivateFields")]
         internal System.Windows.Controls.TextBox gridNo;
         
         #line default
@@ -110,6 +122,7 @@ namespace WPFChart3D {
         
         
         #line 78 "..\..\Window1.xaml"
+        [System.Diagnostics.CodeAnalysis.SuppressMessageAttribute("Microsoft.Performance", "CA1823:AvoidUnusedPrivateFields")]
         internal System.Windows.Controls.Button surfaceButton;
         
         #line default
@@ -117,6 +130,7 @@ namespace WPFChart3D {
         
         
         #line 84 "..\..\Window1.xaml"
+        [System.Diagnostics.CodeAnalysis.SuppressMessageAttribute("Microsoft.Performance", "CA1823:AvoidUnusedPrivateFields")]
         internal System.Windows.Controls.Label label2;
         
         #line default
@@ -124,6 +138,7 @@ namespace WPFChart3D {
         
         
         #line 85 "..\..\Window1.xaml"
+        [System.Diagnostics.CodeAnalysis.SuppressMessageAttribute("Microsoft.Performance", "CA1823:AvoidUnusedPrivateFields")]
         internal System.Windows.Controls.TextBox dataNo;
         
         #line default
@@ -131,6 +146,7 @@ namespace WPFChart3D {
         
         
         #line 86 "..\..\Window1.xaml"
+        [System.Diagnostics.CodeAnalysis.SuppressMessageAttribute("Microsoft.Performance", "CA1823:AvoidUnusedPrivateFields")]
         internal System.Windows.Controls.CheckBox checkBoxShape;
         
         #line default
@@ -138,6 +154,7 @@ namespace WPFChart3D {
         
         
         #line 87 "..\..\Window1.xaml"
+        [System.Diagnostics.CodeAnalysis.SuppressMessageAttribute("Microsoft.Performance", "CA1823:AvoidUnusedPrivateFields")]
         internal System.Windows.Controls.Button scatterButton;
         
         #line default
@@ -145,6 +162,7 @@ namespace WPFChart3D {
         
         
         #line 96 "..\..\Window1.xaml"
+        [System.Diagnostics.CodeAnalysis.SuppressMessageAttribute("Microsoft.Performance", "CA1823:AvoidUnusedPrivateFields")]
         internal System.Windows.Controls.Label labelVertNo;
         
         #line default
@@ -152,6 +170,7 @@ namespace WPFChart3D {
         
         
         #line 97 "..\..\Window1.xaml"
+        [System.Diagnostics.CodeAnalysis.SuppressMessageAttribute("Microsoft.Performance", "CA1823:AvoidUnusedPrivateFields")]
         internal System.Windows.Controls.Label labelTriNo;
         
         #line default
@@ -180,6 +199,8 @@ namespace WPFChart3D {
         [System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Never)]
         [System.Diagnostics.CodeAnalysis.SuppressMessageAttribute("Microsoft.Design", "CA1033:InterfaceMethodsShouldBeCallableByChildTypes")]
+        [System.Diagnostics.CodeAnalysis.SuppressMessageAttribute("Microsoft.Maintainability", "CA1502:AvoidExcessiveComplexity")]
+        [System.Diagnostics.CodeAnalysis.SuppressMessageAttribute("Microsoft.Performance", "CA1800:DoNotCastUnnecessarily")]
         void System.Windows.Markup.IComponentConnector.Connect(int connectionId, object target) {
             switch (connectionId)
             {
@@ -277,3 +298,4 @@ namespace WPFChart3D {
         }
     }
 }
+

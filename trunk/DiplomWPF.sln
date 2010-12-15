@@ -2,6 +2,9 @@
 Microsoft Visual Studio Solution File, Format Version 11.00
 # Visual Studio 2010
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DiplomWPF", "DiplomWPF\DiplomWPF.csproj", "{9F0FEB2E-9F15-4F98-85D0-72A48E03D9E8}"
+	ProjectSection(ProjectDependencies) = postProject
+		{4594058D-A96A-4B11-93B5-707215E40231} = {4594058D-A96A-4B11-93B5-707215E40231}
+	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{190E8166-E861-482C-B559-47852A129572}"
 EndProject
@@ -22,7 +25,8 @@ Global
 		{9F0FEB2E-9F15-4F98-85D0-72A48E03D9E8}.Debug|Any CPU.ActiveCfg = Debug|x86
 		{9F0FEB2E-9F15-4F98-85D0-72A48E03D9E8}.Debug|Mixed Platforms.ActiveCfg = Debug|x86
 		{9F0FEB2E-9F15-4F98-85D0-72A48E03D9E8}.Debug|Mixed Platforms.Build.0 = Debug|x86
-		{9F0FEB2E-9F15-4F98-85D0-72A48E03D9E8}.Debug|x64.ActiveCfg = Debug|x86
+		{9F0FEB2E-9F15-4F98-85D0-72A48E03D9E8}.Debug|x64.ActiveCfg = Debug|x64
+		{9F0FEB2E-9F15-4F98-85D0-72A48E03D9E8}.Debug|x64.Build.0 = Debug|x64
 		{9F0FEB2E-9F15-4F98-85D0-72A48E03D9E8}.Debug|x86.ActiveCfg = Debug|x86
 		{9F0FEB2E-9F15-4F98-85D0-72A48E03D9E8}.Debug|x86.Build.0 = Debug|x86
 		{9F0FEB2E-9F15-4F98-85D0-72A48E03D9E8}.Release|Any CPU.ActiveCfg = Release|x86
@@ -35,7 +39,8 @@ Global
 		{4594058D-A96A-4B11-93B5-707215E40231}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{4594058D-A96A-4B11-93B5-707215E40231}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
 		{4594058D-A96A-4B11-93B5-707215E40231}.Debug|Mixed Platforms.Build.0 = Debug|Any CPU
-		{4594058D-A96A-4B11-93B5-707215E40231}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{4594058D-A96A-4B11-93B5-707215E40231}.Debug|x64.ActiveCfg = Debug|x64
+		{4594058D-A96A-4B11-93B5-707215E40231}.Debug|x64.Build.0 = Debug|x64
 		{4594058D-A96A-4B11-93B5-707215E40231}.Debug|x86.ActiveCfg = Debug|Any CPU
 		{4594058D-A96A-4B11-93B5-707215E40231}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{4594058D-A96A-4B11-93B5-707215E40231}.Release|Any CPU.Build.0 = Release|Any CPU

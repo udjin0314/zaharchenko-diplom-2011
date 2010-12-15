@@ -91,6 +91,7 @@ namespace DiplomWPF
             Thread thread = new Thread(new ParameterizedThreadStart(process.executeProcess));
             pool.addThread(thread);
             increaseProgressBar handler = increaseProgressBarMethod;
+            thread.Name = process.processName;
             thread.Start(handler);
 
             //process.executeProcess();

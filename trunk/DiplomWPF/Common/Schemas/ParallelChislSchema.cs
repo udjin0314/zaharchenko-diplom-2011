@@ -72,6 +72,7 @@ namespace DiplomWPF.Common.Schemas
                 for (int j = 0; j < threadsN; j++)
                 {
                     Thread thread = new Thread(new ParameterizedThreadStart(firstrun));
+                    
                     Dictionary<String, Object> firstParams = new Dictionary<string, object>();
                     firstParams.Add("Fr", Fr.Clone());
                     firstParams.Add("B", B.Clone());
@@ -79,6 +80,7 @@ namespace DiplomWPF.Common.Schemas
                     else firstParams.Add("j1", j * intervalJ + 1);
                     if (j == threadsN - 1) firstParams.Add("j2", J);
                     else firstParams.Add("j2", (j + 1) * intervalJ);
+                    thread.Name = "n=" + n + "; j=" + firstParams["j1"] + ":" + firstParams["j2"];
                     pool.addThread(thread);
                     thread.Start(firstParams);
                     
@@ -102,6 +104,7 @@ namespace DiplomWPF.Common.Schemas
                     else secondParams.Add("i1", i * intervalI + 1);
                     if (i == threadsN - 1) secondParams.Add("i2", I);
                     else secondParams.Add("i2", (i + 1) * intervalI);
+                    thread.Name = "n=" + n + "; i=" + secondParams["i1"] + ":" + secondParams["i2"];
                     pool.addThread(thread);
                     thread.Start(secondParams);
                     
