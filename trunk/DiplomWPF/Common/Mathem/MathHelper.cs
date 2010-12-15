@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace DiplomWPF.Common.Helpers
+namespace DiplomWPF.Common.Mathem
 {
     public static class MathHelper
     {
