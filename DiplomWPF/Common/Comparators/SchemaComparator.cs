@@ -29,9 +29,14 @@ namespace DiplomWPF.Common.Comparators
         public float t { get; set; }
 
         private int globN = MainWindow.globN;
+
+        private bool executed = false;
         public Int32 pointsN { get; set; }
 
-
+        public Boolean isExecuted()
+        {
+            return executed;
+        }
 
         public SchemaComparator(AbstractProcess mainProc, AbstractProcess comparableProc)
         {
@@ -66,6 +71,7 @@ namespace DiplomWPF.Common.Comparators
         public void apply()
         {
             chartComparator.reDrawNewProcess(this);
+            executed = true;
         }
 
         public void processSchemaParam(Int32 schemParameter, int i)

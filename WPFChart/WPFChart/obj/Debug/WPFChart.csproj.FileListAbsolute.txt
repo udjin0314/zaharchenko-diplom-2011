@@ -5,3 +5,10 @@ C:\Users\Женька\Documents\Visual Studio 2010\Projects\DiplomWPF\WPFChart\W
 C:\Users\Женька\Documents\Visual Studio 2010\Projects\DiplomWPF\WPFChart\WPFChart\obj\Debug\WPFChart_MarkupCompile.cache
 C:\Users\Женька\Documents\Visual Studio 2010\Projects\DiplomWPF\WPFChart\WPFChart\obj\Debug\WPFChart.g.resources
 C:\Users\Женька\Documents\Visual Studio 2010\Projects\DiplomWPF\WPFChart\WPFChart\obj\Debug\WPFChart.Properties.Resources.resources
+C:\Users\Женька\documents\visual studio 2010\Projects\DiplomWPF\WPFChart\WPFChart\bin\Debug\WPFChart.exe.config
+C:\Users\Женька\documents\visual studio 2010\Projects\DiplomWPF\WPFChart\WPFChart\bin\Debug\WPFChart.exe
+C:\Users\Женька\documents\visual studio 2010\Projects\DiplomWPF\WPFChart\WPFChart\bin\Debug\WPFChart.pdb
+C:\Users\Женька\documents\visual studio 2010\Projects\DiplomWPF\WPFChart\WPFChart\obj\Debug\GenerateResource.read.1.tlog
+C:\Users\Женька\documents\visual studio 2010\Projects\DiplomWPF\WPFChart\WPFChart\obj\Debug\GenerateResource.write.1.tlog
+C:\Users\Женька\documents\visual studio 2010\Projects\DiplomWPF\WPFChart\WPFChart\obj\Debug\WPFChart.exe
+C:\Users\Женька\documents\visual studio 2010\Projects\DiplomWPF\WPFChart\WPFChart\obj\Debug\WPFChart.pdb
