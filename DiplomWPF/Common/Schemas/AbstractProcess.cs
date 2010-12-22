@@ -9,11 +9,11 @@ using System.Windows.Media;
 
 namespace DiplomWPF.Common
 {
-    public abstract class AbstractProcess:ICloneable
+    public abstract class AbstractProcess : ICloneable
     {
         public String processName { get; set; }
         public Brush brush { get; set; }
-     //   public float[, ,] values { get; set; }
+        //   public float[, ,] values { get; set; }
         public ProcessValues values;
         public float P { get; set; }
         public float alphaR { get; set; }
@@ -35,6 +35,7 @@ namespace DiplomWPF.Common
         public Int32 N { get; set; }
         public Int32 I { get; set; }
         public Int32 J { get; set; }
+        public Int32 progressBarMax { get; set; }
 
         public float ht { get; set; }
         public float hz { get; set; }
@@ -64,7 +65,7 @@ namespace DiplomWPF.Common
             chartUZ.reDrawNewProcess(this);
             chartUR.reDrawNewProcess(this);
             chartUTime.reDrawNewProcess(this);
-            
+
         }
 
 
@@ -95,6 +96,7 @@ namespace DiplomWPF.Common
             this.hr = R / I;
             this.hz = l / J;
             this.ht = T / N;
+            progressBarMax = N;
         }
 
         public virtual void initializeParams(float P, float alphaR, float alphaZ, float R, float l, float K, float c, float beta, float T)
@@ -114,9 +116,10 @@ namespace DiplomWPF.Common
             this.hr = R / I;
             this.hz = l / J;
             this.ht = T / N;
+            progressBarMax = N;
         }
 
-        public virtual void initializeSchema( Int32 I, Int32 J,Int32 N)
+        public virtual void initializeSchema(Int32 I, Int32 J, Int32 N)
         {
             this.N = N;
             this.I = I;
@@ -125,7 +128,8 @@ namespace DiplomWPF.Common
             this.hr = R / I;
             this.hz = l / J;
             this.ht = T / N;
-            
+            progressBarMax = N;
+
         }
 
         public virtual void executeProcess()

@@ -8,7 +8,7 @@ namespace DiplomWPF.Common
     static class MatrixWriter
     {
         public static Boolean logMode = false;
-        
+
         public static String makeMatrixAsString(String caption, double[,] matrix, int rows, int cols, Boolean transpon)
         {
             String s = "==============================" + caption + "==============================\n";
@@ -39,7 +39,7 @@ namespace DiplomWPF.Common
             String src = srcD.ToString();
             int size = 22;
             int strsize = src.Length;
-            for (int i = 0; i < size -strsize; i++)
+            for (int i = 0; i < size - strsize; i++)
             {
                 src += " ";
             }

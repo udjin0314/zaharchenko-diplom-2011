@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using DiplomWPF.ServerSide;
 using System.Windows.Media;
 using System.Threading;
 using DiplomWPF.Common.Helpers;
@@ -79,7 +78,7 @@ namespace DiplomWPF.Common
             base.executeProcess();
             executeAlg();
             isExecuted = true;
-            
+
         }
 
         public override void executeProcess(object parameters)
@@ -89,7 +88,7 @@ namespace DiplomWPF.Common
             executeAlg();
             isExecuted = true;
 
-           
+
         }
 
 

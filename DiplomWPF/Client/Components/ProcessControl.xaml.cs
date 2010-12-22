@@ -25,7 +25,7 @@ namespace DiplomWPF
         public AbstractProcess process { get; set; }
         public MainWindow parentWindow;
         private int progressBarValue = 0;
-        private TimeSpan executionTime ;
+        private TimeSpan executionTime;
         private DateTime startTime;
 
         private DThreadPool pool;
@@ -36,7 +36,7 @@ namespace DiplomWPF
             this.process = processIn;
             InitializeComponent();
             processGroupBox.Header = process.processName;
-            parametersLabel.Content = "I=" + process.I + ", J=" + process.J + ", N=" + process.N; 
+            parametersLabel.Content = "I=" + process.I + ", J=" + process.J + ", N=" + process.N;
             progressBar.Maximum = process.N;
             colorRect.Fill = process.brush;
             executionTimeLabel.Content = executionTime;
@@ -59,10 +59,10 @@ namespace DiplomWPF
                         //process.reDrawViewport();
                         parentWindow.prepareTempLegend();
                     }
-                    
+
                 }
                 else progressBar.Value = progressBarValue;
-                if (executionTime.Ticks!=0) executionTimeLabel.Content = executionTime;
+                if (executionTime.Ticks != 0) executionTimeLabel.Content = executionTime;
             }
 
         }
@@ -85,7 +85,7 @@ namespace DiplomWPF
             pool = new DThreadPool();
             setProcessButton.IsEnabled = false;
             parentWindow.initializeProcessParams(process);
-            progressBar.Maximum = process.N;
+            progressBar.Maximum = process.progressBarMax;
             startTime = DateTime.Now;
             executionTimeLabel.Content = "Инициализация";
             Thread thread = new Thread(new ParameterizedThreadStart(process.executeProcess));
@@ -101,7 +101,7 @@ namespace DiplomWPF
         private void closeButton_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
         {
             //TODO deleteProcessControl
-            if (pool!=null) pool.closeAll();
+            if (pool != null) pool.closeAll();
             parentWindow.deleteProcessControl(this);
         }
 

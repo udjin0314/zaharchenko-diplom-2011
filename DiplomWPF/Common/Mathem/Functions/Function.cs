@@ -5,7 +5,7 @@ using System.Text;
 
 namespace DiplomWPF.Common.Mathem.Functions
 {
-    interface Function
+    public interface Function
     {
         double resolve(double param);
     }

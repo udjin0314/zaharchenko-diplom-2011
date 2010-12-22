@@ -41,7 +41,7 @@ namespace DiplomWPF.Common
             base.executeProcess();
             executeAlg();
             isExecuted = true;
-            
+
         }
 
         public override void executeProcess(object parameters)

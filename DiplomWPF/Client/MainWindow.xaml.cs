@@ -247,7 +247,7 @@ namespace DiplomWPF
             if (tn < 0) tn = 0;
             Double time = Double.Parse(parametrExTime.Text) * (tn) / globN;
             graphURZTimeLabel.Content = time.ToString() + " c";
-            graphURZ.reDrawNewValues(len, time);
+            if (paramProcess != null && paramProcess.isExecuted) graphURZ.reDrawNewValues(len, time);
 
         }
 
@@ -375,13 +375,13 @@ namespace DiplomWPF
             if (radioButtonR.IsChecked == true) mode = 0;
             if (radioButtonZ.IsChecked == true) mode = 1;
             if (radioButtonT.IsChecked == true) mode = 2;
-            if (comparators!=null) foreach (SchemaComparator comparator in comparators)
-            {
-                comparator.chartComparator.delete();
-            }
+            if (comparators != null) foreach (SchemaComparator comparator in comparators)
+                {
+                    comparator.chartComparator.delete();
+                }
             comparatorsPool = new DThreadPool();
             comparators = new List<SchemaComparator>();
-            comparatorProgressBar.Maximum = (maxSize-minSize)/shag * processControls.Count - 1;
+            comparatorProgressBar.Maximum = (maxSize - minSize) / shag * processControls.Count - 1;
             foreach (ProcessControl prCtrl in processControls)
             {
                 AbstractProcess process = prCtrl.process;

@@ -3,66 +3,88 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Windows.Media;
+using DiplomWPF.Common.Mathem.Functions;
+using DiplomWPF.Common.Mathem;
+using DiplomWPF.Common.Helpers;
+using DiplomWPF.Common.Schemas;
 
 namespace DiplomWPF.Common
 {
 
-    class AnalitProcess : AbstractProcess
+    public class AnalitProcess : FullAnalitSchema
     {
-        public static String FILE_NAME = "log.txt";
 
-        private int k = 0;
-        private int n = 0;
-        private double mkr;
-        private double mnz;
+
+        private int nQ;
+        private int kQ;
 
         public AnalitProcess(String name, Brush brush)
             : base(name, brush)
         {
         }
 
-        public override void initialize(float P, float alphaR, float alphaZ, float R, float l, float K, float c, float beta, float T, Int32 N, Int32 I, Int32 J)
+
+
+        private void resolveM(double r, double z)
         {
-            base.initialize(P, alphaR, alphaZ, R, l, K, c, beta, T, N, I, J);
-        }
+            double eps = 1e-5;
 
-        public override void initializeParams(float P, float alphaR, float alphaZ, float R, float l, float K, float c, float beta, float T)
-        {
-            base.initializeParams(P, alphaR, alphaZ, R, l, K, c, beta, T);
-        }
-
-        public override void executeProcess()
-        {
-            //execute();
-            base.executeProcess();
-            executeAlg();
-            isExecuted = true;
-            
-        }
-
-        public override void executeProcess(object parameters)
-        {
-            //execute();
-            base.executeProcess(parameters);
-            executeAlg();
-            isExecuted = true;
-
-        }
-
-        private double resolveMkr(double r)
-        {
-
-        }
-
-        public void executeAlg()
-        {
-            for (int n = 0; n <= N - 1; n++)
+            Function fiz = new FiZFunction(beta);
+            Function ir = new IRFunction(P, a);
+            Boolean flag = false;
+            double res = fiz.resolve(z) * fiz.resolve(r);
+            for (int k = 0; k < findN; k++)
             {
-                for (int i = 0; i <= I; i++)
-                    for (int j = 0; j <= J; j++)
+                Function vkr = new VkrFunction(R, mr[k]);
+                double vkres = vkr.resolve(r);
+                for (int n = 0; n < findN; n++)
+                {
+                    Function vnz = new VnzFunction(mz[n]);
+                    double vnres = vnz.resolve(z);
+                    if (Math.Abs(res - beta * vkres * vnres) < eps)
                     {
-                        values[i, j, n]=;
+                        nQ = n;
+                        kQ = k;
+                        flag = true;
+                        //System.IO.File.AppendAllText(LOG_FILE, "we find it r=" + r + "; z=" + z +"; k=" + kQ + "; n=" + nQ + "; " + Math.Abs(res - beta * vkres * vnres) + "<" + eps + "; res=" + res + "; mrk=" + mr[kQ] + "; mzn=" + mz[nQ] + '\n');
                     }
+                    if (flag) break;
+                }
+                if (flag) break;
+            }
+            if (!flag) System.IO.File.AppendAllText(LOG_FILE, "UNABLE r=" + r + "; z=" + z + "; with eps" + eps + "; res=" + res + '\n');
+
+        }
+
+        public override float findU(double t, double r, double z)
+        {
+            float res = 0;
+
+            for (int n1 = 0; n1 < listN; n1++)
+            {
+                res = res + (float)(functionCkn(t, kQ, n1) * functionVkn(r, z, kQ, n1));
+            }
+            return res;
+        }
+
+        public override void executeAlg()
+        {
+            init();
+            System.IO.File.WriteAllText(LOG_FILE, "");
+            for (int i = 0; i <= I; i++)
+            {
+                for (int j = 0; j <= J; j++)
+                {
+                    resolveM(i * hr, j * hz);
+                    for (int n = 1; n <= N; n++)
+                    {
+                        float res = findU(n * ht, i * hr, j * hz);
+                        values[i, j, n] = res;
+                        if (res > maxTemperature) maxTemperature = res;
+                        if (res < minTemperature) minTemperature = res;
+                        handler();
+                    }
+                }
             }
         }
 

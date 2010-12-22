@@ -44,24 +44,34 @@ namespace DiplomWPF.Client.Components
             if ("pismen" == processType)
             {
                 process = new ChislProcess(processName, new SolidColorBrush(selectedColor));
-                process.initializeSchema( I, J,N);
+                process.initializeSchema(I, J, N);
             }
             if ("yavn" == processType)
             {
                 process = new YavnSchema(processName, new SolidColorBrush(selectedColor));
-                process.initializeSchema( I, 1,N);
+                process.initializeSchema(I, 1, N);
             }
             if ("analytic" == processType)
             {
                 process = new AnalitProcess(processName, new SolidColorBrush(selectedColor));
-                process.initializeSchema(I, J,N);
+                process.initializeSchema(I, J, N);
             }
             if ("parpismen" == processType)
             {
                 process = new ParallelChislSchema(processName, new SolidColorBrush(selectedColor));
-                process.initializeSchema(I, J,N);
+                process.initializeSchema(I, J, N);
             }
-            
+            if ("fullAnalytic" == processType)
+            {
+                process = new FullAnalitSchema(processName, new SolidColorBrush(selectedColor));
+                process.initializeSchema(I, J, N);
+            }
+            if ("CLI" == processType)
+            {
+                process = new ChislOpenCLI(processName, new SolidColorBrush(selectedColor));
+                process.initializeSchema(I, J, N);
+            }
+
             this.Close();
         }
     }

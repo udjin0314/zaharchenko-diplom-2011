@@ -88,10 +88,10 @@ namespace DiplomWPF.Common.Comparators
         {
             if (!mainProc.isExecuted) mainProc.executeProcess();
 
-            values = new Double[pointsN+1, 2];
+            values = new Double[pointsN + 1, 2];
             for (int i = 0; i <= pointsN; i++)
             {
-                Int32 schemParameter = i * shag+minSchemaSize;
+                Int32 schemParameter = i * shag + minSchemaSize;
                 processSchemaParam(schemParameter, i);
             }
         }

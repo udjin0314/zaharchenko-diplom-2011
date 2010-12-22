@@ -33,7 +33,7 @@ namespace DiplomWPF.Common.Mathem
                 else
                     b = c;
             }
-           return (a + b) / 2;
+            return (a + b) / 2;
         }
     }
 }
