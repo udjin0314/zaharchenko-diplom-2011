@@ -5,14 +5,22 @@ using System.Text;
 
 namespace DiplomWPF.Common.Mathem.Functions
 {
-    public class MkrFunction:Function
+    public class MkrFunction : Function
     {
         double alphar;
         double K;
-        
+        double R;
+
+        public MkrFunction(double alphar, double K, double R)
+        {
+            this.alphar = alphar;
+            this.K = K;
+            this.R = R;
+        }
+
         public double resolve(double param)
         {
-            return MathHelper.bessel1(param) + alphar / K * MathHelper.bessel0(param); 
+            return alphar / K * MathHelper.bessel0(param) - param / R * MathHelper.bessel1(param);
         }
     }
 }

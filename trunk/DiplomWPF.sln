@@ -4,11 +4,17 @@ Microsoft Visual Studio Solution File, Format Version 11.00
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DiplomWPF", "DiplomWPF\DiplomWPF.csproj", "{9F0FEB2E-9F15-4F98-85D0-72A48E03D9E8}"
 	ProjectSection(ProjectDependencies) = postProject
 		{4594058D-A96A-4B11-93B5-707215E40231} = {4594058D-A96A-4B11-93B5-707215E40231}
+		{FD7A92BD-8036-428F-9C7D-9A3630AF7E2F} = {FD7A92BD-8036-428F-9C7D-9A3630AF7E2F}
+		{656E96CE-2587-4CCC-A4DB-06D36267133A} = {656E96CE-2587-4CCC-A4DB-06D36267133A}
 	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{190E8166-E861-482C-B559-47852A129572}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WPFChart", "WPFChart\WPFChart\WPFChart.csproj", "{4594058D-A96A-4B11-93B5-707215E40231}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Cloo.VS2010", "Cloo\Cloo\Cloo.VS2010.csproj", "{656E96CE-2587-4CCC-A4DB-06D36267133A}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Clootils.VS2010", "Cloo\Clootils\Clootils.VS2010.csproj", "{FD7A92BD-8036-428F-9C7D-9A3630AF7E2F}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -48,6 +54,30 @@ Global
 		{4594058D-A96A-4B11-93B5-707215E40231}.Release|Mixed Platforms.Build.0 = Release|Any CPU
 		{4594058D-A96A-4B11-93B5-707215E40231}.Release|x64.ActiveCfg = Release|Any CPU
 		{4594058D-A96A-4B11-93B5-707215E40231}.Release|x86.ActiveCfg = Release|Any CPU
+		{656E96CE-2587-4CCC-A4DB-06D36267133A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{656E96CE-2587-4CCC-A4DB-06D36267133A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{656E96CE-2587-4CCC-A4DB-06D36267133A}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
+		{656E96CE-2587-4CCC-A4DB-06D36267133A}.Debug|Mixed Platforms.Build.0 = Debug|Any CPU
+		{656E96CE-2587-4CCC-A4DB-06D36267133A}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{656E96CE-2587-4CCC-A4DB-06D36267133A}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{656E96CE-2587-4CCC-A4DB-06D36267133A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{656E96CE-2587-4CCC-A4DB-06D36267133A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{656E96CE-2587-4CCC-A4DB-06D36267133A}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
+		{656E96CE-2587-4CCC-A4DB-06D36267133A}.Release|Mixed Platforms.Build.0 = Release|Any CPU
+		{656E96CE-2587-4CCC-A4DB-06D36267133A}.Release|x64.ActiveCfg = Release|Any CPU
+		{656E96CE-2587-4CCC-A4DB-06D36267133A}.Release|x86.ActiveCfg = Release|Any CPU
+		{FD7A92BD-8036-428F-9C7D-9A3630AF7E2F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{FD7A92BD-8036-428F-9C7D-9A3630AF7E2F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{FD7A92BD-8036-428F-9C7D-9A3630AF7E2F}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
+		{FD7A92BD-8036-428F-9C7D-9A3630AF7E2F}.Debug|Mixed Platforms.Build.0 = Debug|Any CPU
+		{FD7A92BD-8036-428F-9C7D-9A3630AF7E2F}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{FD7A92BD-8036-428F-9C7D-9A3630AF7E2F}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{FD7A92BD-8036-428F-9C7D-9A3630AF7E2F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{FD7A92BD-8036-428F-9C7D-9A3630AF7E2F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{FD7A92BD-8036-428F-9C7D-9A3630AF7E2F}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
+		{FD7A92BD-8036-428F-9C7D-9A3630AF7E2F}.Release|Mixed Platforms.Build.0 = Release|Any CPU
+		{FD7A92BD-8036-428F-9C7D-9A3630AF7E2F}.Release|x64.ActiveCfg = Release|Any CPU
+		{FD7A92BD-8036-428F-9C7D-9A3630AF7E2F}.Release|x86.ActiveCfg = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

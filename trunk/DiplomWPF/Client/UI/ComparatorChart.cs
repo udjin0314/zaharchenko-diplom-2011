@@ -14,12 +14,12 @@ namespace DiplomWPF.Client.UI
     {
         private EnumerableDataSource<double> chartYDataSource = null;
         private EnumerableDataSource<double> xSrc = null;
-        private CompositeDataSource dataSrc=null;
+        private CompositeDataSource dataSrc = null;
 
         private double[] chartX;
         private double[] chartY;
 
-        LineGraph lineGraph=null;
+        LineGraph lineGraph = null;
 
         private SchemaComparator schemaComparator;
 
@@ -66,7 +66,7 @@ namespace DiplomWPF.Client.UI
         private void addGraph()
         {
             String name = schemaComparator.comparatorName;
-            dataSrc =new CompositeDataSource(xSrc, chartYDataSource);
+            dataSrc = new CompositeDataSource(xSrc, chartYDataSource);
             lineGraph = plotter.AddLineGraph(dataSrc,
                             new Pen(schemaComparator.brush, 3),
                             new PenDescription(name));
@@ -90,7 +90,7 @@ namespace DiplomWPF.Client.UI
         public void reDrawNewProcess(SchemaComparator inSchemaComparator)
         {
             //delGraph();
-           initilize(inSchemaComparator);
+            initilize(inSchemaComparator);
         }
 
 
@@ -99,8 +99,8 @@ namespace DiplomWPF.Client.UI
         {
             for (int i = 0; i <= schemaComparator.pointsN; i++)
             {
-                chartX[i] = schemaComparator.values[i,0];
-                chartY[i] = schemaComparator.values[i,1];
+                chartX[i] = schemaComparator.values[i, 0];
+                chartY[i] = schemaComparator.values[i, 1];
             }
         }
     }

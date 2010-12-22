@@ -11,7 +11,8 @@
     <RootNamespace>DiplomWPF</RootNamespace>
     <AssemblyName>DiplomWPF</AssemblyName>
     <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
-    <TargetFrameworkProfile>Client</TargetFrameworkProfile>
+    <TargetFrameworkProfile>
+    </TargetFrameworkProfile>
     <FileAlignment>512</FileAlignment>
     <ProjectTypeGuids>{60dc8134-eba5-43b8-bcc9-bb4bc16c2548};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
     <WarningLevel>4</WarningLevel>
@@ -126,9 +127,14 @@
     <Compile Include="Client\UI\ComparatorChart.cs" />
     <Compile Include="Client\UI\Graph3D.cs" />
     <Compile Include="Common\Comparators\SchemaComparator.cs" />
+    <Compile Include="Common\Helpers\CommonHelper.cs" />
     <Compile Include="Common\Mathem\Dihotomy.cs" />
+    <Compile Include="Common\Mathem\Functions\FiZFunction.cs" />
     <Compile Include="Common\Mathem\Functions\Function.cs" />
+    <Compile Include="Common\Mathem\Functions\IRFunction.cs" />
     <Compile Include="Common\Mathem\Functions\MkrFunction.cs" />
+    <Compile Include="Common\Mathem\Functions\VkrFunction.cs" />
+    <Compile Include="Common\Mathem\Functions\VnzFunction.cs" />
     <Compile Include="Common\Mathem\MathHelper.cs" />
     <Compile Include="Common\Helpers\DThreadPool.cs" />
     <Compile Include="Common\Mathem\Functions\MnzFunction.cs" />
@@ -142,9 +148,10 @@
     <Compile Include="Client\Components\ProcessControl.xaml.cs">
       <DependentUpon>ProcessControl.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Common\Schemas\FullAnalitSchema.cs" />
     <Compile Include="Common\Schemas\ParallelChislSchema.cs" />
+    <Compile Include="Common\Schemas\ChislOpenCLI.cs" />
     <Compile Include="Common\Schemas\YavnSchema.cs" />
-    <Compile Include="Common\Schemas\ProcessChislExecuterOpenCLI.cs" />
     <Page Include="Client\Components\AddProcess.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -186,6 +193,10 @@
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
     <None Include="app.config" />
+    <Content Include="Common\Schemas\OpenCL\PismenRekford.cpp">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <None Include="Common\Schemas\OpenCL\BitonicSort_Kernels.cl" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
@@ -222,6 +233,16 @@
   </ItemGroup>
   <ItemGroup>
     <Resource Include="Client\UI\wait.gif" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Cloo\Clootils\Clootils.VS2010.csproj">
+      <Project>{FD7A92BD-8036-428F-9C7D-9A3630AF7E2F}</Project>
+      <Name>Clootils.VS2010</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Cloo\Cloo\Cloo.VS2010.csproj">
+      <Project>{656E96CE-2587-4CCC-A4DB-06D36267133A}</Project>
+      <Name>Cloo.VS2010</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

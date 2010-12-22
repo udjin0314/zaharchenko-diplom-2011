@@ -33,7 +33,7 @@ namespace DiplomWPF.Common.Mathem
             Double result = 0;
             if (x >= -3 && x <= 3)
             {
-                result = (double)1/2 - 0.56249985 * Math.Pow(x / 3, 2) + 0.21093573 * Math.Pow(x / 3, 4)
+                result = (double)1 / 2 - 0.56249985 * Math.Pow(x / 3, 2) + 0.21093573 * Math.Pow(x / 3, 4)
                     - 0.03954289 * Math.Pow(x / 3, 6) + 0.00443319 * Math.Pow(x / 3, 8) - 0.00031761 * Math.Pow(x / 3, 10)
                     + 0.00001109 * Math.Pow(x / 3, 12);
             }

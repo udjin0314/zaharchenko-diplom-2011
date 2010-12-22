@@ -82,7 +82,7 @@ namespace DiplomWPF.Client.UI
         public void initialize()
         {
             m_selectRect.SetRect(new Point(-0.5, -0.5), new Point(-0.5, -0.5));
-           model3d = new WPFChart3D.Model3D();
+            model3d = new WPFChart3D.Model3D();
             ArrayList meshs = m_selectRect.GetMeshes();
             m_nRectModelIndex = model3d.UpdateModel(meshs, null, m_nRectModelIndex, mainViewport);
         }
@@ -192,7 +192,7 @@ namespace DiplomWPF.Client.UI
 
                 }
             m_3dChart.GetDataRange();
-            m_3dChart.SetAxes(); 
+            m_3dChart.SetAxes();
 
             double zMin = m_3dChart.ZMin();
             double zMax = m_3dChart.ZMax();
@@ -210,7 +210,7 @@ namespace DiplomWPF.Client.UI
 
             UpdateModelSizeInfo(meshs);
 
-           
+
 
             WPFChart3D.Model3D model3d = new WPFChart3D.Model3D();
             Material backMaterial = new DiffuseMaterial(new SolidColorBrush(Colors.Gray));
