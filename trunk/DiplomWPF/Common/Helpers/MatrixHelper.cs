@@ -92,5 +92,29 @@ namespace DiplomWPF.Common
                 A[i, j] = Bloc[i];
             }
         }
+
+        public static float[] MatrixToVector(float[,] M, ref int maxi, ref int maxj)
+        {
+            float[] v = new float[maxi * maxj];
+
+            for (int i = 0; i < maxi; i++)
+                for (int j = 0; j < maxj; j++)
+                    v[i + maxi * j] = M[i, j];
+
+            return v;
+        }
+
+
+
+        public static float[,] VectorToMatrix(float[] v, ref int maxi, ref int maxj)
+        {
+            float[,] M = new float[maxi, maxj];
+
+            for (int i = 0; i < maxi; i++)
+                for (int j = 0; j < maxj; j++)
+                    M[i, j] = v[i + maxi * j];
+
+            return M;
+        }
     }
 }
