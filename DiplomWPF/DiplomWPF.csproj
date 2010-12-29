@@ -75,6 +75,9 @@
     <Reference Include="DynamicDataDisplay.Controls">
       <HintPath>..\D3\DynamicDataDisplay.Controls\DynamicDataDisplay.Controls.dll</HintPath>
     </Reference>
+    <Reference Include="OpenCLTemplate">
+      <HintPath>..\libs\OpenCLTemplate.dll</HintPath>
+    </Reference>
     <Reference Include="System">
       <EmbedInteropTypes>False</EmbedInteropTypes>
       <Private>True</Private>
