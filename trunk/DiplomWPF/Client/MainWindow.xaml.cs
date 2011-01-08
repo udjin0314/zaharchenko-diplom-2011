@@ -61,6 +61,8 @@ namespace DiplomWPF
 
             initializeGraphics();
 
+            MatrixWriter.createFile("tempLayer.txt"); 
+
             _timer = new DispatcherTimer();
             _timer.Tick += new EventHandler(delegate(object s, EventArgs a)
             {

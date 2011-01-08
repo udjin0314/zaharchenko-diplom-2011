@@ -79,7 +79,8 @@ namespace DiplomWPF.Common
                     for (int n = 1; n <= N; n++)
                     {
                         float res = findU(n * ht, i * hr, j * hz);
-                        values[i, j, n] = res;
+                        setPoint(i * hr, j * hz, n * ht, res);
+                        //values[i, j, n] = res;
                         if (res > maxTemperature) maxTemperature = res;
                         if (res < minTemperature) minTemperature = res;
                         handler();

@@ -182,10 +182,10 @@ namespace DiplomWPF.Client.UI
                     int i1i = i * process.I / globN;
                     vert.x = (float)(i1 * Math.Cos(2 * j * Math.PI / nXNo));
                     vert.y = (float)(i1 * Math.Sin(2 * j * Math.PI / nXNo));
-                    float z = (float)(process.values[i1i, zni, timei]);
+                    float z = process.getPoint(i1i * process.hr, (float)zn, (float)time);
                     if ((i1i != nXNo - 1))
                     {
-                        float k = (float)((i1 - i1i * process.hr) / process.hr * (process.values[i1i + 1, zni, timei] - process.values[i1i, zni, timei]));
+                        float k = (float)((i1 - i1i * process.hr) / process.hr * (process.getPoint((i1i+1) * process.hr, (float)zn, (float)time) - z));
                         z += k;
                     }
                     vert.z = z;

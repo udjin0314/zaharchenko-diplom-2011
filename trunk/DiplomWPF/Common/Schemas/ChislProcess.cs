@@ -11,10 +11,10 @@ namespace DiplomWPF.Common
     class ChislProcess : AbstractProcess
     {
         public static String FILE_NAME = "log.txt";
-        private float gammaZ = 0;
-        private float gamma = 0;
-        private float sigm = 0;
-        private float sigmZ = 0;
+        protected float gammaZ = 0;
+        protected float gamma = 0;
+        protected float sigm = 0;
+        protected float sigmZ = 0;
         protected float[,] tempLayer;
 
         public ChislProcess(String name, Brush brush)
@@ -53,11 +53,11 @@ namespace DiplomWPF.Common
                 for (int j = 0; j <= J; j++)
                 {
                     float[] Bloc = MatrixHelper.getCol(B, j, I + 1);
+                    
                     float[] Prloc = MatrixHelper.progonka(Fr, Bloc, I + 1);
-
                     MatrixHelper.setCol(tempLayer, Prloc, j, I + 1);
+                    
                 }
-
                 Fl = prepareFFr(tempLayer);
                 B = prepareB(Fl, Gsh, 1);
 
@@ -209,7 +209,8 @@ namespace DiplomWPF.Common
             for (int j = 0; j <= J; j++)
                 for (int i = 0; i <= I; i++)
                 {
-                    values[i, j, n] = res[i, j];
+                    //values[i, j, n] = res[i, j];
+                    setPoint(i * hr, j * hz, n * ht, res[i, j]);
                     if (res[i, j] > maxTemperature)
                         maxTemperature = res[i, j];
                     if (res[i, j] < minTemperature)
