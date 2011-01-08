@@ -21,6 +21,10 @@ namespace DiplomWPF.Common
         public float R { get; set; }
         public float l { get; set; }
 
+        public Int32 Npv { get; set; }
+        public Int32 Ipv { get; set; }
+        public Int32 Jpv { get; set; }
+
         public Boolean isExecuted { get; set; }
 
         public float a { get; set; }
@@ -58,6 +62,9 @@ namespace DiplomWPF.Common
             this.processName = processName;
             this.brush = brush;
             this.isExecuted = false;
+            this.Npv = 100;
+            this.Ipv = 100;
+            this.Jpv = 100;
         }
 
         public void reDrawNewProcess()
@@ -135,13 +142,15 @@ namespace DiplomWPF.Common
         public virtual void executeProcess()
         {
             //values = new float[I + 1, J + 1, N + 1];
-            values = new ProcessValues(I, J, N);
+            //values = new ProcessValues(I, J, N);
+            values = new ProcessValues(Ipv + 1, Jpv + 1, Npv + 1);
         }
 
         public virtual void executeProcess(object parameters)
         {
             //values = new float[I + 1, J + 1, N + 1];
-            values = new ProcessValues(I, J, N);
+            //values = new ProcessValues(I, J, N);
+            values = new ProcessValues(Ipv + 1, Jpv + 1, Npv + 1);
             handler = (DiplomWPF.ProcessControl.increaseProgressBar)parameters;
         }
 
@@ -157,10 +166,39 @@ namespace DiplomWPF.Common
 
         public float getPoint(float r, float z, float t)
         {
-            int i = (int)(r / hr);
+            /*int i = (int)(r / hr);
             int j = (int)(z / hz);
-            int n = (int)(t / ht);
+            int n = (int)(t / ht);*/
+            int i = (int)Math.Round(r * Ipv / R);
+            int j = (int)Math.Round(z * Jpv / l);
+            int n = (int)Math.Round(t * Npv / T);
             return values[i, j, n];
+        }
+
+        public void setPoint(float r, float z, float t, float value)
+        {
+            int i = (int)Math.Round(r * Ipv / R);
+            int j = (int)Math.Round(z * Jpv / l);
+            int n = (int)Math.Round(t * Npv / T);
+            int difI = Ipv / I;
+            int difJ = Jpv / J;
+            int difN = Npv / N;
+            for (int it = i; it <= i + difI && it <= Ipv; it++)
+                for (int jt = j; jt <= j + difJ && jt <= Jpv; jt++)
+                    for (int nt = n; nt <= n + difN && nt <= Npv; nt++)
+                        values[it, jt, nt] = value;
+        }
+
+        private float preparePoint(float r, float z, float t)
+        {
+
+            int i = (int)(r * Ipv / R);
+            int j = (int)(z * Jpv / l);
+            int n = (int)(t * Npv / T);
+            float value = values[i, j, n];
+            float k = (float)((r - j * hr) / hr * (values[(i + 1), j, n] - value));
+            value += k;
+            return value;
         }
 
         public object Clone()

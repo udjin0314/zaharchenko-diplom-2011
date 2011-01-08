@@ -7,9 +7,9 @@ namespace DiplomWPF.Common
 {
     static class MatrixWriter
     {
-        public static Boolean logMode = false;
+        public static Boolean logMode = true;
 
-        public static String makeMatrixAsString(String caption, double[,] matrix, int rows, int cols, Boolean transpon)
+        public static String makeMatrixAsString(String caption, float[,] matrix, int rows, int cols, Boolean transpon)
         {
             String s = "==============================" + caption + "==============================\n";
             if (!transpon)
@@ -34,7 +34,7 @@ namespace DiplomWPF.Common
 
         }
 
-        public static String getStringWithNeededLength(Double srcD)
+        public static String getStringWithNeededLength(float srcD)
         {
             String src = srcD.ToString();
             int size = 22;
@@ -46,7 +46,7 @@ namespace DiplomWPF.Common
             return src;
         }
 
-        public static String makeVectorAsString(String caption, double[] vector, int size, Boolean asRow)
+        public static String makeVectorAsString(String caption, float[] vector, int size, Boolean asRow)
         {
             String s = "==============================" + caption + "==============================\n";
             String spacer = "\n";
@@ -62,12 +62,12 @@ namespace DiplomWPF.Common
             if (logMode) System.IO.File.WriteAllText(filename, "");
         }
 
-        public static void writeMatrixToFile(String filename, String caption, double[,] matrix, int rows, int cols, Boolean transpon)
+        public static void writeMatrixToFile(String filename, String caption, float[,] matrix, int rows, int cols, Boolean transpon)
         {
             if (logMode) System.IO.File.AppendAllText(filename, makeMatrixAsString(caption, matrix, rows, cols, transpon));
         }
 
-        public static void writeVectorAsString(String filename, String caption, double[] vector, int size, Boolean asRow)
+        public static void writeVectorAsString(String filename, String caption, float[] vector, int size, Boolean asRow)
         {
             if (logMode) System.IO.File.AppendAllText(filename, makeVectorAsString(caption, vector, size, asRow));
         }

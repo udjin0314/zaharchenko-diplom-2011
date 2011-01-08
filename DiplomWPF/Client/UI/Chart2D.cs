@@ -97,20 +97,18 @@ namespace DiplomWPF.Client.UI
 
         private void prepareData(double Rk, double Rn)
         {
-            int rni = (int)Math.Round(Rn / process.ht);
             if (mode == 1)
             {
-                int rki = (int)Math.Round(Rk / process.hr);
                 for (int j = 0; j <= globN; j++)
                 {
                     chartX[j] = j * process.l / globN;
                     int jint = j * process.J / globN;
 
-                    float diff = (float)globN / process.J;
-                    float z = process.values[rki, jint, rni];
+                    float diff = (float)globN / process.Jpv;
+                    float z = process.getPoint((float)Rk, jint * process.hz, (float)Rn);
                     if ((jint != process.J))
                     {
-                        float k = (float)((chartX[j] - jint * process.hz) / process.hz * (process.values[rki, jint + 1, rni] - process.values[rki, jint, rni]));
+                        float k = (float)((chartX[j] - jint * process.hz) / process.hz * (process.getPoint((float)Rk, (jint + 1) * process.hz, (float)Rn) - z));
                         z += k;
                     }
 
@@ -119,17 +117,14 @@ namespace DiplomWPF.Client.UI
             }
             else if (mode == 2)
             {
-                rni = (int)Math.Round(Rk / process.hz);
-                int rki = (int)Math.Round(Rn / process.hr);
                 for (int t = 0; t <= globN; t++)
                 {
                     chartX[t] = t * process.T / globN;
                     int tint = t * process.N / globN;
-
-                    float z = process.values[rki, rni, tint];
+                    float z = process.getPoint((float)Rn, (float)Rk, tint * process.ht);
                     if ((tint != process.N))
                     {
-                        float k = (float)((chartX[t] - tint * process.ht) / process.ht * (process.values[rki, rni, tint + 1] - process.values[rki, rni, tint]));
+                        float k = (float)((chartX[t] - tint * process.ht) / process.ht * (process.getPoint((float)Rn, (float)Rk, (tint+1) * process.ht) - z));
                         z += k;
                     }
 
@@ -138,16 +133,14 @@ namespace DiplomWPF.Client.UI
             }
             else
             {
-                int rki = (int)Math.Round(Rk / process.hz);
                 for (int i = 0; i <= globN; i++)
                 {
                     chartX[i] = i * process.R / globN;
                     int jint = i * process.I / globN;
-
-                    float z = process.values[jint, rki, rni];
+                    float z = process.getPoint(jint*process.hr, (float)Rk, (float)Rn);
                     if ((jint != process.I))
                     {
-                        float k = (float)((chartX[i] - jint * process.hr) / process.hr * (process.values[jint + 1, rki, rni] - process.values[jint, rki, rni]));
+                        float k = (float)((chartX[i] - jint * process.hr) / process.hr * (process.getPoint((jint+1)*process.hr, (float)Rk, (float)Rn) - z));
                         z += k;
                     }
 

@@ -27,9 +27,63 @@ namespace DiplomWPF.Common
             return diff;
         }
 
+        public static float[] getMainDiag(float[,] A,int size)
+        {
+            float[] diag = new float[size];
+            for (int i=0;i<size;i++)
+            {
+                diag[i] = A[i, i];
+            }
+            return diag;
+        }
+
+        public static float[] getHighDiag(float[,] A, int size)
+        {
+            float[] diag = new float[size-1];
+            for (int i = 0; i < size-1; i++)
+            {
+                diag[i] = A[i, i+1];
+            }
+            return diag;
+        }
+
+        public static float[] getLowDiag(float[,] A, int size)
+        {
+            float[] diag = new float[size-1];
+            for (int i = 0; i < size-1; i++)
+            {
+                diag[i] = A[i+1, i];
+            }
+            return diag;
+        }
+
+        public static float[] progonka2(int n, float[] a, float[] b, float[] c, float[] v, float[] x)
+        {
+            /**
+             * n - число уравнений (строк матрицы)
+             * a - главная диагональ матрицы A
+             * b - диагональ, лежащая под главной
+             * c - диагональ, лежащая над главной
+             * v - правая часть (столбец)
+             * x - решение, массив x будет содержать ответ
+             */
+            for (int i = 1; i < n; i++)
+            {
+                float m = b[i - 1] / a[i - 1];
+                a[i] = a[i] - m * c[i - 1];
+                v[i] = v[i] - m * v[i - 1];
+            }
+
+            x[n - 1] = v[n - 1] / a[n - 1];
+
+            for (int i = n - 2; i >= 0; i--)
+                x[i] = (v[i] - c[i] * x[i + 1]) / a[i];
+            return x;
+        }
+
         public static float[] progonka(float[,] A, float[] B, int size)
         {
-            float[] alphaPr = new float[size];
+            /*float[] alphaPr = new float[size];
             float[] betaPr = new float[size];
             float[] X = new float[size];
             alphaPr[1] = -(A[0, 1]) / A[0, 0];
@@ -58,6 +112,13 @@ namespace DiplomWPF.Common
                 X[i] = alphaPr[i + 1] * X[i + 1] + betaPr[i + 1];
             }
             //MatrixWriter.writeVectorAsString("log.txt", "Proverka ", proverka(A, size, X, B), size, false);
+            return X;*/
+            float[] mainDiag = getMainDiag(A, size);
+            float[] highDiag = getHighDiag(A, size);
+            float[] lowDiag = getLowDiag(A, size);
+
+            float[] X = new float[size];
+            progonka2(size, mainDiag, lowDiag, highDiag, B, X);
             return X;
         }
 

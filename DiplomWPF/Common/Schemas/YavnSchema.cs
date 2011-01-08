@@ -75,6 +75,7 @@ namespace DiplomWPF.Common
                     for (int j = 0; j <= J; j++)
                     {
                         values[i, j, n + 1] = ilayer[i];
+                        setPoint(i * hr, j * hz, (n + 1) * ht, ilayer[i]);
                         if (ilayer[i] > maxTemperature)
                             maxTemperature = ilayer[i];
                         if (ilayer[i] < minTemperature)
