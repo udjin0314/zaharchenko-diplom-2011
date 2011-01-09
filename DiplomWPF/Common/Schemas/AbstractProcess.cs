@@ -13,6 +13,9 @@ namespace DiplomWPF.Common
     public abstract class AbstractProcess : ICloneable
     {
         public String processName { get; set; }
+
+        public String additionalName { get; set; }
+
         public Brush brush { get; set; }
         //   public float[, ,] values { get; set; }
         public ProcessValues values;

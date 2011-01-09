@@ -9,28 +9,27 @@ namespace DiplomWPF.Common
     {
         public static Boolean logMode = true;
 
-        public static String makeMatrixAsString(String caption, float[,] matrix, int rows, int cols, Boolean transpon)
+        public static void writeMatrixToFile(String caption, float[,] matrix, int rows, int cols, Boolean transpon = false, String filename = "log.txt")
         {
-            String s = "==============================" + caption + "==============================\n";
+            System.IO.File.AppendAllText(filename, "==============================" + caption + "==============================\n");
             if (!transpon)
                 for (int i = 0; i < rows; i++)
                 {
                     for (int j = 0; j < cols; j++)
-                        s += getStringWithNeededLength(matrix[i, j]) + "\t";
-                    s += "\n";
+                        System.IO.File.AppendAllText(filename, getStringWithNeededLength(matrix[i, j]) + "\t");
+                    System.IO.File.AppendAllText(filename, "\n");
                 }
             else
             {
-                s += "transponated\n";
+                System.IO.File.AppendAllText(filename, "transponated\n");
                 for (int i = 0; i < cols; i++)
                 {
                     for (int j = 0; j < rows; j++)
-                        s += getStringWithNeededLength(matrix[j, i]) + "\t";
-                    s += "\n";
+                        System.IO.File.AppendAllText(filename, getStringWithNeededLength(matrix[j, i]) + "\t");
+                    System.IO.File.AppendAllText(filename, "\n");
                 }
             }
-            s += "\n";
-            return s;
+            System.IO.File.AppendAllText(filename, "\n");
 
         }
 
@@ -46,15 +45,14 @@ namespace DiplomWPF.Common
             return src;
         }
 
-        public static String makeVectorAsString(String caption, float[] vector, int size, Boolean asRow)
+        public static void writeVectorAsString(String caption, float[] vector, int size, Boolean asRow = false, String filename = "log.txt")
         {
-            String s = "==============================" + caption + "==============================\n";
+            System.IO.File.AppendAllText(filename, "==============================" + caption + "==============================\n");
             String spacer = "\n";
             if (asRow) spacer = "\t";
             for (int j = 0; j < size; j++)
-                s += getStringWithNeededLength(vector[j]) + spacer;
-            s += "\n";
-            return s;
+                System.IO.File.AppendAllText(filename, getStringWithNeededLength(vector[j]) + spacer);
+            System.IO.File.AppendAllText(filename, "\n");
         }
 
         public static void createFile(String filename = "log.txt")
@@ -62,14 +60,5 @@ namespace DiplomWPF.Common
             if (logMode) System.IO.File.WriteAllText(filename, "");
         }
 
-        public static void writeMatrixToFile(String caption, float[,] matrix, int rows, int cols, Boolean transpon = false, String filename = "log.txt")
-        {
-            if (logMode) System.IO.File.AppendAllText(filename, makeMatrixAsString(caption, matrix, rows, cols, transpon));
-        }
-
-        public static void writeVectorAsString(String caption, float[] vector, int size, Boolean asRow = false, String filename = "log.txt")
-        {
-            if (logMode) System.IO.File.AppendAllText(filename, makeVectorAsString(caption, vector, size, asRow));
-        }
     }
 }
