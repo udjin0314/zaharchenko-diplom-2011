@@ -7,11 +7,11 @@
         <GroupBox Header="Параметры Схемы" Height="119" HorizontalAlignment="Left" Margin="12,116,0,0" Name="groupBox1" VerticalAlignment="Top" Width="254">
             <Grid Height="97" Width="239">
                 <Label Content="N" FontSize="12" FontWeight="Normal" Height="23" HorizontalAlignment="Left" Margin="6,6,0,0" Name="label6" Padding="2" VerticalAlignment="Top" Width="65" />
-                <TextBox Height="23" HorizontalAlignment="Left" Margin="72,6,0,0" Name="parametrN" Text="100" VerticalAlignment="Top" Width="161" />
+                <TextBox Height="23" HorizontalAlignment="Left" Margin="72,6,0,0" Name="parametrN" Text="4" VerticalAlignment="Top" Width="161" />
                 <Label Content="I" FontSize="12" FontWeight="Normal" Height="23" HorizontalAlignment="Left" Margin="6,35,0,0" Name="label7" Padding="2" VerticalAlignment="Top" Width="65" />
-                <TextBox Height="23" HorizontalAlignment="Left" Margin="72,35,0,0" Name="parametrI" Text="100" VerticalAlignment="Top" Width="161" />
+                <TextBox Height="23" HorizontalAlignment="Left" Margin="72,35,0,0" Name="parametrI" Text="140" VerticalAlignment="Top" Width="161" />
                 <Label Content="J" FontSize="12" FontWeight="Normal" Height="23" HorizontalAlignment="Left" Margin="6,64,0,0" Name="label8" Padding="2" VerticalAlignment="Top" Width="65" />
-                <TextBox Height="23" HorizontalAlignment="Left" Margin="72,64,0,0" Name="parametrJ" Text="100" VerticalAlignment="Top" Width="161" />
+                <TextBox Height="23" HorizontalAlignment="Left" Margin="72,64,0,0" Name="parametrJ" Text="133" VerticalAlignment="Top" Width="161" />
             </Grid>
         </GroupBox>
         <Button Content="Ок" Height="23" HorizontalAlignment="Left" Margin="110,241,0,0" Name="okButton" VerticalAlignment="Top" Width="75" IsDefault="True" Click="okButton_Click" />

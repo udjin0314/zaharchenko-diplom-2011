@@ -61,7 +61,7 @@ namespace DiplomWPF
 
             initializeGraphics();
 
-            MatrixWriter.createFile("tempLayer.txt"); 
+            MatrixWriter.createFile(); 
 
             _timer = new DispatcherTimer();
             _timer.Tick += new EventHandler(delegate(object s, EventArgs a)
@@ -146,8 +146,8 @@ namespace DiplomWPF
             processCtrl.process.delete();
             if (processCtrl.process == paramProcess && processCtrl.process.isExecuted)
             {
-                ModelVisual3D m = (ModelVisual3D)mainViewport.Children[graphURZ.getModelNumber()];
-                mainViewport.Children.Remove(m);
+                /*ModelVisual3D m = (ModelVisual3D)mainViewport.Children[graphURZ.getModelNumber()];
+                mainViewport.Children.Remove(m);*/
                 paramProcess = null;
             }
             processCtrl.process = null;

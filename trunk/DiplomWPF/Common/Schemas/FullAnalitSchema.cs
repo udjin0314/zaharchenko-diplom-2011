@@ -46,8 +46,11 @@ namespace DiplomWPF.Common.Schemas
         public override void executeProcess()
         {
             //execute();
+            swInit.Start();
             base.executeProcess();
+            swInit.Stop(); swCompute.Start();
             executeAlg();
+            swCompute.Stop();
             isExecuted = true;
 
         }
@@ -55,8 +58,11 @@ namespace DiplomWPF.Common.Schemas
         public override void executeProcess(object parameters)
         {
             //execute();
+            swInit.Start();
             base.executeProcess(parameters);
+            swInit.Stop(); swCompute.Start();
             executeAlg();
+            swCompute.Stop();
             isExecuted = true;
 
         }

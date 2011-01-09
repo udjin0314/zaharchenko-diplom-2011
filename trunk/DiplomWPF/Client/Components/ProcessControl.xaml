@@ -14,8 +14,7 @@
                 </Grid.ColumnDefinitions>
                 <Button Content="Выполнить" Height="23" HorizontalAlignment="Left" Margin="6,6,0,0" Name="setProcessButton" VerticalAlignment="Top" Width="132" IsDefault="True" Grid.ColumnSpan="2" Click="setProcessButton_Click" />
                 <ProgressBar Height="25" HorizontalAlignment="Left" Margin="7,107,0,0" Name="progressBar" VerticalAlignment="Top" Width="131" Grid.Column="1" />
-                <Label Content="Время" Grid.Column="1" Height="28" HorizontalAlignment="Left" Margin="0,35,0,0" Name="label1" VerticalAlignment="Top" Width="46" FontStretch="Condensed" />
-                <Label Content="0" Grid.Column="1" Height="28" HorizontalAlignment="Left" Margin="43,35,0,0" Name="executionTimeLabel" VerticalAlignment="Top" Width="100" />
+                <Label Content="0" Grid.Column="1" Height="44" HorizontalAlignment="Right" Margin="0,24,0,0" Name="executionTimeLabel" VerticalAlignment="Top" Width="143" />
                 <Rectangle Grid.Column="1" Height="16" HorizontalAlignment="Left" Margin="7,85,0,0" Name="colorRect" Stroke="Black" VerticalAlignment="Top" Width="130" />
                 <Label Content="" FontStretch="Condensed" Grid.Column="1" Height="28" HorizontalAlignment="Left" Margin="0,57,0,0" Name="parametersLabel" VerticalAlignment="Top" Width="143" />
             </Grid>

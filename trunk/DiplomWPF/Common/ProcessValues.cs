@@ -11,12 +11,12 @@ namespace DiplomWPF.Common
         private int J;
         private int N;
 
-        //private List<List<List<float>>> values;
-        private float[,,] values;
+        private List<List<List<float>>> values;
+        //private float[,,] values;
 
         public ProcessValues(int Ii, int Jj, int Nn)
         {
-            /*I = Ii;
+            I = Ii;
             J = Jj;
             N = Nn;
             values = new List<List<List<float>>>();
@@ -35,19 +35,21 @@ namespace DiplomWPF.Common
                     jsublist.Add(isublist);
                 }
                 values.Add(jsublist);
-            }*/
-            values = new float[Ii, Jj, Nn];
+            }
+            //values = new float[Ii, Jj, Nn];
         }
 
         public float getPoint(int i, int j, int n)
         {
             if (i > I || j > J || n > N) return 0;
-            return values[i,j,n];
+            //return values[i,j,n];
+            return values[n][j][i];
         }
 
         public void setPoint(int i, int j, int n, float u)
         {
-            values[i, j, n] = u;
+            //values[i, j, n] = u;
+            values[n][j][i] = u;
         }
 
         public float this[int i, int j, int n]
