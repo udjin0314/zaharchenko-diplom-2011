@@ -6,6 +6,7 @@ using DiplomWPF.Client.UI;
 using Microsoft.Research.DynamicDataDisplay;
 using System.Windows.Controls;
 using System.Windows.Media;
+using System.Diagnostics;
 
 namespace DiplomWPF.Common
 {
@@ -57,6 +58,9 @@ namespace DiplomWPF.Common
         public Chart2D chartUR { get; set; }
         public Chart2D chartUTime { get; set; }
 
+        public Stopwatch swInit { get; set; }
+        public Stopwatch swCompute { get; set; }
+
         public AbstractProcess(String processName, Brush brush)
         {
             this.processName = processName;
@@ -65,6 +69,8 @@ namespace DiplomWPF.Common
             this.Npv = 100;
             this.Ipv = 100;
             this.Jpv = 100;
+            swInit = new Stopwatch();
+            swCompute = new Stopwatch();
         }
 
         public void reDrawNewProcess()
@@ -143,15 +149,19 @@ namespace DiplomWPF.Common
         {
             //values = new float[I + 1, J + 1, N + 1];
             //values = new ProcessValues(I, J, N);
-            values = new ProcessValues(Ipv + 1, Jpv + 1, Npv + 1);
+            initValues();
         }
 
         public virtual void executeProcess(object parameters)
         {
-            //values = new float[I + 1, J + 1, N + 1];
-            //values = new ProcessValues(I, J, N);
-            values = new ProcessValues(Ipv + 1, Jpv + 1, Npv + 1);
+            initValues();
+            //values = new ProcessValues(Ipv + 1, Jpv + 1, Npv + 1);
             handler = (DiplomWPF.ProcessControl.increaseProgressBar)parameters;
+        }
+
+        public void initValues()
+        {
+            values = new ProcessValues(I, J, N);
         }
 
         public virtual void delete()
@@ -169,15 +179,18 @@ namespace DiplomWPF.Common
             /*int i = (int)(r / hr);
             int j = (int)(z / hz);
             int n = (int)(t / ht);*/
-            int i = (int)Math.Round(r * Ipv / R);
+            /*int i = (int)Math.Round(r * Ipv / R);
             int j = (int)Math.Round(z * Jpv / l);
-            int n = (int)Math.Round(t * Npv / T);
+            int n = (int)Math.Round(t * Npv / T);*/
+            int i = (int)Math.Round(r * I / R);
+            int j = (int)Math.Round(z * J / l);
+            int n = (int)Math.Round(t * N / T);
             return values[i, j, n];
         }
 
         public void setPoint(float r, float z, float t, float value)
         {
-            int i = (int)Math.Round(r * Ipv / R);
+            /*int i = (int)Math.Round(r * Ipv / R);
             int j = (int)Math.Round(z * Jpv / l);
             int n = (int)Math.Round(t * Npv / T);
             int difI = Ipv / I;
@@ -186,19 +199,11 @@ namespace DiplomWPF.Common
             for (int it = i; it <= i + difI && it <= Ipv; it++)
                 for (int jt = j; jt <= j + difJ && jt <= Jpv; jt++)
                     for (int nt = n; nt <= n + difN && nt <= Npv; nt++)
-                        values[it, jt, nt] = value;
-        }
-
-        private float preparePoint(float r, float z, float t)
-        {
-
-            int i = (int)(r * Ipv / R);
-            int j = (int)(z * Jpv / l);
-            int n = (int)(t * Npv / T);
-            float value = values[i, j, n];
-            float k = (float)((r - j * hr) / hr * (values[(i + 1), j, n] - value));
-            value += k;
-            return value;
+                        values[it, jt, nt] = value;*/
+            int i = (int)Math.Round(r * I / R);
+            int j = (int)Math.Round(z * J / l);
+            int n = (int)Math.Round(t * N / T);
+            values[i, j, n] = value;
         }
 
         public object Clone()

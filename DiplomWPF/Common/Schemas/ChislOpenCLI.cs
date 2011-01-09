@@ -7,6 +7,7 @@ using Cloo;
 using System.Collections.ObjectModel;
 using System.Runtime.InteropServices;
 using System.IO;
+using DiplomWPF.Common.Mathem;
 
 namespace DiplomWPF.Common.Schemas
 {
@@ -23,8 +24,39 @@ namespace DiplomWPF.Common.Schemas
         private ComputeKernel kernelFr;
         private ComputeKernel kernelFFl;
         private ComputeKernel kernelFl;
-        private ComputeKernel kernelB;
+        private ComputeKernel kernelBFirst;
         private ComputeKernel kernelFFr;
+        private ComputeKernel kernelBSecond;
+
+        private ComputeBuffer<int> IGCL;
+
+        private ComputeBuffer<float> FrACl;
+        private ComputeBuffer<float> FrBCl;
+        private ComputeBuffer<float> FrCCl;
+
+        private ComputeBuffer<float> FFlACl;
+        private ComputeBuffer<float> FFlBCl;
+        private ComputeBuffer<float> FFlCCl;
+
+        private ComputeBuffer<float> BCl;
+        private ComputeBuffer<float> tempLayerCl;
+
+        private ComputeBuffer<float> paramsRCl;
+        private ComputeBuffer<float> paramsLCl;
+        private ComputeBuffer<float> paramsGCl;
+
+        private ComputeBuffer<float> GCl;
+        private ComputeBuffer<float> FFrCl;
+        private ComputeBuffer<float> FlCl;
+
+        private long[] localWorkersJ = null;
+        private long[] localWorkersI = null;
+
+        private long[] localWorkersIJ = null;
+
+        private long[] localWorkers3J = null;
+
+        private long[] localWorkers3I = null;
 
         private float[,] Gsh;
 
@@ -52,6 +84,21 @@ namespace DiplomWPF.Common.Schemas
             context = new ComputeContext(Platform.Devices, properties, null, IntPtr.Zero);
         }
 
+        public void findOptimalLocalWorkers()
+        {
+            int baseV = 16;
+            int locWI = MathHelper.findMaxDiv(I + 1, baseV);
+            int locWJ = MathHelper.findMaxDiv(J + 1, baseV);
+            int locW3I = MathHelper.findMaxDiv(3 * I + 1, baseV);
+            int locW3J = MathHelper.findMaxDiv(3 * J + 1, baseV);
+            localWorkersI = new long[] { locWI };
+            localWorkersJ = new long[] { locWJ };
+            localWorkersIJ = new long[] { locWI, locWJ };
+            localWorkers3I = new long[] { locW3I };
+            localWorkers3J = new long[] { locW3J };
+
+        }
+
         public void InitPrograms()
         {
             ComputeContextPropertyList cpl = new ComputeContextPropertyList(ComputePlatform.Platforms[0]);
@@ -63,7 +110,8 @@ namespace DiplomWPF.Common.Schemas
 
             commands = new ComputeCommandQueue(context, context.Devices[0], ComputeCommandQueueFlags.None);
 
-            events = new Collection<ComputeEventBase>();
+            //events = new Collection<ComputeEventBase>();
+            events = null;
 
             // I am specifying the first device, the original example did not, but it does not make a difference in performance.
             program.Build(new[] { context.Devices[0] }, null, null, IntPtr.Zero);
@@ -75,15 +123,128 @@ namespace DiplomWPF.Common.Schemas
             kernelFFl = program.CreateKernel("prepareFFl");
             kernelFl = program.CreateKernel("prepareFl");
             kernelFFr = program.CreateKernel("prepareFFr");
-            kernelB = program.CreateKernel("prepareB");
+            kernelBFirst = program.CreateKernel("prepareBFirst");
+            kernelBSecond = program.CreateKernel("prepareBSecond");
 
+        }
+
+        public void SetArgumentsToKernels()
+        {
+            //commonProperties 
+            int maxI = I + 1;
+            int maxJ = J + 1;
+            //IJ
+            int[] IJ = new int[3];
+            IJ[0] = I;
+            IJ[1] = J;
+
+            //params G
+            float[] paramsG = new float[6];
+            paramsG[0] = hr;
+            paramsG[1] = hz;
+            paramsG[2] = ht;
+            paramsG[3] = a;
+            paramsG[4] = P;
+            paramsG[5] = beta;
+
+            //params R
+            float[] paramsR = new float[3];
+            paramsR[0] = gamma;
+            paramsR[1] = sigm;
+            paramsR[2] = c;
+
+            //params L
+            float[] paramsL = new float[3];
+            paramsL[0] = gammaZ;
+            paramsL[1] = sigmZ;
+            paramsL[2] = c;
+
+            IGCL = new ComputeBuffer<int>(context, ComputeMemoryFlags.ReadOnly | ComputeMemoryFlags.UseHostPointer, IJ);
+
+            FrACl = new ComputeBuffer<float>(context, ComputeMemoryFlags.ReadWrite | ComputeMemoryFlags.UseHostPointer, new float[I + 1]);
+            FrBCl = new ComputeBuffer<float>(context, ComputeMemoryFlags.ReadWrite | ComputeMemoryFlags.UseHostPointer, new float[I]);
+            FrCCl = new ComputeBuffer<float>(context, ComputeMemoryFlags.ReadWrite | ComputeMemoryFlags.UseHostPointer, new float[I]);
+
+            FFlACl = new ComputeBuffer<float>(context, ComputeMemoryFlags.ReadWrite | ComputeMemoryFlags.UseHostPointer, new float[J + 1]);
+            FFlBCl = new ComputeBuffer<float>(context, ComputeMemoryFlags.ReadWrite | ComputeMemoryFlags.UseHostPointer, new float[J]);
+            FFlCCl = new ComputeBuffer<float>(context, ComputeMemoryFlags.ReadWrite | ComputeMemoryFlags.UseHostPointer, new float[J]);
+
+            BCl = new ComputeBuffer<float>(context, ComputeMemoryFlags.ReadWrite | ComputeMemoryFlags.UseHostPointer, new float[maxI * maxJ]);
+            tempLayerCl = new ComputeBuffer<float>(context, ComputeMemoryFlags.ReadWrite | ComputeMemoryFlags.UseHostPointer, new float[maxI * maxJ]);
+
+            paramsRCl = new ComputeBuffer<float>(kernelFr.Context, ComputeMemoryFlags.ReadOnly | ComputeMemoryFlags.UseHostPointer, paramsR);
+            paramsLCl = new ComputeBuffer<float>(kernelFr.Context, ComputeMemoryFlags.ReadOnly | ComputeMemoryFlags.UseHostPointer, paramsL);
+            paramsGCl = new ComputeBuffer<float>(context, ComputeMemoryFlags.ReadOnly | ComputeMemoryFlags.UseHostPointer, paramsG);
+
+            GCl = new ComputeBuffer<float>(context, ComputeMemoryFlags.ReadWrite | ComputeMemoryFlags.UseHostPointer, new float[maxI * maxJ]);
+            FFrCl = new ComputeBuffer<float>(kernelFFr.Context, ComputeMemoryFlags.ReadWrite | ComputeMemoryFlags.UseHostPointer, new float[maxI * maxJ]);
+            FlCl = new ComputeBuffer<float>(kernelFFr.Context, ComputeMemoryFlags.ReadWrite | ComputeMemoryFlags.UseHostPointer, new float[maxI * maxJ]);
+
+            //kernelFirst
+
+            kernelFirst.SetMemoryArgument(0, IGCL);
+            kernelFirst.SetMemoryArgument(1, FrACl);
+            kernelFirst.SetMemoryArgument(2, FrBCl);
+            kernelFirst.SetMemoryArgument(3, FrCCl);
+            kernelFirst.SetMemoryArgument(4, BCl);
+            kernelFirst.SetMemoryArgument(5, tempLayerCl);
+
+            //kernelSecond
+
+            kernelSecond.SetMemoryArgument(0, IGCL);
+            kernelSecond.SetMemoryArgument(1, FFlACl);
+            kernelSecond.SetMemoryArgument(2, FFlBCl);
+            kernelSecond.SetMemoryArgument(3, FFlCCl);
+            kernelSecond.SetMemoryArgument(4, BCl);
+            kernelSecond.SetMemoryArgument(5, tempLayerCl);
+
+            //kernelG
+            kernelG.SetMemoryArgument(0, IGCL);
+            kernelG.SetMemoryArgument(1, paramsGCl);
+            kernelG.SetMemoryArgument(2, GCl);
+
+            //kernelFr
+            kernelFr.SetMemoryArgument(0, IGCL);
+            kernelFr.SetMemoryArgument(1, paramsRCl);
+            kernelFr.SetMemoryArgument(2, FrACl);
+            kernelFr.SetMemoryArgument(3, FrBCl);
+            kernelFr.SetMemoryArgument(4, FrCCl);
+
+            //kernelFFr
+            kernelFFr.SetMemoryArgument(0, IGCL);
+            kernelFFr.SetMemoryArgument(1, paramsRCl);
+            kernelFFr.SetMemoryArgument(2, tempLayerCl);
+            kernelFFr.SetMemoryArgument(3, FFrCl);
+
+            //kernelBFirst
+            kernelBFirst.SetMemoryArgument(0, IGCL);
+            kernelBFirst.SetMemoryArgument(1, FlCl);
+            kernelBFirst.SetMemoryArgument(2, GCl);
+            kernelBFirst.SetMemoryArgument(3, BCl);
+
+            //kernelBSecond
+            kernelBSecond.SetMemoryArgument(0, IGCL);
+            kernelBSecond.SetMemoryArgument(1, FFrCl);
+            kernelBSecond.SetMemoryArgument(2, GCl);
+            kernelBSecond.SetMemoryArgument(3, BCl);
+
+            //kernelFl
+            kernelFl.SetMemoryArgument(0, IGCL);
+            kernelFl.SetMemoryArgument(1, paramsLCl);
+            kernelFl.SetMemoryArgument(2, tempLayerCl);
+            kernelFl.SetMemoryArgument(3, FlCl);
+
+            //kernelFFl
+            kernelFFl.SetMemoryArgument(0, IGCL);
+            kernelFFl.SetMemoryArgument(1, paramsLCl);
+            kernelFFl.SetMemoryArgument(2, FFlACl);
+            kernelFFl.SetMemoryArgument(3, FFlBCl);
+            kernelFFl.SetMemoryArgument(4, FFlCCl);
         }
 
         public void CleanupUnusedKernels()
         {
-            kernelG.Dispose();
-            kernelFr.Dispose();
-            kernelFFl.Dispose();
+
         }
 
         public void CleanupPrograms()
@@ -93,60 +254,44 @@ namespace DiplomWPF.Common.Schemas
             kernelSecond.Dispose();
             kernelFFr.Dispose();
             kernelFl.Dispose();
-            kernelB.Dispose();
+            kernelBFirst.Dispose();
+            kernelBSecond.Dispose();
+            kernelG.Dispose();
+            kernelFr.Dispose();
+            kernelFFl.Dispose();
             program.Dispose();
             context.Dispose();
         }
 
-        public float[,] runKernel(ComputeKernel kernel, float[] a, float[] b, float[] c, float[,] B, float[,] tempLayer, int PrSize, int workers)
+        public float[,] runFirstKernel()
         {
             int maxI = I + 1;
             int maxJ = J + 1;
 
-            int[] IJ = new int[2];
-            IJ[0] = I;
-            IJ[1] = J;
-
-            float[] BVect = MatrixHelper.MatrixToVector(B, ref maxI, ref maxJ);
-            float[] tempLayerVect = MatrixHelper.MatrixToVector(tempLayer, ref maxI, ref maxJ);
-
-
-            if (kernel == null)
+            if (kernelFirst == null)
             {
                 throw new Exception("Call InitPrograms first!");
             }
 
-            ComputeBuffer<float> aCl = new ComputeBuffer<float>(kernel.Context, ComputeMemoryFlags.ReadOnly | ComputeMemoryFlags.UseHostPointer, a);
-            ComputeBuffer<float> bCl = new ComputeBuffer<float>(kernel.Context, ComputeMemoryFlags.ReadOnly | ComputeMemoryFlags.UseHostPointer, b);
-            ComputeBuffer<float> cCl = new ComputeBuffer<float>(kernel.Context, ComputeMemoryFlags.ReadOnly | ComputeMemoryFlags.UseHostPointer, c);
-            ComputeBuffer<float> Bcl = new ComputeBuffer<float>(kernel.Context, ComputeMemoryFlags.ReadOnly | ComputeMemoryFlags.UseHostPointer, BVect);
-            ComputeBuffer<float> tempLayerCl = new ComputeBuffer<float>(kernel.Context, ComputeMemoryFlags.ReadWrite | ComputeMemoryFlags.UseHostPointer, tempLayerVect);
-            ComputeBuffer<int> IGCL = new ComputeBuffer<int>(kernel.Context, ComputeMemoryFlags.ReadOnly | ComputeMemoryFlags.UseHostPointer, IJ);
-
-            kernel.SetMemoryArgument(0, IGCL);
-            kernel.SetMemoryArgument(1, aCl);
-            kernel.SetMemoryArgument(2, bCl);
-            kernel.SetMemoryArgument(3, cCl);
-            kernel.SetMemoryArgument(4, Bcl);
-            kernel.SetMemoryArgument(5, tempLayerCl);
-
-           
-
             // BUG: ATI Stream v2.2 crash if event list not null.
-            commands.Execute(kernel, null, new long[] { workers }, null, null);
-            //commands.Execute(kernel, null, new long[] { count }, null, null);
+            commands.Execute(kernelFirst, null, new long[] { maxJ }, localWorkersJ, events);
+            float[] retVal = commands.Read<float>(tempLayerCl, events);
+            return MatrixHelper.VectorToMatrix(retVal, ref maxI, ref maxJ);
+        }
 
-            float[] retVal = new float[tempLayerVect.Length];
-            GCHandle arrCHandle = GCHandle.Alloc(retVal, GCHandleType.Pinned);
+        public float[,] runSecondKernel()
+        {
+            int maxI = I + 1;
+            int maxJ = J + 1;
 
-
-            commands.Read(tempLayerCl, true, 0, tempLayerVect.Length, arrCHandle.AddrOfPinnedObject(), events);
-
-            arrCHandle.Free();
-
-            tempLayer = MatrixHelper.VectorToMatrix(retVal, ref maxI, ref maxJ);
-
-            return tempLayer;
+            if (kernelSecond == null)
+            {
+                throw new Exception("Call InitPrograms first!");
+            }
+            // BUG: ATI Stream v2.2 crash if event list not null.
+            commands.Execute(kernelSecond, null, new long[] { maxI }, localWorkersI, events);
+            float[] retVal = commands.Read<float>(tempLayerCl, events);
+            return MatrixHelper.VectorToMatrix(retVal, ref maxI, ref maxJ);
         }
 
         public float[,] prepareMatrixGCl()
@@ -154,50 +299,15 @@ namespace DiplomWPF.Common.Schemas
             int maxI = I + 1;
             int maxJ = J + 1;
 
-            int[] IJ = new int[2];
-            IJ[0] = I;
-            IJ[1] = J;
-
-            float[] paramsV = new float[6];
-            paramsV[0] = hr;
-            paramsV[1] = hz;
-            paramsV[2] = ht;
-            paramsV[3] = a;
-            paramsV[4] = P;
-            paramsV[5] = beta;
-
-            Gsh = MatrixHelper.getStdMatrix(I + 1, J + 1);
-
-            float[] Avect = new float[maxI*maxJ];
-
             if (kernelG == null)
             {
                 throw new Exception("Call InitPrograms first!");
             }
 
-            ComputeBuffer<float> paramsCl = new ComputeBuffer<float>(kernelG.Context, ComputeMemoryFlags.ReadOnly | ComputeMemoryFlags.UseHostPointer, paramsV);
-            ComputeBuffer<float> ACl = new ComputeBuffer<float>(kernelG.Context, ComputeMemoryFlags.ReadWrite | ComputeMemoryFlags.UseHostPointer, Avect);
-            ComputeBuffer<int> IGCL = new ComputeBuffer<int>(kernelG.Context, ComputeMemoryFlags.ReadOnly | ComputeMemoryFlags.UseHostPointer, IJ);
-
-            kernelG.SetMemoryArgument(0, IGCL);
-            kernelG.SetMemoryArgument(1, paramsCl);
-            kernelG.SetMemoryArgument(2, ACl);
-
-
             // BUG: ATI Stream v2.2 crash if event list not null.
-            commands.Execute(kernelG, null, new long[] { maxI, maxJ }, new long[] { maxI, maxJ }, events);
-
-            float[] retVal = new float[Avect.Length];
-            GCHandle arrCHandle = GCHandle.Alloc(retVal, GCHandleType.Pinned);
-
-
-            commands.Read(ACl, true, 0, Avect.Length, arrCHandle.AddrOfPinnedObject(), events);
-
-            arrCHandle.Free();
-
-            Gsh = MatrixHelper.VectorToMatrix(retVal, ref maxI, ref maxJ);
-
-            return Gsh;
+            commands.Execute(kernelG, null, new long[] { maxI, maxJ }, localWorkersIJ, events);
+            float[] retVal = commands.Read<float>(GCl, events);
+            return MatrixHelper.VectorToMatrix(retVal, ref maxI, ref maxJ);
         }
 
         public void prepareFrCl()
@@ -205,207 +315,81 @@ namespace DiplomWPF.Common.Schemas
             int maxI = I + 1;
             int maxJ = J + 1;
 
-            int workers = 3 * maxI - 2;
-
-            int[] IJ = new int[2];
-            IJ[0] = I;
-            IJ[1] = J;
-
-            float[] paramsV = new float[3];
-            paramsV[0] = gamma;
-            paramsV[1] = sigm;
-            paramsV[2] = c;
-
-            FrA = new float[maxI];
-            FrB = new float[maxI - 1];
-            FrC = new float[maxI - 1];
-
-            float[] Avect = new float[workers];
-
             if (kernelFr == null)
             {
                 throw new Exception("Call InitPrograms first!");
             }
-
-            ComputeBuffer<float> paramsCl = new ComputeBuffer<float>(kernelFr.Context, ComputeMemoryFlags.ReadOnly | ComputeMemoryFlags.UseHostPointer, paramsV);
-            ComputeBuffer<float> ACl = new ComputeBuffer<float>(kernelFr.Context, ComputeMemoryFlags.ReadWrite | ComputeMemoryFlags.UseHostPointer, Avect);
-            ComputeBuffer<int> IGCL = new ComputeBuffer<int>(kernelFr.Context, ComputeMemoryFlags.ReadOnly | ComputeMemoryFlags.UseHostPointer, IJ);
-
-            kernelFr.SetMemoryArgument(0, IGCL);
-            kernelFr.SetMemoryArgument(1, paramsCl);
-            kernelFr.SetMemoryArgument(2, ACl);
-
-
             // BUG: ATI Stream v2.2 crash if event list not null.
-            commands.Execute(kernelFr, null, new long[] { workers }, null, events);
+            commands.Execute(kernelFr, null, new long[] { 3 * maxI - 2 }, localWorkers3I, events);
 
-            float[] retVal = new float[Avect.Length];
-            GCHandle arrCHandle = GCHandle.Alloc(retVal, GCHandleType.Pinned);
-
-
-            commands.Read(ACl, true, 0, Avect.Length, arrCHandle.AddrOfPinnedObject(), events);
-
-            arrCHandle.Free();
-
-            for (int i = 0; i < maxI - 1; i++)
-                FrC[i] = retVal[i];
-
-            for (int i = maxI - 1; i < 2 * maxI - 1; i++)
-                FrA[i - maxI + 1] = retVal[i];
-
-            for (int i = 2 * maxI - 1; i < 3 * maxI - 2; i++)
-                FrB[i - 2 * maxI + 1] = retVal[i];
+            FrA = commands.Read<float>(FrACl, events);
+            FrB = commands.Read<float>(FrBCl, events);
+            FrC = commands.Read<float>(FrCCl, events);
         }
 
-        public float[,] prepareFFrCl(float[,] neededLayer)
+        public float[,] prepareFFrCl()
         {
             int maxI = I + 1;
             int maxJ = J + 1;
-
-            float[,] FFr = MatrixHelper.getStdMatrix(maxI, maxJ);
-
-            int[] IJ = new int[2];
-            IJ[0] = I;
-            IJ[1] = J;
-
-            float[] paramsV = new float[3];
-            paramsV[0] = gamma;
-            paramsV[1] = sigm;
-            paramsV[2] = c;
-
-            float[] FFrVect = new float[maxI*maxJ];
-            float[] neededLayerVect = MatrixHelper.MatrixToVector(neededLayer, ref maxI, ref maxJ);
 
             if (kernelFFr == null)
             {
                 throw new Exception("Call InitPrograms first!");
             }
 
-            ComputeBuffer<float> paramsCl = new ComputeBuffer<float>(kernelFFr.Context, ComputeMemoryFlags.ReadOnly | ComputeMemoryFlags.UseHostPointer, paramsV);
-            ComputeBuffer<float> neededLayerCl = new ComputeBuffer<float>(kernelFFr.Context, ComputeMemoryFlags.ReadOnly | ComputeMemoryFlags.UseHostPointer, neededLayerVect);
-            ComputeBuffer<float> FFrCl = new ComputeBuffer<float>(kernelFFr.Context, ComputeMemoryFlags.ReadWrite | ComputeMemoryFlags.UseHostPointer, FFrVect);
-            ComputeBuffer<int> IGCL = new ComputeBuffer<int>(kernelFFr.Context, ComputeMemoryFlags.ReadOnly | ComputeMemoryFlags.UseHostPointer, IJ);
-
-            kernelFFr.SetMemoryArgument(0, IGCL);
-            kernelFFr.SetMemoryArgument(1, paramsCl);
-            kernelFFr.SetMemoryArgument(2, neededLayerCl);
-            kernelFFr.SetMemoryArgument(3, FFrCl);
-
-
             // BUG: ATI Stream v2.2 crash if event list not null.
-            commands.Execute(kernelFFr, null, new long[] { maxI, maxJ }, new long[] { maxI, maxJ }, events);
-
-            float[] retVal = new float[FFrVect.Length];
-            GCHandle arrCHandle = GCHandle.Alloc(retVal, GCHandleType.Pinned);
-
-
-            commands.Read(FFrCl, true, 0, FFrVect.Length, arrCHandle.AddrOfPinnedObject(), events);
-
-            arrCHandle.Free();
-
-            FFr = MatrixHelper.VectorToMatrix(retVal, ref maxI, ref maxJ);
-
-            return FFr;
+            commands.Execute(kernelFFr, null, new long[] { maxI, maxJ }, localWorkersIJ, events);
+            float[] retVal = commands.Read<float>(FFrCl, events);
+            return MatrixHelper.VectorToMatrix(retVal, ref maxI, ref maxJ);
         }
 
-        public float[,] prepareBCl(float[,] A1, float[,] A2, int koef)
+        public float[,] prepareBFirstCl()
         {
             int maxI = I + 1;
             int maxJ = J + 1;
 
-            float[,] B = MatrixHelper.getStdMatrix(maxI, maxJ);
-
-            int[] IJ = new int[3];
-            IJ[0] = I;
-            IJ[1] = J;
-            IJ[2] = koef;
-
-
-            float[] A1Vect = MatrixHelper.MatrixToVector(A1, ref maxI, ref maxJ);
-            float[] A2Vect = MatrixHelper.MatrixToVector(A2, ref maxI, ref maxJ);
-            float[] BVect = new float[maxI*maxJ];
-
-            if (kernelB == null)
+            if (kernelBFirst == null)
             {
                 throw new Exception("Call InitPrograms first!");
             }
 
-            ComputeBuffer<float> A1Cl = new ComputeBuffer<float>(kernelB.Context, ComputeMemoryFlags.ReadOnly | ComputeMemoryFlags.UseHostPointer, A1Vect);
-            ComputeBuffer<float> A2Cl = new ComputeBuffer<float>(kernelB.Context, ComputeMemoryFlags.ReadOnly | ComputeMemoryFlags.UseHostPointer, A2Vect);
-            ComputeBuffer<float> BCl = new ComputeBuffer<float>(kernelB.Context, ComputeMemoryFlags.ReadWrite | ComputeMemoryFlags.UseHostPointer, BVect);
-            ComputeBuffer<int> IGCL = new ComputeBuffer<int>(kernelB.Context, ComputeMemoryFlags.ReadOnly | ComputeMemoryFlags.UseHostPointer, IJ);
-
-            kernelB.SetMemoryArgument(0, IGCL);
-            kernelB.SetMemoryArgument(1, A1Cl);
-            kernelB.SetMemoryArgument(2, A2Cl);
-            kernelB.SetMemoryArgument(3, BCl);
-
-
             // BUG: ATI Stream v2.2 crash if event list not null.
-            commands.Execute(kernelB, null, new long[] { maxI, maxJ }, new long[] { maxI, maxJ }, events);
-
-            float[] retVal = new float[BVect.Length];
-            GCHandle arrCHandle = GCHandle.Alloc(retVal, GCHandleType.Pinned);
-
-
-            commands.Read(BCl, true, 0, BVect.Length, arrCHandle.AddrOfPinnedObject(), events);
-
-            arrCHandle.Free();
-
-            B = MatrixHelper.VectorToMatrix(retVal, ref maxI, ref maxJ);
-
-            return B;
+            commands.Execute(kernelBFirst, null, new long[] { maxI, maxJ }, localWorkersIJ, events);
+            float[] retVal = commands.Read<float>(BCl, events);
+            return MatrixHelper.VectorToMatrix(retVal, ref maxI, ref maxJ);
         }
 
-        public float[,] prepareFlCl(float[,] neededLayer)
+        public float[,] prepareBSecondCl()
         {
             int maxI = I + 1;
             int maxJ = J + 1;
 
-            float[,] Fl = MatrixHelper.getStdMatrix(maxI, maxJ);
+            if (kernelBSecond == null)
+            {
+                throw new Exception("Call InitPrograms first!");
+            }
 
-            int[] IJ = new int[2];
-            IJ[0] = I;
-            IJ[1] = J;
+            // BUG: ATI Stream v2.2 crash if event list not null.
+            commands.Execute(kernelBSecond, null, new long[] { maxI, maxJ }, localWorkersIJ, events);
+            float[] retVal = commands.Read<float>(BCl, events);
+            return MatrixHelper.VectorToMatrix(retVal, ref maxI, ref maxJ);
+        }
 
-            float[] paramsV = new float[3];
-            paramsV[0] = gammaZ;
-            paramsV[1] = sigmZ;
-            paramsV[2] = c;
-
-            float[] FlVect = new float[maxI*maxJ];
-            float[] neededLayerVect = MatrixHelper.MatrixToVector(neededLayer, ref maxI, ref maxJ);
+        public float[,] prepareFlCl()
+        {
+            int maxI = I + 1;
+            int maxJ = J + 1;
 
             if (kernelFl == null)
             {
                 throw new Exception("Call InitPrograms first!");
             }
 
-            ComputeBuffer<float> paramsCl = new ComputeBuffer<float>(kernelFl.Context, ComputeMemoryFlags.ReadOnly | ComputeMemoryFlags.UseHostPointer, paramsV);
-            ComputeBuffer<float> neededLayerCl = new ComputeBuffer<float>(kernelFl.Context, ComputeMemoryFlags.ReadOnly | ComputeMemoryFlags.UseHostPointer, neededLayerVect);
-            ComputeBuffer<float> FlCl = new ComputeBuffer<float>(kernelFl.Context, ComputeMemoryFlags.ReadWrite | ComputeMemoryFlags.UseHostPointer, FlVect);
-            ComputeBuffer<int> IGCL = new ComputeBuffer<int>(kernelFl.Context, ComputeMemoryFlags.ReadOnly | ComputeMemoryFlags.UseHostPointer, IJ);
-
-            kernelFl.SetMemoryArgument(0, IGCL);
-            kernelFl.SetMemoryArgument(1, paramsCl);
-            kernelFl.SetMemoryArgument(2, neededLayerCl);
-            kernelFl.SetMemoryArgument(3, FlCl);
-
-
             // BUG: ATI Stream v2.2 crash if event list not null.
-            commands.Execute(kernelFl, null, new long[] { maxI, maxJ }, new long[] { maxI, maxJ }, events);
+            commands.Execute(kernelFl, null, new long[] { maxI, maxJ }, localWorkersIJ, events);
 
-            float[] retVal = new float[FlVect.Length];
-            GCHandle arrCHandle = GCHandle.Alloc(retVal, GCHandleType.Pinned);
-
-
-            commands.Read(FlCl, true, 0, FlVect.Length, arrCHandle.AddrOfPinnedObject(), events);
-
-            arrCHandle.Free();
-
-            Fl = MatrixHelper.VectorToMatrix(retVal, ref maxI, ref maxJ);
-
-            return Fl;
+            float[] retVal = commands.Read<float>(FlCl, events);
+            return MatrixHelper.VectorToMatrix(retVal, ref maxI, ref maxJ);
         }
 
 
@@ -414,85 +398,48 @@ namespace DiplomWPF.Common.Schemas
             int maxI = I + 1;
             int maxJ = J + 1;
 
-            int workers = 3 * maxJ - 2;
-
-            FFlA = new float[maxJ];
-            FFlB = new float[maxJ - 1];
-            FFlC = new float[maxJ - 1];
-
-            int[] IJ = new int[2];
-            IJ[0] = I;
-            IJ[1] = J;
-
-            float[] paramsV = new float[3];
-            paramsV[0] = gammaZ;
-            paramsV[1] = sigmZ;
-            paramsV[2] = c;
-
-
-            float[] Avect = new float[workers];
-
-            if (kernelFFl == null)
-            {
-                throw new Exception("Call InitPrograms first!");
-            }
-
-            ComputeBuffer<float> paramsCl = new ComputeBuffer<float>(kernelFFl.Context, ComputeMemoryFlags.ReadOnly | ComputeMemoryFlags.UseHostPointer, paramsV);
-            ComputeBuffer<float> ACl = new ComputeBuffer<float>(kernelFFl.Context, ComputeMemoryFlags.ReadOnly | ComputeMemoryFlags.UseHostPointer, Avect);
-            ComputeBuffer<int> IGCL = new ComputeBuffer<int>(kernelFFl.Context, ComputeMemoryFlags.ReadOnly | ComputeMemoryFlags.UseHostPointer, IJ);
-
-            kernelFFl.SetMemoryArgument(0, IGCL);
-            kernelFFl.SetMemoryArgument(1, paramsCl);
-            kernelFFl.SetMemoryArgument(2, ACl);
-
-
             // BUG: ATI Stream v2.2 crash if event list not null.
-            commands.Execute(kernelFFl, null, new long[] { workers }, null, events);
+            commands.Execute(kernelFFl, null, new long[] { 3 * maxJ - 2 }, localWorkers3J, events);
 
-            float[] retVal = new float[Avect.Length];
-            GCHandle arrCHandle = GCHandle.Alloc(retVal, GCHandleType.Pinned);
-
-
-            commands.Read(ACl, true, 0, Avect.Length, arrCHandle.AddrOfPinnedObject(), events);
-
-            arrCHandle.Free();
-
-            for (int i = 0; i < maxJ - 1; i++)
-                FFlC[i] = retVal[i];
-
-            for (int i = maxJ - 1; i < 2 * maxJ - 1; i++)
-                FFlA[i - maxJ + 1] = retVal[i];
-
-            for (int i = 2 * maxJ - 1; i < 3 * maxJ - 2; i++)
-                FFlB[i - 2 * maxJ + 1] = retVal[i];
-        }
-
-
-        private void initializeVarMatrixes()
-        {
-            Gsh = prepareMatrixGCl();
-            tempLayer = MatrixHelper.getStdMatrix(I + 1, J + 1);
-            prepareFrCl();
-            prepareFFlCl();
+            FFlA = commands.Read<float>(FFlACl, events);
+            FFlB = commands.Read<float>(FFlBCl, events);
+            FFlC = commands.Read<float>(FFlCCl, events);
         }
 
         public override void executeAlg()
         {
-
+            Gsh = prepareMatrixGCl();
+            //MatrixWriter.writeMatrixToFile("G CL", Gsh, I + 1, J + 1);
+            tempLayer = MatrixHelper.getStdMatrix(I + 1, J + 1);
+            prepareFrCl();
+            //MatrixWriter.writeVectorAsString("FrA CL", commands.Read<float>(FrACl, null), I + 1,true);
+            //MatrixWriter.writeVectorAsString("FrB CL", commands.Read<float>(FrBCl, events), I, true);
+            //MatrixWriter.writeVectorAsString("FrC CL", commands.Read<float>(FrCCl, null), I, true);
+            prepareFFlCl();
+            //MatrixWriter.writeVectorAsString("FFlA CL", FFlA, J + 1);
+            //MatrixWriter.writeVectorAsString("FFlB CL", FFlB, J);
+            //MatrixWriter.writeVectorAsString("FFlC CL", FFlC, J);
             for (int n = 0; n <= N - 1; n++)
             {
-                float[,] Fl = prepareFlCl(tempLayer);
-                float[,] B = prepareBCl(Fl, Gsh, -1);
 
 
-                tempLayer = runKernel(kernelFirst, FrA, FrB, FrC, B, tempLayer, I + 1, J + 1);
-                //tempLayer = firstrunTest(Fr, B, tempLayer, I + 1, J + 1);
+                float[,] Fl = prepareFlCl();
+                //MatrixWriter.writeMatrixToFile("Fl CL n=" + n, Fl, I + 1, J + 1);
+                float[,] B = prepareBFirstCl();
+                //MatrixWriter.writeMatrixToFile("B1 CL n=" + n, B, I + 1, J + 1);
 
-                Fl = prepareFFrCl(tempLayer);
-                B = prepareBCl(Fl, Gsh, 1);
-                tempLayer = runKernel(kernelSecond, FFlA, FFlB, FFlC, B, tempLayer, J + 1, I + 1);
-                //tempLayer = secondrunTest(FFl, B, tempLayer, J + 1, I + 1);
+                tempLayer = runFirstKernel();
+                //MatrixWriter.writeMatrixToFile("tempLayer1 CL n=" + n, tempLayer, I + 1, J + 1);
 
+                Fl = prepareFFrCl();
+                //MatrixWriter.writeMatrixToFile("FFr CL n=" + n, Fl, I + 1, J + 1);
+                B = prepareBSecondCl();
+                //MatrixWriter.writeMatrixToFile("B2 CL n=" + n, B, I + 1, J + 1);
+                tempLayer = runSecondKernel();
+                //MatrixWriter.writeMatrixToFile("tempLayer2 CL n=" + n, tempLayer, I + 1, J + 1);
+
+                commands.Write<float>(FrACl, FrA, events);
+                commands.Write<float>(FFlACl, FFlA, events);
 
                 copyToProc(tempLayer, n + 1);
             }
@@ -501,7 +448,8 @@ namespace DiplomWPF.Common.Schemas
         public override void executeProcess()
         {
             //execute();
-            values = new ProcessValues(Ipv + 1, Jpv + 1, Npv + 1);
+            swInit.Start();
+            initValues();
             executeOpenCLKernel();
             isExecuted = true;
 
@@ -510,7 +458,8 @@ namespace DiplomWPF.Common.Schemas
         public override void executeProcess(object parameters)
         {
             //execute();
-            values = new ProcessValues(Ipv + 1, Jpv + 1, Npv + 1);
+            swInit.Start();
+            initValues();
             handler = (DiplomWPF.ProcessControl.increaseProgressBar)parameters;
             executeOpenCLKernel();
             isExecuted = true;
@@ -522,11 +471,14 @@ namespace DiplomWPF.Common.Schemas
         {
             try
             {
+                
                 System.IO.File.WriteAllText("logCL.txt", "");
                 InitPrograms();
-                initializeVarMatrixes();
-                CleanupUnusedKernels();
+                SetArgumentsToKernels();
+                findOptimalLocalWorkers();
+                swInit.Stop(); swCompute.Start();
                 executeAlg();
+                swCompute.Stop();
                 CleanupPrograms();
             }
             catch (ComputeException exception)

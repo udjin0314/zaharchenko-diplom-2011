@@ -39,7 +39,7 @@ namespace DiplomWPF
             parametersLabel.Content = "I=" + process.I + ", J=" + process.J + ", N=" + process.N;
             progressBar.Maximum = process.N;
             colorRect.Fill = process.brush;
-            executionTimeLabel.Content = executionTime;
+            executionTimeLabel.Content = "Иниц: " + process.swInit.Elapsed.ToString() + "\nВыч: " + process.swCompute.Elapsed.ToString();
 
         }
 
@@ -54,6 +54,7 @@ namespace DiplomWPF
                     process.reDrawNewProcess();
                     parentWindow.chartUR_ValueChanged(null, null);
                     parentWindow.chartUZ_ValueChanged(null, null);
+                    executionTimeLabel.Content = "Иниц: " + process.swInit.Elapsed.ToString() + "\nВыч: " + process.swCompute.Elapsed.ToString();
                     if (parentWindow.paramProcess == process)
                     {
                         //process.reDrawViewport();
@@ -61,8 +62,12 @@ namespace DiplomWPF
                     }
 
                 }
-                else progressBar.Value = progressBarValue;
-                if (executionTime.Ticks != 0) executionTimeLabel.Content = executionTime;
+                else
+                {
+                    progressBar.Value = progressBarValue;
+                    //if (executionTime.Ticks != 0) executionTimeLabel.Content = executionTime;
+                    executionTimeLabel.Content = "Иниц: " + process.swInit.Elapsed.ToString() + "\nВыч: " + process.swCompute.Elapsed.ToString();
+                }
             }
 
         }

@@ -57,17 +57,17 @@ namespace DiplomWPF.Common
             return s;
         }
 
-        public static void createFile(String filename)
+        public static void createFile(String filename = "log.txt")
         {
             if (logMode) System.IO.File.WriteAllText(filename, "");
         }
 
-        public static void writeMatrixToFile(String filename, String caption, float[,] matrix, int rows, int cols, Boolean transpon)
+        public static void writeMatrixToFile(String caption, float[,] matrix, int rows, int cols, Boolean transpon = false, String filename = "log.txt")
         {
             if (logMode) System.IO.File.AppendAllText(filename, makeMatrixAsString(caption, matrix, rows, cols, transpon));
         }
 
-        public static void writeVectorAsString(String filename, String caption, float[] vector, int size, Boolean asRow)
+        public static void writeVectorAsString(String caption, float[] vector, int size, Boolean asRow = false, String filename = "log.txt")
         {
             if (logMode) System.IO.File.AppendAllText(filename, makeVectorAsString(caption, vector, size, asRow));
         }

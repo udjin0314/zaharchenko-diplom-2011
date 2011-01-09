@@ -28,6 +28,16 @@ namespace DiplomWPF.Common.Mathem
             return result;
         }
 
+        public static int findMaxDiv(int Val,int baseV)
+        {
+            int div = 1;
+            for(int i=1;i<=baseV;i++)
+            {
+                if (Val % i == 0) div = i;
+            }
+            return div;
+        }
+
         public static Double bessel1(Double x)
         {
             Double result = 0;

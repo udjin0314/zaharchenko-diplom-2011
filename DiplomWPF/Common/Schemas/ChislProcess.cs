@@ -43,13 +43,18 @@ namespace DiplomWPF.Common
         public virtual void executeAlg()
         {
             float[,] Gsh = prepareMatrixG();
+            //MatrixWriter.writeMatrixToFile("G", Gsh, I + 1, J + 1);
             tempLayer = MatrixHelper.getStdMatrix(I + 1, J + 1);
             float[,] Fr = prepareFr();
+            //MatrixWriter.writeMatrixToFile("Fr", Fr, I + 1, I + 1);
             float[,] FFl = prepareFFl();
+            //MatrixWriter.writeMatrixToFile("FFl", FFl, J + 1, J + 1);
             for (int n = 0; n <= N - 1; n++)
             {
                 float[,] Fl = prepareFl(tempLayer);
+                //MatrixWriter.writeMatrixToFile("Fl n=" + n, Fl, I + 1, J + 1);
                 float[,] B = prepareB(Fl, Gsh, -1);
+                //MatrixWriter.writeMatrixToFile("B1 n=" + n, B, I + 1, J + 1);
                 for (int j = 0; j <= J; j++)
                 {
                     float[] Bloc = MatrixHelper.getCol(B, j, I + 1);
@@ -58,8 +63,11 @@ namespace DiplomWPF.Common
                     MatrixHelper.setCol(tempLayer, Prloc, j, I + 1);
                     
                 }
+                //MatrixWriter.writeMatrixToFile("tempLayer1 n=" + n, tempLayer, I + 1, J + 1);
                 Fl = prepareFFr(tempLayer);
+                //MatrixWriter.writeMatrixToFile("FFr n=" + n, Fl, I + 1, J + 1);
                 B = prepareB(Fl, Gsh, 1);
+                //MatrixWriter.writeMatrixToFile("B2 n=" + n, B, I + 1, J + 1);
 
                 for (int i = 0; i <= I; i++)
                 {
@@ -68,6 +76,7 @@ namespace DiplomWPF.Common
                     MatrixHelper.setRow(tempLayer, Prloc, i, J + 1);
 
                 }
+                //MatrixWriter.writeMatrixToFile("tempLayer2 n=" + n, tempLayer, I + 1, J + 1);
                 copyToProc(tempLayer, n + 1);
             }
         }
@@ -75,8 +84,11 @@ namespace DiplomWPF.Common
         public override void executeProcess()
         {
             //execute();
+            swInit.Start();
             base.executeProcess();
+            swInit.Stop(); swCompute.Start();
             executeAlg();
+            swCompute.Stop();
             isExecuted = true;
 
         }
@@ -84,8 +96,11 @@ namespace DiplomWPF.Common
         public override void executeProcess(object parameters)
         {
             //execute();
+            swInit.Start();
             base.executeProcess(parameters);
+            swInit.Stop(); swCompute.Start();
             executeAlg();
+            swCompute.Stop();
             isExecuted = true;
 
 
