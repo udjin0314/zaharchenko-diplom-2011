@@ -3,7 +3,7 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d3="http://research.microsoft.com/DynamicDataDisplay/1.0" 
         KeyDown="OnKeyDown"
-        Title="Разработка Алгоритма численного моделирования теплового поля прозрачного оптического элемента с учетом неравномерности поглощения лазерного излучения" Height="768" Width="1366" Loaded="Window_Loaded" ResizeMode="NoResize" WindowState="Maximized" WindowStyle="SingleBorderWindow">
+        Title="Разработка Алгоритма численного моделирования теплового поля прозрачного оптического элемента с учетом неравномерности поглощения лазерного излучения" Height="768" Width="1366" Loaded="Window_Loaded" ResizeMode="NoResize" WindowState="Maximized" WindowStyle="SingleBorderWindow" Icon="/DiplomWPF;component/Client/UI/icon.png">
 
     <Grid>
         <TabControl Height="700" HorizontalAlignment="Left" Margin="196,17,0,0" Name="tabControl1" VerticalAlignment="Top" Width="991">
@@ -167,7 +167,7 @@
 
             </Grid>
         </GroupBox>
-        <GroupBox Header="Процессы" Height="678" Margin="1193,39,0,0" Name="groupBox3" VerticalAlignment="Top" HorizontalAlignment="Left" Width="165">
+        <GroupBox Header="Схемы" Height="678" Margin="1193,39,0,0" Name="groupBox3" VerticalAlignment="Top" HorizontalAlignment="Left" Width="165">
             <Grid Name="processesGrid" ShowGridLines="False">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="Auto" />
@@ -176,7 +176,7 @@
         </GroupBox>
         <Grid Height="24" HorizontalAlignment="Left" Margin="1193,24,0,0" Name="addProcess" VerticalAlignment="Top" Width="151" Cursor="Hand">
             <Image Height="15" Margin="6,0,0,6" Name="image1" Stretch="Fill" VerticalAlignment="Bottom" Source="/DiplomWPF;component/Client/UI/add.png" Cursor="Hand" HorizontalAlignment="Left" Width="15" MouseLeftButtonDown="addProcessLabel_MouseLeftButtonDown" />
-            <Label Content="Добавить процесс" Height="28" HorizontalAlignment="Right" Margin="0,0,12,0" Name="addProcessLabel" VerticalAlignment="Bottom" Cursor="Hand" FontStyle="Italic" Foreground="#FF0707FF" MouseLeftButtonDown="addProcessLabel_MouseLeftButtonDown" />
+            <Label Content="Добавить схему" Height="28" HorizontalAlignment="Right" Margin="0,0,12,0" Name="addProcessLabel" VerticalAlignment="Bottom" Cursor="Hand" FontStyle="Italic" Foreground="#FF0707FF" MouseLeftButtonDown="addProcessLabel_MouseLeftButtonDown" />
         </Grid>
         <GroupBox Header="Параметры Процесса" Height="315" HorizontalAlignment="Left" Margin="10,10,0,0" Name="ParamGroupBox" VerticalAlignment="Top" Width="180">
             <Grid Width="170">

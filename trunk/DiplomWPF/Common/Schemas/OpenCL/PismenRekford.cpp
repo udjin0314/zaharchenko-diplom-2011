@@ -2,6 +2,7 @@
 
 __kernel void firstrun(__global int* IJ,
 						__global       float * a,
+						__local      float * a1,
 						__global       float * b,
 						__global       float * c,
                       __global       float * B,
@@ -10,23 +11,30 @@ __kernel void firstrun(__global int* IJ,
 	int I = IJ[0];
     int jG = get_global_id(0);
 
-    int n = I + 1;
-
-    for (int i = 1; i < n; i++)
+    int cols = I + 1;
+	a1[0]=a[0];
+    for (int i = 1; i < cols; i++)
     {
-        float m = b[i - 1] / a[i - 1];
-        a[i] = a[i] - m * c[i - 1];
-        B[i + n * jG] = B[i + n * jG] - m * B[i - 1 + n * jG];
+        float m = b[i - 1] / a1[i - 1];
+        a1[i] = a[i] - m * c[i - 1];
+        B[i + cols * jG] = B[i + cols * jG] - m * B[i - 1 + cols * jG];
     }
 
-    tempLayer[n - 1 + n * jG] = B[n - 1 + n * jG] / a[n - 1];
+    tempLayer[cols - 1 + cols * jG] = B[cols - 1 + cols * jG] / a1[cols - 1];
 
-    for (int i = n - 2; i >= 0; i--)
-       tempLayer[i + n * jG] = (B[i + n * jG] - c[i] * tempLayer[i + 1 + n * jG]) / a[i];
+    for (int i = cols - 2; i >= 0; i--)
+       tempLayer[i + cols * jG] = (B[i + cols * jG] - c[i] * tempLayer[i + 1 + cols * jG]) / a1[i];
+
+	/*tempLayer[cols - 1 + cols * jG] = B[cols - 1 + cols * jG];
+
+    for (int i = cols - 2; i >= 0; i--)
+       tempLayer[i + cols * jG] = B[i + cols * jG];*/
+	   
 }
-
+ 
 __kernel void secondrun(__global int* IJ,
 						__global       float * a,
+						__local       float * a1,
 						__global       float * b,
 						__global       float * c,
                       __global       float * B,
@@ -39,18 +47,18 @@ __kernel void secondrun(__global int* IJ,
 
 	int cols = I + 1;
     int n = J + 1;
-
+	a1[0]=a[0];
     for (int i = 1; i < n; i++)
    {
-      float m = b[i - 1] / a[i - 1];
-      a[i] = a[i] - m * c[i - 1];
+      float m = b[i - 1] / a1[i - 1];
+      a1[i] = a[i] - m * c[i - 1];
        B[iG + cols * i] = B[iG + cols * i] - m * B[iG + cols * (i - 1)];
     }
 
-    tempLayer[iG + cols * (n - 1)] = B[iG + cols * (n - 1)] / a[n - 1];
+    tempLayer[iG + cols * (n - 1)] = B[iG + cols*(n - 1)] / a1[n - 1];
 
    for (int i = n - 2; i >= 0; i--)
-       tempLayer[iG + cols * i] = (B[iG + cols * i] - c[i] * tempLayer[iG + cols * (i + 1)]) / a[i];
+       tempLayer[iG + cols * i] = (B[iG + cols * i] - c[i] * tempLayer[iG + cols * (i + 1)]) / a1[i];
 }
 
 
@@ -134,22 +142,22 @@ __kernel void prepareFFr(__global int* IJ, __global float * params, __global  fl
 	if (iG>0&&iG<I) Fl[iG+cols*jG] = gamma * (1 - 1.0f / (2 * iG)) * neededLayer[iG - 1+cols*jG] - (2 * gamma - c) * neededLayer[iG+cols*jG] + gamma * (1 + 1.0f / (2 * iG)) * neededLayer[iG + 1+cols*jG];
 }
 
-__kernel void prepareBFirst(__global int* IJ, __global float * Fl, __global  float * Gsh, __global  float * B)
+__kernel void prepareBFirst(__global int* IJ, __global float * Fl, __global  float * Gsh)
 {
 	int iG = get_global_id(0);
 	int jG = get_global_id(1);
 	int I=IJ[0];
 	int J=IJ[1];
 	int cols = I + 1;
-	B[iG+cols*jG] = -1 * (Fl[iG+cols*jG] + Gsh[iG+cols*jG]);
+	Fl[iG+cols*jG] = -1 * (Fl[iG+cols*jG] + Gsh[iG+cols*jG]);
 }
 
-__kernel void prepareBSecond(__global int* IJ, __global float * Fl, __global  float * Gsh, __global  float * B)
+__kernel void prepareBSecond(__global int* IJ, __global float * Fl, __global  float * Gsh)
 {
 	int iG = get_global_id(0);
 	int jG = get_global_id(1);
 	int I=IJ[0];
 	int J=IJ[1];
 	int cols = I + 1;
-	B[iG+cols*jG] = (Fl[iG+cols*jG] + Gsh[iG+cols*jG]);
+	Fl[iG+cols*jG] = (Fl[iG+cols*jG] + Gsh[iG+cols*jG]);
 }

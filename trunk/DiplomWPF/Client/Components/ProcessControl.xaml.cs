@@ -25,8 +25,6 @@ namespace DiplomWPF
         public AbstractProcess process { get; set; }
         public MainWindow parentWindow;
         private int progressBarValue = 0;
-        private TimeSpan executionTime;
-        private DateTime startTime;
 
         private DThreadPool pool;
 
@@ -40,7 +38,13 @@ namespace DiplomWPF
             progressBar.Maximum = process.N;
             colorRect.Fill = process.brush;
             executionTimeLabel.Content = "Иниц: " + process.swInit.Elapsed.ToString() + "\nВыч: " + process.swCompute.Elapsed.ToString();
-
+            if (process.additionalName!=null)
+            {
+                additional.Height = GridLength.Auto;
+                additionalText.TextWrapping = TextWrapping.Wrap;
+                additionalText.Text = process.additionalName;
+                
+            }
         }
 
         public void processTimer()
@@ -77,7 +81,6 @@ namespace DiplomWPF
         public void increaseProgressBarMethod()
         {
             progressBarValue++;
-            executionTime = DateTime.Now.Subtract(startTime);
         }
 
         private void label1_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
@@ -91,7 +94,6 @@ namespace DiplomWPF
             setProcessButton.IsEnabled = false;
             parentWindow.initializeProcessParams(process);
             progressBar.Maximum = process.progressBarMax;
-            startTime = DateTime.Now;
             executionTimeLabel.Content = "Инициализация";
             Thread thread = new Thread(new ParameterizedThreadStart(process.executeProcess));
             pool.addThread(thread);

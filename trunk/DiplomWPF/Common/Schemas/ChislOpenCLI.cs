@@ -38,7 +38,7 @@ namespace DiplomWPF.Common.Schemas
         private ComputeBuffer<float> FFlBCl;
         private ComputeBuffer<float> FFlCCl;
 
-        private ComputeBuffer<float> BCl;
+        private ComputeBuffer<float> FCl;
         private ComputeBuffer<float> tempLayerCl;
 
         private ComputeBuffer<float> paramsRCl;
@@ -46,8 +46,6 @@ namespace DiplomWPF.Common.Schemas
         private ComputeBuffer<float> paramsGCl;
 
         private ComputeBuffer<float> GCl;
-        private ComputeBuffer<float> FFrCl;
-        private ComputeBuffer<float> FlCl;
 
         private long[] localWorkersJ = null;
         private long[] localWorkersI = null;
@@ -58,30 +56,16 @@ namespace DiplomWPF.Common.Schemas
 
         private long[] localWorkers3I = null;
 
-        private float[,] Gsh;
-
         private float[] FrA;
-        private float[] FrB;
-        private float[] FrC;
 
         private float[] FFlA;
-        private float[] FFlB;
-        private float[] FFlC;
 
-        private Boolean fi = true;
-
-
+        public ComputePlatform Platform { get; set; }
+        public ComputeDevice[] Devices { get; set; }
 
         public ChislOpenCLI(String name, Brush brush)
             : base(name, brush)
         {
-        }
-
-        protected void initComputeContext()
-        {
-            ComputePlatform Platform = ComputePlatform.Platforms[0];
-            ComputeContextPropertyList properties = new ComputeContextPropertyList(Platform);
-            context = new ComputeContext(Platform.Devices, properties, null, IntPtr.Zero);
         }
 
         public void findOptimalLocalWorkers()
@@ -101,21 +85,15 @@ namespace DiplomWPF.Common.Schemas
 
         public void InitPrograms()
         {
-            ComputeContextPropertyList cpl = new ComputeContextPropertyList(ComputePlatform.Platforms[0]);
-
-            // This was ComputeDeviceTypes.Default, I tried Gpu instead with no noticeable difference.
-            context = new ComputeContext(ComputeDeviceTypes.Gpu, cpl, null, IntPtr.Zero);
-
-            program = new ComputeProgram(context, new[] { System.IO.File.ReadAllText(KERNEL_FILE) });
-
-            commands = new ComputeCommandQueue(context, context.Devices[0], ComputeCommandQueueFlags.None);
-
+            ComputeContextPropertyList properties = new ComputeContextPropertyList(Platform);
+            context = new ComputeContext(Devices, properties, null, IntPtr.Zero);
+            program = new ComputeProgram(context, System.IO.File.ReadAllText(KERNEL_FILE));
+            program.Build(Devices, "", null, IntPtr.Zero);
+            commands = new ComputeCommandQueue(context, Devices[0], ComputeCommandQueueFlags.None);
             //events = new Collection<ComputeEventBase>();
             events = null;
 
             // I am specifying the first device, the original example did not, but it does not make a difference in performance.
-            program.Build(new[] { context.Devices[0] }, null, null, IntPtr.Zero);
-
             kernelFirst = program.CreateKernel("firstrun");
             kernelSecond = program.CreateKernel("secondrun");
             kernelG = program.CreateKernel("prepareMatrixG");
@@ -169,7 +147,7 @@ namespace DiplomWPF.Common.Schemas
             FFlBCl = new ComputeBuffer<float>(context, ComputeMemoryFlags.ReadWrite | ComputeMemoryFlags.UseHostPointer, new float[J]);
             FFlCCl = new ComputeBuffer<float>(context, ComputeMemoryFlags.ReadWrite | ComputeMemoryFlags.UseHostPointer, new float[J]);
 
-            BCl = new ComputeBuffer<float>(context, ComputeMemoryFlags.ReadWrite | ComputeMemoryFlags.UseHostPointer, new float[maxI * maxJ]);
+            FCl = new ComputeBuffer<float>(context, ComputeMemoryFlags.ReadWrite | ComputeMemoryFlags.UseHostPointer, new float[maxI * maxJ]);
             tempLayerCl = new ComputeBuffer<float>(context, ComputeMemoryFlags.ReadWrite | ComputeMemoryFlags.UseHostPointer, new float[maxI * maxJ]);
 
             paramsRCl = new ComputeBuffer<float>(kernelFr.Context, ComputeMemoryFlags.ReadOnly | ComputeMemoryFlags.UseHostPointer, paramsR);
@@ -177,26 +155,26 @@ namespace DiplomWPF.Common.Schemas
             paramsGCl = new ComputeBuffer<float>(context, ComputeMemoryFlags.ReadOnly | ComputeMemoryFlags.UseHostPointer, paramsG);
 
             GCl = new ComputeBuffer<float>(context, ComputeMemoryFlags.ReadWrite | ComputeMemoryFlags.UseHostPointer, new float[maxI * maxJ]);
-            FFrCl = new ComputeBuffer<float>(kernelFFr.Context, ComputeMemoryFlags.ReadWrite | ComputeMemoryFlags.UseHostPointer, new float[maxI * maxJ]);
-            FlCl = new ComputeBuffer<float>(kernelFFr.Context, ComputeMemoryFlags.ReadWrite | ComputeMemoryFlags.UseHostPointer, new float[maxI * maxJ]);
 
             //kernelFirst
 
             kernelFirst.SetMemoryArgument(0, IGCL);
             kernelFirst.SetMemoryArgument(1, FrACl);
-            kernelFirst.SetMemoryArgument(2, FrBCl);
-            kernelFirst.SetMemoryArgument(3, FrCCl);
-            kernelFirst.SetMemoryArgument(4, BCl);
-            kernelFirst.SetMemoryArgument(5, tempLayerCl);
+            kernelFirst.SetLocalArgument(2, maxI*sizeof(float));
+            kernelFirst.SetMemoryArgument(3, FrBCl);
+            kernelFirst.SetMemoryArgument(4, FrCCl);
+            kernelFirst.SetMemoryArgument(5, FCl);
+            kernelFirst.SetMemoryArgument(6, tempLayerCl);
 
             //kernelSecond
 
             kernelSecond.SetMemoryArgument(0, IGCL);
             kernelSecond.SetMemoryArgument(1, FFlACl);
-            kernelSecond.SetMemoryArgument(2, FFlBCl);
-            kernelSecond.SetMemoryArgument(3, FFlCCl);
-            kernelSecond.SetMemoryArgument(4, BCl);
-            kernelSecond.SetMemoryArgument(5, tempLayerCl);
+            kernelSecond.SetLocalArgument(2, maxJ * sizeof(float));
+            kernelSecond.SetMemoryArgument(3, FFlBCl);
+            kernelSecond.SetMemoryArgument(4, FFlCCl);
+            kernelSecond.SetMemoryArgument(5, FCl);
+            kernelSecond.SetMemoryArgument(6, tempLayerCl);
 
             //kernelG
             kernelG.SetMemoryArgument(0, IGCL);
@@ -214,25 +192,23 @@ namespace DiplomWPF.Common.Schemas
             kernelFFr.SetMemoryArgument(0, IGCL);
             kernelFFr.SetMemoryArgument(1, paramsRCl);
             kernelFFr.SetMemoryArgument(2, tempLayerCl);
-            kernelFFr.SetMemoryArgument(3, FFrCl);
+            kernelFFr.SetMemoryArgument(3, FCl);
 
             //kernelBFirst
             kernelBFirst.SetMemoryArgument(0, IGCL);
-            kernelBFirst.SetMemoryArgument(1, FlCl);
+            kernelBFirst.SetMemoryArgument(1, FCl);
             kernelBFirst.SetMemoryArgument(2, GCl);
-            kernelBFirst.SetMemoryArgument(3, BCl);
 
             //kernelBSecond
             kernelBSecond.SetMemoryArgument(0, IGCL);
-            kernelBSecond.SetMemoryArgument(1, FFrCl);
+            kernelBSecond.SetMemoryArgument(1, FCl);
             kernelBSecond.SetMemoryArgument(2, GCl);
-            kernelBSecond.SetMemoryArgument(3, BCl);
 
             //kernelFl
             kernelFl.SetMemoryArgument(0, IGCL);
             kernelFl.SetMemoryArgument(1, paramsLCl);
             kernelFl.SetMemoryArgument(2, tempLayerCl);
-            kernelFl.SetMemoryArgument(3, FlCl);
+            kernelFl.SetMemoryArgument(3, FCl);
 
             //kernelFFl
             kernelFFl.SetMemoryArgument(0, IGCL);
@@ -263,7 +239,7 @@ namespace DiplomWPF.Common.Schemas
             context.Dispose();
         }
 
-        public float[,] runFirstKernel()
+        public void runFirstKernel()
         {
             int maxI = I + 1;
             int maxJ = J + 1;
@@ -275,8 +251,6 @@ namespace DiplomWPF.Common.Schemas
 
             // BUG: ATI Stream v2.2 crash if event list not null.
             commands.Execute(kernelFirst, null, new long[] { maxJ }, localWorkersJ, events);
-            float[] retVal = commands.Read<float>(tempLayerCl, events);
-            return MatrixHelper.VectorToMatrix(retVal, ref maxI, ref maxJ);
         }
 
         public float[,] runSecondKernel()
@@ -294,7 +268,7 @@ namespace DiplomWPF.Common.Schemas
             return MatrixHelper.VectorToMatrix(retVal, ref maxI, ref maxJ);
         }
 
-        public float[,] prepareMatrixGCl()
+        public void prepareMatrixGCl()
         {
             int maxI = I + 1;
             int maxJ = J + 1;
@@ -306,8 +280,6 @@ namespace DiplomWPF.Common.Schemas
 
             // BUG: ATI Stream v2.2 crash if event list not null.
             commands.Execute(kernelG, null, new long[] { maxI, maxJ }, localWorkersIJ, events);
-            float[] retVal = commands.Read<float>(GCl, events);
-            return MatrixHelper.VectorToMatrix(retVal, ref maxI, ref maxJ);
         }
 
         public void prepareFrCl()
@@ -323,11 +295,9 @@ namespace DiplomWPF.Common.Schemas
             commands.Execute(kernelFr, null, new long[] { 3 * maxI - 2 }, localWorkers3I, events);
 
             FrA = commands.Read<float>(FrACl, events);
-            FrB = commands.Read<float>(FrBCl, events);
-            FrC = commands.Read<float>(FrCCl, events);
         }
 
-        public float[,] prepareFFrCl()
+        public void prepareFFrCl()
         {
             int maxI = I + 1;
             int maxJ = J + 1;
@@ -339,11 +309,9 @@ namespace DiplomWPF.Common.Schemas
 
             // BUG: ATI Stream v2.2 crash if event list not null.
             commands.Execute(kernelFFr, null, new long[] { maxI, maxJ }, localWorkersIJ, events);
-            float[] retVal = commands.Read<float>(FFrCl, events);
-            return MatrixHelper.VectorToMatrix(retVal, ref maxI, ref maxJ);
         }
 
-        public float[,] prepareBFirstCl()
+        public void prepareBFirstCl()
         {
             int maxI = I + 1;
             int maxJ = J + 1;
@@ -355,11 +323,9 @@ namespace DiplomWPF.Common.Schemas
 
             // BUG: ATI Stream v2.2 crash if event list not null.
             commands.Execute(kernelBFirst, null, new long[] { maxI, maxJ }, localWorkersIJ, events);
-            float[] retVal = commands.Read<float>(BCl, events);
-            return MatrixHelper.VectorToMatrix(retVal, ref maxI, ref maxJ);
         }
 
-        public float[,] prepareBSecondCl()
+        public void prepareBSecondCl()
         {
             int maxI = I + 1;
             int maxJ = J + 1;
@@ -371,11 +337,9 @@ namespace DiplomWPF.Common.Schemas
 
             // BUG: ATI Stream v2.2 crash if event list not null.
             commands.Execute(kernelBSecond, null, new long[] { maxI, maxJ }, localWorkersIJ, events);
-            float[] retVal = commands.Read<float>(BCl, events);
-            return MatrixHelper.VectorToMatrix(retVal, ref maxI, ref maxJ);
         }
 
-        public float[,] prepareFlCl()
+        public void prepareFlCl()
         {
             int maxI = I + 1;
             int maxJ = J + 1;
@@ -388,8 +352,6 @@ namespace DiplomWPF.Common.Schemas
             // BUG: ATI Stream v2.2 crash if event list not null.
             commands.Execute(kernelFl, null, new long[] { maxI, maxJ }, localWorkersIJ, events);
 
-            float[] retVal = commands.Read<float>(FlCl, events);
-            return MatrixHelper.VectorToMatrix(retVal, ref maxI, ref maxJ);
         }
 
 
@@ -402,44 +364,42 @@ namespace DiplomWPF.Common.Schemas
             commands.Execute(kernelFFl, null, new long[] { 3 * maxJ - 2 }, localWorkers3J, events);
 
             FFlA = commands.Read<float>(FFlACl, events);
-            FFlB = commands.Read<float>(FFlBCl, events);
-            FFlC = commands.Read<float>(FFlCCl, events);
         }
 
         public override void executeAlg()
         {
-            Gsh = prepareMatrixGCl();
-            //MatrixWriter.writeMatrixToFile("G CL", Gsh, I + 1, J + 1);
-            tempLayer = MatrixHelper.getStdMatrix(I + 1, J + 1);
+            int maxI = I + 1;
+            int maxJ = J + 1;
+            prepareMatrixGCl();
+            //MatrixWriter.writeMatrixToFile("G CL", MatrixHelper.VectorToMatrix(commands.Read<float>(GCl, events),ref maxI, ref maxJ), I + 1, J + 1);
             prepareFrCl();
             //MatrixWriter.writeVectorAsString("FrA CL", commands.Read<float>(FrACl, null), I + 1,true);
             //MatrixWriter.writeVectorAsString("FrB CL", commands.Read<float>(FrBCl, events), I, true);
             //MatrixWriter.writeVectorAsString("FrC CL", commands.Read<float>(FrCCl, null), I, true);
             prepareFFlCl();
-            //MatrixWriter.writeVectorAsString("FFlA CL", FFlA, J + 1);
-            //MatrixWriter.writeVectorAsString("FFlB CL", FFlB, J);
-            //MatrixWriter.writeVectorAsString("FFlC CL", FFlC, J);
+            //MatrixWriter.writeVectorAsString("FFlA CL", commands.Read<float>(FFlACl, events), J + 1,true);
+            //MatrixWriter.writeVectorAsString("FFlB CL", commands.Read<float>(FFlBCl, events), J, true);
+            //MatrixWriter.writeVectorAsString("FFlC CL", commands.Read<float>(FFlCCl, events), J, true);
             for (int n = 0; n <= N - 1; n++)
             {
 
 
-                float[,] Fl = prepareFlCl();
-                //MatrixWriter.writeMatrixToFile("Fl CL n=" + n, Fl, I + 1, J + 1);
-                float[,] B = prepareBFirstCl();
-                //MatrixWriter.writeMatrixToFile("B1 CL n=" + n, B, I + 1, J + 1);
+                prepareFlCl();
+                //if (n == 1) MatrixWriter.writeMatrixToFile("Fl CL n=" + n, MatrixHelper.VectorToMatrix(commands.Read<float>(FCl, events), ref maxI, ref maxJ), maxI, maxJ);
+                prepareBFirstCl();
+                //if (n == 0) MatrixWriter.writeMatrixToFile("B1 CL n=" + n, MatrixHelper.VectorToMatrix(commands.Read<float>(FCl, events), ref maxI, ref maxJ), maxI, maxJ);
 
-                tempLayer = runFirstKernel();
-                //MatrixWriter.writeMatrixToFile("tempLayer1 CL n=" + n, tempLayer, I + 1, J + 1);
-
-                Fl = prepareFFrCl();
+                runFirstKernel();
+                //if (n == 0) MatrixWriter.writeMatrixToFile("tempLayer1 CL n=" + n, MatrixHelper.VectorToMatrix(commands.Read<float>(tempLayerCl, events), ref maxI, ref maxJ), maxI, maxJ);
+                prepareFFrCl();
                 //MatrixWriter.writeMatrixToFile("FFr CL n=" + n, Fl, I + 1, J + 1);
-                B = prepareBSecondCl();
+                prepareBSecondCl();
                 //MatrixWriter.writeMatrixToFile("B2 CL n=" + n, B, I + 1, J + 1);
                 tempLayer = runSecondKernel();
                 //MatrixWriter.writeMatrixToFile("tempLayer2 CL n=" + n, tempLayer, I + 1, J + 1);
 
-                commands.Write<float>(FrACl, FrA, events);
-                commands.Write<float>(FFlACl, FFlA, events);
+                /*commands.Write<float>(FrACl, FrA, events);
+                commands.Write<float>(FFlACl, FFlA, events);*/
 
                 copyToProc(tempLayer, n + 1);
             }

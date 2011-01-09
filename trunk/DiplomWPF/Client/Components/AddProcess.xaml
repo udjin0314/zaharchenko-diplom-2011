@@ -2,32 +2,60 @@
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:extToolkit="clr-namespace:Microsoft.Windows.Controls;assembly=WPFToolkit.Extended"
-        Title="Добавить новый процесс" Height="310" Width="300">
-    <Grid Height="273">
-        <GroupBox Header="Параметры Схемы" Height="119" HorizontalAlignment="Left" Margin="12,116,0,0" Name="groupBox1" VerticalAlignment="Top" Width="254">
-            <Grid Height="97" Width="239">
-                <Label Content="N" FontSize="12" FontWeight="Normal" Height="23" HorizontalAlignment="Left" Margin="6,6,0,0" Name="label6" Padding="2" VerticalAlignment="Top" Width="65" />
-                <TextBox Height="23" HorizontalAlignment="Left" Margin="72,6,0,0" Name="parametrN" Text="4" VerticalAlignment="Top" Width="161" />
-                <Label Content="I" FontSize="12" FontWeight="Normal" Height="23" HorizontalAlignment="Left" Margin="6,35,0,0" Name="label7" Padding="2" VerticalAlignment="Top" Width="65" />
-                <TextBox Height="23" HorizontalAlignment="Left" Margin="72,35,0,0" Name="parametrI" Text="140" VerticalAlignment="Top" Width="161" />
-                <Label Content="J" FontSize="12" FontWeight="Normal" Height="23" HorizontalAlignment="Left" Margin="6,64,0,0" Name="label8" Padding="2" VerticalAlignment="Top" Width="65" />
-                <TextBox Height="23" HorizontalAlignment="Left" Margin="72,64,0,0" Name="parametrJ" Text="133" VerticalAlignment="Top" Width="161" />
+        Title="Добавить новую схему" Icon="/DiplomWPF;component/Client/UI/add.png" mc:Ignorable="d" xmlns:d="http://schemas.microsoft.com/expression/blend/2008" xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" d:DesignHeight="300" d:DesignWidth="300" SizeToContent="WidthAndHeight">
+    <Grid Height="Auto">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="30"/>
+        </Grid.RowDefinitions>
+        <GroupBox  Header="Параметры Схемы" Grid.Row="3" Height="Auto" HorizontalAlignment="Left" Margin="12,10,0,0" Name="groupBox1" VerticalAlignment="Top" Width="266">
+            <Grid Width="Auto" >
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="0" Name="parPismRow" />
+                    <RowDefinition Height="0" Name="openCLRow" />
+                </Grid.RowDefinitions>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="6*" />
+                </Grid.ColumnDefinitions>
+
+                <Label Content="N" FontSize="12" FontWeight="Normal" Height="23" HorizontalAlignment="Left" Margin="5,5,0,0" Name="label6" Padding="2" VerticalAlignment="Top"  />
+                <TextBox Height="23" HorizontalAlignment="Left" Margin="72,5,0,0" Name="parametrN" Text="100" VerticalAlignment="Top" Width="176" />
+                <Label Content="I" FontSize="12" FontWeight="Normal" Height="23" HorizontalAlignment="Left" Margin="5,5,0,0" Name="label7" Padding="2" VerticalAlignment="Top"  Grid.Row="1" />
+                <TextBox Height="23" HorizontalAlignment="Left" Margin="72,5,0,0" Name="parametrI" Text="100" VerticalAlignment="Top" Width="176" Grid.Row="1" />
+                <Label Content="J" FontSize="12" FontWeight="Normal" Height="23" HorizontalAlignment="Left" Margin="5,5,0,0" Name="label8" Padding="2" VerticalAlignment="Top"  Grid.Row="2" />
+                <TextBox Height="23" HorizontalAlignment="Left" Margin="72,5,0,0" Name="parametrJ" Text="100" VerticalAlignment="Top" Width="176" Grid.Row="2" />
+                <Label Content="Количество потоков" FontSize="12" FontWeight="Normal" Height="23" HorizontalAlignment="Left" Margin="5,5,0,0" Name="parPismLabel" Padding="2" VerticalAlignment="Top" Grid.Row="3" />
+                <TextBox Height="23" HorizontalAlignment="Left" Margin="130,5,0,0" Name="parPismTextBox" Text="10" VerticalAlignment="Top" Width="118" Grid.Row="3" />
+
+                <Label Content="Платформа" Height="28" HorizontalAlignment="Left" Margin="5,5,0,0" Name="platformLabel" VerticalAlignment="Top" Grid.Row="4" />
+                <ComboBox Height="23" IsEnabled="False" HorizontalAlignment="Left" Margin="75,5,0,0" Name="platformBox" VerticalAlignment="Top" Width="173" Grid.Row="4" SelectionChanged="platformBox_SelectionChanged" />
+
+                <Label Content="Устройства" Height="28" HorizontalAlignment="Left" Margin="5,35,0,0" Name="deviceLabel" VerticalAlignment="Top" Grid.Row="4" />
+                <ListBox IsEnabled="False" Grid.Row="4" Height="100" HorizontalAlignment="Left" Margin="75,35,0,0" Name="deviceBoxList" VerticalAlignment="Top" Width="173" SelectionChanged="deviceBox_SelectionChanged" />
             </Grid>
         </GroupBox>
-        <Button Content="Ок" Height="23" HorizontalAlignment="Left" Margin="110,241,0,0" Name="okButton" VerticalAlignment="Top" Width="75" IsDefault="True" Click="okButton_Click" />
-        <Button Content="Отмена" Height="23" HorizontalAlignment="Left" Margin="192,241,0,0" Name="cancelButton" VerticalAlignment="Top" Width="75" IsCancel="True" />
-        <Label Content="Название" Height="28" HorizontalAlignment="Left" Name="label1" VerticalAlignment="Top" Margin="12,12,0,0" />
-        <TextBox Height="23" HorizontalAlignment="Left" Margin="92,14,0,0" Name="processNameTextbox" VerticalAlignment="Top" Width="174" />
-        <Label Content="Цвет" Height="28" HorizontalAlignment="Left" Margin="12,42,0,0" Name="label2" VerticalAlignment="Top" />
-        <extToolkit:ColorPicker Margin="92,46,19,0" SelectedColor="{Binding FavoriteColor}" Height="24" VerticalAlignment="Top" Name="colorPicker" IsManipulationEnabled="False" />
-        <Label Content="Тип" Height="28" HorizontalAlignment="Left" Margin="12,72,0,0" Name="label3" VerticalAlignment="Top" />
-        <ComboBox Height="23" HorizontalAlignment="Left" Margin="92,77,0,0" Name="processTypeBox" VerticalAlignment="Top" Width="174">
+        <Button   Content="Ок" Grid.Row="4" Height="23" HorizontalAlignment="Left" Margin="109,0,0,5" Name="okButton" VerticalAlignment="Bottom" Width="75" IsDefault="True" Click="okButton_Click" />
+        <Button  Content="Отмена" Grid.Row="4" Height="23" HorizontalAlignment="Left" Margin="191,0,0,5" Name="cancelButton" VerticalAlignment="Bottom" Width="75" IsCancel="True" />
+        <Label Content="Название" Height="28" HorizontalAlignment="Left" Name="label1" VerticalAlignment="Top" Margin="12,5,0,0" Grid.Row="0" />
+        <TextBox  Height="23" HorizontalAlignment="Left" Margin="92,5,0,0" Name="processNameTextbox" VerticalAlignment="Top" Width="174" Grid.Row="0" />
+        <Label  Content="Цвет" Height="28" HorizontalAlignment="Left" Margin="12,5,0,0" Name="label2" VerticalAlignment="Top" Grid.Row="1" />
+        <extToolkit:ColorPicker  Margin="92,5,19,0" Height="24" VerticalAlignment="Top" Name="colorPicker" Grid.Row="1" SelectedColor="Red"  />
+        <Label Content="Тип" Height="28" HorizontalAlignment="Left" Margin="12,5,0,0" Name="label3" VerticalAlignment="Top" Grid.Row="2" />
+        <ComboBox Height="23" HorizontalAlignment="Left" Margin="92,5,0,0" Name="processTypeBox" VerticalAlignment="Top" Width="174" Grid.Row="2" SelectionChanged="processTypeBox_SelectionChanged">
             <ComboBoxItem Name="pismen" Content="Писмена - Рекфорда" IsSelected="True" />
-            <ComboBoxItem Name="CLI" Content="OpenCL Писмена Рекфорда" />
+            <ComboBoxItem Name="openCL" Content="OCL Писмена Рекфорда" />
             <ComboBoxItem Content="Полная аналитическая" Name="fullAnalytic" />
             <ComboBoxItem Name="parpismen" Content="Пар. Писмена Рекфорда" />
             <ComboBoxItem Name="yavn" Content="Явная схема" />
             <ComboBoxItem Name="analytic" Content="Аналитическое решение" />
         </ComboBox>
+
     </Grid>
 </Window>

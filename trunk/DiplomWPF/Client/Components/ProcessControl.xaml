@@ -3,20 +3,27 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
-             mc:Ignorable="d" 
-             d:DesignHeight="300" d:DesignWidth="300" Loaded="UserControl_Loaded" HorizontalAlignment="Left" VerticalAlignment="Top" Height="161" Width="155" VerticalContentAlignment="Top" HorizontalContentAlignment="Left" ClipToBounds="True" UseLayoutRounding="True" AllowDrop="True">
+             mc:Ignorable="d" Loaded="UserControl_Loaded" HorizontalAlignment="Left" VerticalAlignment="Top" VerticalContentAlignment="Top" HorizontalContentAlignment="Left" ClipToBounds="True" UseLayoutRounding="True" AllowDrop="True" d:DesignHeight="161" d:DesignWidth="155">
     <Grid>
-        <GroupBox Header="Process Name" Height="160" HorizontalAlignment="Left" Name="processGroupBox" VerticalAlignment="Top" Width="155" BorderBrush="{x:Null}" MouseLeftButtonDown="processGroupBox_MouseLeftButtonDown">
+        <GroupBox Header="Process Name" Height="Auto" HorizontalAlignment="Left" Name="processGroupBox" VerticalAlignment="Top" Width="155" BorderBrush="{x:Null}" MouseLeftButtonDown="processGroupBox_MouseLeftButtonDown">
             <Grid>
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="Auto" />
-                    <ColumnDefinition Width="75*" />
                 </Grid.ColumnDefinitions>
-                <Button Content="Выполнить" Height="23" HorizontalAlignment="Left" Margin="6,6,0,0" Name="setProcessButton" VerticalAlignment="Top" Width="132" IsDefault="True" Grid.ColumnSpan="2" Click="setProcessButton_Click" />
-                <ProgressBar Height="25" HorizontalAlignment="Left" Margin="7,107,0,0" Name="progressBar" VerticalAlignment="Top" Width="131" Grid.Column="1" />
-                <Label Content="0" Grid.Column="1" Height="44" HorizontalAlignment="Right" Margin="0,24,0,0" Name="executionTimeLabel" VerticalAlignment="Top" Width="143" />
-                <Rectangle Grid.Column="1" Height="16" HorizontalAlignment="Left" Margin="7,85,0,0" Name="colorRect" Stroke="Black" VerticalAlignment="Top" Width="130" />
-                <Label Content="" FontStretch="Condensed" Grid.Column="1" Height="28" HorizontalAlignment="Left" Margin="0,57,0,0" Name="parametersLabel" VerticalAlignment="Top" Width="143" />
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="0" Name="additional" />
+                </Grid.RowDefinitions>
+                <Button Content="Выполнить" Height="23" HorizontalAlignment="Left" Margin="5,5,0,0" Name="setProcessButton" VerticalAlignment="Top" Width="132" IsDefault="True" Grid.ColumnSpan="2" Click="setProcessButton_Click" />
+                <ProgressBar Height="20" HorizontalAlignment="Left" Margin="5,5,0,5" Name="progressBar" Width="131" Grid.Column="1" ClipToBounds="False" Grid.Row="4" />
+                <Label Content="0"  HorizontalAlignment="Right" Margin="0,5,0,0" Name="executionTimeLabel" VerticalAlignment="Top" Width="143" Grid.Row="1" />
+                <Rectangle Grid.Column="1" Height="16" HorizontalAlignment="Left" Margin="5,5,0,0" Name="colorRect" Stroke="Black" VerticalAlignment="Top" Width="130" Grid.Row="3" />
+                <Label Content="" FontStretch="Condensed" Grid.Column="1"  HorizontalAlignment="Left" Margin="0,5,0,0" Name="parametersLabel" VerticalAlignment="Top" Width="143" Grid.Row="2" />
+                <TextBlock Text=""  HorizontalAlignment="Right" Margin="0,0,0,0" Name="additionalText" VerticalAlignment="Top" Width="143" Grid.Row="5" />
             </Grid>
         </GroupBox>
         <Image Margin="0,0,0,0" Name="closeButton" Stretch="Fill" Source="/DiplomWPF;component/Client/UI/close.png" Cursor="Hand" MouseLeftButtonDown="closeButton_MouseLeftButtonDown" MouseLeave="closeButton_MouseLeave" MouseEnter="closeButton_MouseEnter" HorizontalAlignment="Right" Width="15" Height="15" VerticalAlignment="Top" />

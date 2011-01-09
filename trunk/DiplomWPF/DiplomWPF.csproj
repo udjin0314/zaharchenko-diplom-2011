@@ -196,6 +196,7 @@
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
     <None Include="app.config" />
+    <Resource Include="Client\UI\icon.png" />
     <Content Include="Common\Schemas\OpenCL\PismenRekford.cpp">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
@@ -233,9 +234,6 @@
   </ItemGroup>
   <ItemGroup>
     <Resource Include="Client\UI\add.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <Resource Include="Client\UI\wait.gif" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Cloo\Clootils\Clootils.VS2010.csproj">
