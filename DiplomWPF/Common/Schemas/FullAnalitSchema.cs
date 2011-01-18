@@ -22,9 +22,9 @@ namespace DiplomWPF.Common.Schemas
         protected String mrFile = "mr";
         protected String mzFile = "mz";
 
-        protected Int32 listN = 100;
+        protected Int32 listN = 2;
 
-        protected Int32 findN = 1000;
+        protected Int32 findN = 2;
 
         public FullAnalitSchema(String name, Brush brush)
             : base(name, brush)
@@ -103,7 +103,7 @@ namespace DiplomWPF.Common.Schemas
         {
             /* if (n == 0) return MathHelper.bessel0(mr[k] * r / R);
              else */
-            return MathHelper.bessel0(mr[k] * r / R) * Math.Cos(mz[n] * z);
+            return MathHelper.bessel0(mr[k] * r / R) * (K * mz[n] / alphaZ * Math.Cos(mz[n] * z) + Math.Sin(mz[n] * z));
         }
 
 
@@ -116,7 +116,7 @@ namespace DiplomWPF.Common.Schemas
             }
 
             Function mrf = new MkrFunction(alphaR, K, R);
-            mr = CommonHelper.findM(mrFile, 1000, mrf, 1e-5);
+            mr = CommonHelper.findM(mrFile, findN, mrf, 1e-5);
 
         }
 
@@ -130,7 +130,7 @@ namespace DiplomWPF.Common.Schemas
                 if (mz.Count >= listN) return;
             }
             Function mnf = new MnzFunction(l, alphaZ, K);
-            mz = CommonHelper.findM(mzFile, 1000, mnf, 1e-5/*,1*/);
+            mz = CommonHelper.findM(mzFile, findN, mnf, 1e-5/*,1*/);
 
 
         }

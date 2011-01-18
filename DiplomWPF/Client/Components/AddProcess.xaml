@@ -38,7 +38,7 @@
                 <ComboBox Height="23" IsEnabled="False" HorizontalAlignment="Left" Margin="75,5,0,0" Name="platformBox" VerticalAlignment="Top" Width="173" Grid.Row="4" SelectionChanged="platformBox_SelectionChanged" />
 
                 <Label Content="Устройства" Height="28" HorizontalAlignment="Left" Margin="5,35,0,0" Name="deviceLabel" VerticalAlignment="Top" Grid.Row="4" />
-                <ListBox IsEnabled="False" Grid.Row="4" Height="100" HorizontalAlignment="Left" Margin="75,35,0,0" Name="deviceBoxList" VerticalAlignment="Top" Width="173" SelectionChanged="deviceBox_SelectionChanged" />
+                <ComboBox IsEnabled="False" Grid.Row="4" HorizontalAlignment="Left" Margin="75,35,0,0" Name="deviceBoxList" VerticalAlignment="Top" Width="173" SelectionChanged="deviceBox_SelectionChanged" />
             </Grid>
         </GroupBox>
         <Button   Content="Ок" Grid.Row="4" Height="23" HorizontalAlignment="Left" Margin="109,0,0,5" Name="okButton" VerticalAlignment="Bottom" Width="75" IsDefault="True" Click="okButton_Click" />

@@ -40,7 +40,7 @@ namespace DiplomWPF.Common.Helpers
             while (i < size)
             {
                 double newVal = mzDihotomy.resolve(first, last += interval);
-                if (newVal > 0 && value != newVal && newVal > first + eps)
+                if (newVal > 0 && value != newVal && newVal > first)
                 {
                     value = newVal;
                     targetList.Add(value);

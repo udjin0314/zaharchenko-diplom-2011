@@ -16,7 +16,7 @@ namespace DiplomWPF.Common.Mathem.Functions
         
         public double resolve(double param)
         {
-            return Math.Cos(param * mnz);
+            return Math.Cos(param * mnz); 
         }
     }
     

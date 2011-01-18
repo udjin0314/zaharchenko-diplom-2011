@@ -13,6 +13,10 @@ namespace DiplomWPF.Common.Helpers
         {
             threads.Add(thread);
         }
+        public Thread getThread(int id)
+        {
+            return threads[id];
+        }
         public void delThread(Thread thread)
         {
             threads.Remove(thread);

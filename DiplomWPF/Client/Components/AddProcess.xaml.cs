@@ -25,7 +25,7 @@ namespace DiplomWPF.Client.Components
 
         private ComputePlatform platform;
 
-        private List<ComputeDevice> devices;
+        private ComputeDevice device;
 
         public AddProcessWindow()
         {
@@ -79,8 +79,8 @@ namespace DiplomWPF.Client.Components
                 process = new ChislOpenCLI(processName, new SolidColorBrush(selectedColor));
                 process.initializeSchema(I, J, N);
                 (process as ChislOpenCLI).Platform = platform;
-                (process as ChislOpenCLI).Devices = devices.ToArray();
-                process.additionalName = platform.Name + " " + devices[0].Name;
+                (process as ChislOpenCLI).Device = device;
+                process.additionalName = platform.Name + " " + device.Name;
             }
 
             this.Close();
@@ -107,8 +107,6 @@ namespace DiplomWPF.Client.Components
         {
             okButton.IsEnabled = false;
             openCLRow.Height = GridLength.Auto;
-            deviceBoxList.SelectionMode = SelectionMode.Single;
-            devices = new List<ComputeDevice>();
             int i = 0;
             if (platform == null)
             {
@@ -136,7 +134,7 @@ namespace DiplomWPF.Client.Components
 
                 foreach (ComputeDevice deviceA in platform.Devices)
                 {
-                    ListBoxItem listBoxItem = new ListBoxItem();
+                    ComboBoxItem listBoxItem = new ComboBoxItem();
                     listBoxItem.Content = deviceA.Name;
                     listBoxItem.Name = "device_" + i.ToString();
                     deviceBoxList.Items.Add(listBoxItem);
@@ -173,21 +171,17 @@ namespace DiplomWPF.Client.Components
 
         private void deviceBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            devices.Clear();
-            foreach (ListBoxItem selectedItem in deviceBoxList.SelectedItems)
-            {
+            ComboBoxItem selectedItem = deviceBoxList.SelectedItem as ComboBoxItem;
                 if (selectedItem != null)
                 {
                     String deviceId = selectedItem.Name;
                     int id = Int32.Parse(deviceId.Substring(7));
                     if (id >= 0)
                     {
-                        devices.Add(platform.Devices[id]);
+                        device = platform.Devices[id];
                     }
                 }
-            }
-            if (devices.Count > 0) okButton.IsEnabled = true;
-            else okButton.IsEnabled = false;
+            if (device!=null) okButton.IsEnabled = true;
             
         }
     }
