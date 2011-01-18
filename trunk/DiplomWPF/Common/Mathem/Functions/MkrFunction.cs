@@ -20,7 +20,7 @@ namespace DiplomWPF.Common.Mathem.Functions
 
         public double resolve(double param)
         {
-            return alphar / K * MathHelper.bessel0(param) - param / R * MathHelper.bessel1(param);
+            return alphar * R / K * MathHelper.bessel0(param) - param * MathHelper.bessel1(param);
         }
     }
 }

@@ -99,7 +99,7 @@ namespace DiplomWPF.Common
             this.alphaZ = alphaZ;
             this.R = R;
             this.l = l;
-            this.K = alphaZ;
+            this.K = K;
             this.c = c;
             this.beta = beta;
             this.T = T;
@@ -122,7 +122,7 @@ namespace DiplomWPF.Common
             this.alphaZ = alphaZ;
             this.R = R;
             this.l = l;
-            this.K = alphaZ;
+            this.K = K;
             this.c = c;
             this.beta = beta;
             this.T = T;

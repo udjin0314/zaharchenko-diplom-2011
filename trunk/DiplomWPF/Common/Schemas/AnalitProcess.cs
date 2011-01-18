@@ -29,7 +29,7 @@ namespace DiplomWPF.Common
         {
             double eps = 1e-5;
 
-            Function fiz = new FiZFunction(beta);
+            /*Function fiz = new FiZFunction(beta);
             Function ir = new IRFunction(P, a);
             Boolean flag = false;
             double res = fiz.resolve(z) * fiz.resolve(r);
@@ -52,19 +52,34 @@ namespace DiplomWPF.Common
                 }
                 if (flag) break;
             }
-            if (!flag) System.IO.File.AppendAllText(LOG_FILE, "UNABLE r=" + r + "; z=" + z + "; with eps" + eps + "; res=" + res + '\n');
+            if (!flag) System.IO.File.AppendAllText(LOG_FILE, "UNABLE r=" + r + "; z=" + z + "; with eps" + eps + "; res=" + res + '\n');*/
+            nQ = 1;
+            kQ = 1;
 
+        }
+
+        protected double functionCkn2(double t, int k, int n)
+        {
+            double dkn = 1;
+            //double dkn = resolveDkn(k, n);
+            double lkn = resolveLkn(k, n);
+            return dkn / (lkn * K) * (Math.Exp(K * lkn * t / c) - 1);
         }
 
         public override float findU(double t, double r, double z)
         {
             float res = 0;
-
-            for (int n1 = 0; n1 < listN; n1++)
-            {
-                res = res + (float)(functionCkn(t, kQ, n1) * functionVkn(r, z, kQ, n1));
-            }
-            return res;
+            float a1 = 1;
+            /*for (int n1 = 0; n1 < listN; n1++)
+            {*/
+            // res = res + (float)(functionCkn2(t, kQ, nQ) * functionVkn(r, z, kQ, nQ));
+            //}
+            double result = 1;
+            result = a1 * a1 * R * R / (K * (mr[kQ] * mr[kQ] + R * R * mz[nQ] * mz[nQ]));
+            result = result * (1 - Math.Exp(-K * (mr[kQ] * mr[kQ] + R * R * mz[nQ] * mz[nQ]) * t / (c * R * R)));
+            result = result * MathHelper.bessel0(mr[kQ] * r / R);
+            result = result * (Math.Cos(mz[nQ] * z) + alphaZ / (K * mz[nQ]) * Math.Sin(mz[nQ] * z));
+            return (float)result;
         }
 
         public override void executeAlg()

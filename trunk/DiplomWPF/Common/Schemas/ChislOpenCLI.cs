@@ -61,7 +61,7 @@ namespace DiplomWPF.Common.Schemas
         private float[] FFlA;
 
         public ComputePlatform Platform { get; set; }
-        public ComputeDevice[] Devices { get; set; }
+        public ComputeDevice Device { get; set; }
 
         public ChislOpenCLI(String name, Brush brush)
             : base(name, brush)
@@ -86,10 +86,10 @@ namespace DiplomWPF.Common.Schemas
         public void InitPrograms()
         {
             ComputeContextPropertyList properties = new ComputeContextPropertyList(Platform);
-            context = new ComputeContext(Devices, properties, null, IntPtr.Zero);
+            context = new ComputeContext(new[] {Device} , properties, null, IntPtr.Zero);
             program = new ComputeProgram(context, System.IO.File.ReadAllText(KERNEL_FILE));
-            program.Build(Devices, "", null, IntPtr.Zero);
-            commands = new ComputeCommandQueue(context, Devices[0], ComputeCommandQueueFlags.None);
+            program.Build(new[] { Device }, "", null, IntPtr.Zero);
+            commands = new ComputeCommandQueue(context, Device, ComputeCommandQueueFlags.None);
             //events = new Collection<ComputeEventBase>();
             events = null;
 

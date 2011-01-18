@@ -23,16 +23,16 @@ namespace DiplomWPF.Common
         {
             base.initialize(P, alphaR, alphaZ, R, l, K, c, beta, T, N, I, J);
             gammaR = K * ht / (c * hr * hr);
-            gamma = 1 - (2 * gammaR) - (2 * alphaR * ht / (l * c));
-            gamma0 = 1 - (4 * gammaR) - (2 * alphaR * ht / (l * c));
+            gamma = 1 - (2 * gammaR) - (2 * alphaZ * ht / (l * c));
+            gamma0 = 1 - (4 * gammaR) - (2 * alphaZ * ht / (l * c));
         }
 
         public override void initializeParams(float P, float alphaR, float alphaZ, float R, float l, float K, float c, float beta, float T)
         {
             base.initializeParams(P, alphaR, alphaZ, R, l, K, c, beta, T);
             gammaR = K * ht / (c * hr * hr);
-            gamma = 1 - (2 * gammaR) - (2 * alphaR * ht / (l * c));
-            gamma0 = 1 - (4 * gammaR) - (2 * alphaR * ht / (l * c));
+            gamma = 1 - (2 * gammaR) - (2 * alphaZ * ht / (l * c));
+            gamma0 = 1 - (4 * gammaR) - (2 * alphaZ * ht / (l * c));
         }
 
         public override void executeProcess()
@@ -76,7 +76,7 @@ namespace DiplomWPF.Common
                 {
                     ilayer[i] = values[i + 1, 0, n] * gammaR * (1 + (float)1 / (2 * i)) + values[i, 0, n] * gamma + values[i - 1, 0, n] * gammaR * (1 - (float)1 / (2 * i)) + functionG(i);
                 }
-                ilayer[I] = values[I - 1, 0, n] * gammaR + values[I, 0, n] * (gamma - gammaR * 2 * hr * alphaR / K * (1 + (float)1 / (2 * I)));
+                ilayer[I] = values[I - 1, 0, n] * gammaR + values[I, 0, n] * (gamma - gammaR * 2 * hr * alphaZ / K * (1 + (float)1 / (2 * I)));
                 for (int i = 0; i <= I; i++)
                     for (int j = 0; j <= J; j++)
                     {
