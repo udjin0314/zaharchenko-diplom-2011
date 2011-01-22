@@ -59,33 +59,57 @@ namespace DiplomWPF.Common
 
         }
 
-        float functionG(int i)
+        public float functionG(int i)
         {
             float r = i * hr;
-            float res = (float)(P * beta * ht / (Math.PI * a * a * c) * Math.Exp(-(r * r / (a * a))));
-            return res;
+            if (isForTest)
+            {
+                double result = 1;
+                result = result * Mathem.MathHelper.bessel0(mr * r / R);
+                result = result * 1 / (K*l*mz * mz) * (-alphaZ  * Math.Cos(mz * l) + alphaZ  + K*mz * Math.Sin(mz * l));
+                return (float)result;
+            }
+            else
+            {
+                return (float)(P * beta  / (Math.PI * a * a) * Math.Exp(-(r * r / (a * a))));
+            }
+        }
+
+        public Boolean isStable()
+        {
+            return 1 - 4 * K * ht / (c * hr * hr) - 2 * alphaZ * ht / (l * c) > 0;
+        }
+
+        public static Boolean isStable(double K, double c, double alphaZ, double l, double T, int N, double R, int I)
+        {
+            double gammaR = K * T * I * I / (N * c * R * R);
+            double gamma = 1 - (2 * gammaR) - (2 * alphaZ * T / (N * l * c));
+            double rty = gamma - gammaR * 2 * R * alphaZ / (I * K) * (1 + (float)1 / (2 * I));
+            //return 1 - 4 * K * T * I * I / (N * c * R * R) - 2 * alphaZ * T / (N * l * c) > 0;
+            return rty > 0;
         }
 
         public void executeAlg()
         {
-            float[] ilayer = new float[I + 1];
+            //float[] ilayer = new float[I + 1];
             for (int n = 0; n <= N - 1; n++)
             {
-                ilayer[0] = values[1, 0, n] * 4 * gammaR + gamma0 * values[0, 0, n] + functionG(0);
+                values[0, 0, n + 1] = values[1, 0, n] * 4 * gammaR + gamma0 * values[0, 0, n] + ht / c * functionG(0);
                 for (int i = 1; i < I; i++)
                 {
-                    ilayer[i] = values[i + 1, 0, n] * gammaR * (1 + (float)1 / (2 * i)) + values[i, 0, n] * gamma + values[i - 1, 0, n] * gammaR * (1 - (float)1 / (2 * i)) + functionG(i);
+                    values[i, 0, n + 1] = values[i + 1, 0, n] * gammaR * (1 + (float)1 / (2 * i)) + values[i, 0, n] * gamma + values[i - 1, 0, n] * gammaR * (1 - (float)1 / (2 * i)) + ht / c * functionG(i);
                 }
-                ilayer[I] = values[I - 1, 0, n] * gammaR + values[I, 0, n] * (gamma - gammaR * 2 * hr * alphaZ / K * (1 + (float)1 / (2 * I)));
+                values[I, 0, n + 1] = values[I - 1, 0, n] * gammaR + values[I, 0, n] * (gamma - gammaR * 2 * hr * alphaZ / K * (1 + (float)1 / (2 * I))) + ht / c * functionG(I);
                 for (int i = 0; i <= I; i++)
                     for (int j = 0; j <= J; j++)
                     {
-                        values[i, j, n + 1] = ilayer[i];
-                        setPoint(i * hr, j * hz, (n + 1) * ht, ilayer[i]);
-                        if (ilayer[i] > maxTemperature)
-                            maxTemperature = ilayer[i];
-                        if (ilayer[i] < minTemperature)
-                            minTemperature = ilayer[i];
+                        float val = values[i, 0, n + 1];
+                        values[i, j, n + 1] = val;
+                        setPoint(i * hr, j * hz, (n + 1) * ht, val);
+                        if (val > maxTemperature)
+                            maxTemperature = val;
+                        if (val < minTemperature)
+                            minTemperature = val;
                     }
                 if (handler != null) handler();
             }

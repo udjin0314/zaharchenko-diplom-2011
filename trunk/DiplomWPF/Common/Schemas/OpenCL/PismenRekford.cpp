@@ -75,8 +75,35 @@ __kernel void prepareMatrixG(__global int* IJ, __global float * params, __global
 	float a=params[3];
 	float P=params[4];
 	float beta=params[5];
+	float isTest=params[6];
+	float mr=params[7];
+	float mz=params[8];
+	float R=params[9];
+	float K=params[10];
+	float alphaZ=params[11];
 	int cols = I + 1;
-	A[iG+cols*jG] = 0.5f * ht * P * beta / (M_PI * a * a) * exp(-(beta * jG*hz + (iG*iG*hr*hr / (a * a))));
+	if (isTest==0) A[iG+cols*jG] = 0.5f * ht * P * beta / (M_PI * a * a) * exp(-(beta * jG*hz + (iG*iG*hr*hr / (a * a))));
+	else 
+	{
+		float x=mr * iG*hr / R;
+		float result = 0;
+            if (x >= -3 && x <= 3)
+            {
+                result = (float)1 - 2.2499997f * pow(x / 3, 2) + 1.2656208f * pow(x / 3, 4)
+                    - 0.3163866f * pow(x / 3, 6) + 0.0444479f * pow(x / 3, 8) - 0.0039444f * pow(x / 3, 10)
+                    + 0.00021f * pow(x / 3, 12);
+            }
+            else
+            {
+                float f0 = 0.79788456f - 0.00000077f * 3 / x - 0.0055274f * pow(3 / x, 2) - 0.00009512f * pow(3 / x, 3)
+                    + 0.00137237f * pow(3 / x, 4) - 0.00072805f * pow(3 / x, 5) + 0.00014476f * pow(3 / x, 6);
+                float Q0 = x - 0.78539816f - 0.04166397f * 3 / x - 0.00003954f * pow(3 / x, 2)
+                    + 0.00262573f * pow(3 / x, 3) - 0.00054125f * pow(3 / x, 4) - 0.00029333f * pow(3 / x, 5)
+                        + 0.00013558f * pow(3 / x, 6);
+                result = pow(x, -(float)1 / 2) * f0 * cos(Q0);
+            }
+		A[iG+cols*jG]= 0.5f * ht*result*(cos(mz * jG*hz) + alphaZ / (K * mz) * sin(mz * jG*hz));
+	}
 }
 
 __kernel void prepareFr(__global int* IJ, __global float * params,	__global  float * A, __global  float * B, __global  float * C)

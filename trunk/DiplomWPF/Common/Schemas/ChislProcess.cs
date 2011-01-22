@@ -5,6 +5,7 @@ using System.Text;
 using System.Windows.Media;
 using System.Threading;
 using DiplomWPF.Common.Helpers;
+using DiplomWPF.Common.Mathem;
 
 namespace DiplomWPF.Common
 {
@@ -111,22 +112,22 @@ namespace DiplomWPF.Common
 
 
 
-        protected float functionG(int i, int j)
-        {
-            float r = i * hr;
-            float z = j * hz;
-            float res = (float)(P * beta / (Math.PI * a * a) * Math.Exp(-(beta * z + (r * r / (a * a)))));
-            return res;
-        }
+        
 
 
 
         protected float[,] prepareMatrixG()
         {
+            
             float[,] A = MatrixHelper.getStdMatrix(I + 1, J + 1);
             for (int j = 0; j <= J; j++)
                 for (int i = 0; i <= I; i++)
-                    A[i, j] = 0.5F * ht * functionG(i, j);
+                {
+                    float r = i * hr;
+                    float z = j * hz;
+                    A[i, j] = 0.5F * ht * functionG(r, z);
+                }
+                   
             return A;
         }
 

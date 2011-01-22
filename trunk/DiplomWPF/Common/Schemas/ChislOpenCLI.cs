@@ -117,13 +117,20 @@ namespace DiplomWPF.Common.Schemas
             IJ[1] = J;
 
             //params G
-            float[] paramsG = new float[6];
+            float[] paramsG = new float[12];
             paramsG[0] = hr;
             paramsG[1] = hz;
             paramsG[2] = ht;
             paramsG[3] = a;
             paramsG[4] = P;
             paramsG[5] = beta;
+            if (isForTest) paramsG[6] = 1;
+            else paramsG[6] = 0;
+            paramsG[7] = (float)mr;
+            paramsG[8] = (float)mz;
+            paramsG[9] = R;
+            paramsG[10] = K;
+            paramsG[11] = alphaZ;
 
             //params R
             float[] paramsR = new float[3];
