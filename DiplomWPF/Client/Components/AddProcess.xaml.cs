@@ -27,6 +27,13 @@ namespace DiplomWPF.Client.Components
 
         private ComputeDevice device;
 
+        public double K { get; set; }
+        public double c { get; set; }
+        public double alphaZ { get; set; }
+        public double l { get; set; }
+        public double T { get; set; }
+        public double R { get; set; }
+
         public AddProcessWindow()
         {
             InitializeComponent();
@@ -50,16 +57,28 @@ namespace DiplomWPF.Client.Components
             {
                 process = new ChislProcess(processName, new SolidColorBrush(selectedColor));
                 process.initializeSchema(I, J, N);
+                if ((bool)testCheckBox.IsChecked) process.isForTest = true;
             }
             if ("yavn" == processType)
             {
                 process = new YavnSchema(processName, new SolidColorBrush(selectedColor));
                 process.initializeSchema(I, 1, N);
+                if (YavnSchema.isStable(K, c, alphaZ, l, T, N, R, I))
+                {
+                    process.additionalName = "Схема устойчива";
+                }
+                else
+                {
+                    process.additionalName = "Схема неустойчива";
+                }
+                if ((bool)testCheckBox.IsChecked) process.isForTest = true;
             }
             if ("analytic" == processType)
             {
                 process = new AnalitProcess(processName, new SolidColorBrush(selectedColor));
                 process.initializeSchema(I, J, N);
+                process.isForTest = true;
+
             }
             if ("parpismen" == processType)
             {
@@ -68,11 +87,7 @@ namespace DiplomWPF.Client.Components
                 process.initializeSchema(I, J, N);
                 (process as ParallelChislSchema).threadsN = threads;
                 process.additionalName = "Потоков " + threads;
-            }
-            if ("fullAnalytic" == processType)
-            {
-                process = new FullAnalitSchema(processName, new SolidColorBrush(selectedColor));
-                process.initializeSchema(I, J, N);
+                if ((bool)testCheckBox.IsChecked) process.isForTest = true;
             }
             if ("openCL" == processType)
             {
@@ -81,7 +96,9 @@ namespace DiplomWPF.Client.Components
                 (process as ChislOpenCLI).Platform = platform;
                 (process as ChislOpenCLI).Device = device;
                 process.additionalName = platform.Name + " " + device.Name;
+                if ((bool)testCheckBox.IsChecked) process.isForTest = true;
             }
+
 
             this.Close();
         }
@@ -93,9 +110,16 @@ namespace DiplomWPF.Client.Components
             String processType = selectedItem.Name;
             parPismRow.Height = new GridLength(0);
             openCLRow.Height = new GridLength(0);
+            yavnRow.Height = new GridLength(0);
             okButton.IsEnabled = true;
             if ("parpismen" == processType) selectParPismProcessType();
             if ("openCL" == processType) selectOpenCLProcessType();
+            if ("yavn" == processType) selectYavnProcessType();
+        }
+
+        private void selectYavnProcessType()
+        {
+            yavnRow.Height = GridLength.Auto;
         }
 
         private void selectParPismProcessType()
@@ -183,6 +207,19 @@ namespace DiplomWPF.Client.Components
                 }
             if (device!=null) okButton.IsEnabled = true;
             
+        }
+
+        private void button1_Click(object sender, RoutedEventArgs e)
+        {
+                       
+            if (YavnSchema.isStable(K,c,alphaZ,l,T,Int32.Parse(parametrN.Text),R,Int32.Parse(parametrI.Text)))
+            {
+                schemaUst.Content="Схема устойчива";
+            }
+            else 
+            {
+                schemaUst.Content = "Схема неустойчива";
+            }
         }
     }
 }

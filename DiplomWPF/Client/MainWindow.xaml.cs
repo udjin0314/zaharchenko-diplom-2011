@@ -340,8 +340,19 @@ namespace DiplomWPF
 
         private void addProcessLabel_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
         {
-            //TODO open Form
+            float alphaZ = (float)Double.Parse(parametrAlphaZ.Text);
+            float R = (float)Double.Parse(parametrR.Text);
+            float l = (float)Double.Parse(parametrL.Text);
+            float T = (float)Double.Parse(parametrExTime.Text);
+            float c = (float)Double.Parse(parametrC.Text);
+            float K = (float)Double.Parse(parametrK.Text);
             AddProcessWindow newProcessWindow = new AddProcessWindow();
+            newProcessWindow.alphaZ = alphaZ;
+            newProcessWindow.R = R;
+            newProcessWindow.c = c;
+            newProcessWindow.l = l;
+            newProcessWindow.T = T;
+            newProcessWindow.K = K;
             newProcessWindow.ShowDialog();
             if (newProcessWindow.getProcess() != null) addNewProcess(newProcessWindow.getProcess());
         }

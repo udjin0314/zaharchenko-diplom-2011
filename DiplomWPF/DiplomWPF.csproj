@@ -151,7 +151,6 @@
     <Compile Include="Client\Components\ProcessControl.xaml.cs">
       <DependentUpon>ProcessControl.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Common\Schemas\FullAnalitSchema.cs" />
     <Compile Include="Common\Schemas\ParallelChislSchema.cs" />
     <Compile Include="Common\Schemas\ChislOpenCLI.cs" />
     <Compile Include="Common\Schemas\YavnSchema.cs" />
@@ -200,7 +199,6 @@
     <Content Include="Common\Schemas\OpenCL\PismenRekford.cpp">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <None Include="Common\Schemas\OpenCL\BitonicSort_Kernels.cl" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>

@@ -7,6 +7,8 @@ using Microsoft.Research.DynamicDataDisplay;
 using System.Windows.Controls;
 using System.Windows.Media;
 using System.Diagnostics;
+using DiplomWPF.Common.Helpers;
+using DiplomWPF.Common.Mathem.Functions;
 
 namespace DiplomWPF.Common
 {
@@ -30,6 +32,12 @@ namespace DiplomWPF.Common
         public Int32 Jpv { get; set; }
 
         public Boolean isExecuted { get; set; }
+        public Boolean isForTest { get; set; }
+
+        protected double mz;
+        protected double mr;
+
+        protected double eps { get; set; }
 
         public float a { get; set; }
         public float K { get; set; }
@@ -53,9 +61,14 @@ namespace DiplomWPF.Common
 
         public float minTemperature { get; set; }
 
+        protected List<double> mrArr = new List<double>();
+        protected List<double> mzArr = new List<double>();
+
         public DiplomWPF.ProcessControl.increaseProgressBar handler;
 
         //graphics elements
+
+        protected Int32 findN = 2;
 
         public Chart2D chartUZ { get; set; }
         public Chart2D chartUR { get; set; }
@@ -63,6 +76,9 @@ namespace DiplomWPF.Common
 
         public Stopwatch swInit { get; set; }
         public Stopwatch swCompute { get; set; }
+
+        protected String mrFile = "mr";
+        protected String mzFile = "mz";
 
         public AbstractProcess(String processName, Brush brush)
         {
@@ -73,6 +89,8 @@ namespace DiplomWPF.Common
             this.Ipv = 100;
             this.Jpv = 100;
             swInit = new Stopwatch();
+            isForTest = false;
+            eps = 1e-5;
             swCompute = new Stopwatch();
         }
 
@@ -81,6 +99,53 @@ namespace DiplomWPF.Common
             chartUZ.reDrawNewProcess(this);
             chartUR.reDrawNewProcess(this);
             chartUTime.reDrawNewProcess(this);
+
+        }
+
+        public virtual void init()
+        {
+            if (isForTest)
+            {
+                mrFile = mrFile + "_aR" + alphaR + "K" + K + "R" + R + ".txt";
+                mzFile = mzFile + "_aZ" + alphaZ + "K" + K + "l" + l + ".txt";
+                preapareMr();
+                preapareMz();
+            }
+        }
+
+        public void preapareMr()
+        {
+            if (System.IO.File.Exists(mrFile))
+            {
+                CommonHelper.readAllLines(mrFile, mrArr);
+                if (mrArr.Count >= findN)
+                {
+                    mr = mrArr[1];
+                    return;
+                }
+            }
+
+            Function mrf = new MkrFunction(alphaR, K, R);
+            mrArr = CommonHelper.findM(mrFile, findN, mrf, eps);
+            mr = mrArr[1];
+        }
+
+
+
+        public void preapareMz()
+        {
+            if (System.IO.File.Exists(mzFile))
+            {
+                CommonHelper.readAllLines(mzFile, mzArr);
+                if (mzArr.Count >= findN)
+                {
+                    mz = mzArr[1];
+                    return;
+                }
+            }
+            Function mnf = new MnzFunction(l, alphaZ, K);
+            mzArr = CommonHelper.findM(mzFile, findN, mnf, eps);
+            mz = mzArr[1];
 
         }
 
@@ -148,23 +213,37 @@ namespace DiplomWPF.Common
 
         }
 
+        protected float functionG(float r, float z)
+        {
+            if (!isForTest)
+            {
+                float res = (float)(P * beta / (Math.PI * a * a) * Math.Exp(-(beta * z + (r * r / (a * a)))));
+                return res;
+            }
+            else
+            {
+                double result = 1;
+                result = result * Mathem.MathHelper.bessel0(mr * r / R);
+                result = result * (Math.Cos(mz * z) + alphaZ / (K * mz) * Math.Sin(mz * z));
+                return (float)result;
+            }
+        }
+
         public virtual void executeProcess()
         {
-            //values = new float[I + 1, J + 1, N + 1];
-            //values = new ProcessValues(I, J, N);
             initValues();
         }
 
         public virtual void executeProcess(object parameters)
         {
             initValues();
-            //values = new ProcessValues(Ipv + 1, Jpv + 1, Npv + 1);
             handler = (DiplomWPF.ProcessControl.increaseProgressBar)parameters;
         }
 
         public void initValues()
         {
             values = new ProcessValues(I, J, N);
+            init();
         }
 
         public virtual void delete()
@@ -179,12 +258,6 @@ namespace DiplomWPF.Common
 
         public float getPoint(float r, float z, float t)
         {
-            /*int i = (int)(r / hr);
-            int j = (int)(z / hz);
-            int n = (int)(t / ht);*/
-            /*int i = (int)Math.Round(r * Ipv / R);
-            int j = (int)Math.Round(z * Jpv / l);
-            int n = (int)Math.Round(t * Npv / T);*/
             int i = (int)Math.Round(r * I / R);
             int j = (int)Math.Round(z * J / l);
             int n = (int)Math.Round(t * N / T);
@@ -193,16 +266,6 @@ namespace DiplomWPF.Common
 
         public void setPoint(float r, float z, float t, float value)
         {
-            /*int i = (int)Math.Round(r * Ipv / R);
-            int j = (int)Math.Round(z * Jpv / l);
-            int n = (int)Math.Round(t * Npv / T);
-            int difI = Ipv / I;
-            int difJ = Jpv / J;
-            int difN = Npv / N;
-            for (int it = i; it <= i + difI && it <= Ipv; it++)
-                for (int jt = j; jt <= j + difJ && jt <= Jpv; jt++)
-                    for (int nt = n; nt <= n + difN && nt <= Npv; nt++)
-                        values[it, jt, nt] = value;*/
             int i = (int)Math.Round(r * I / R);
             int j = (int)Math.Round(z * J / l);
             int n = (int)Math.Round(t * N / T);

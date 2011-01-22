@@ -19,12 +19,15 @@
                     <RowDefinition Height="Auto"/>
                     <RowDefinition Height="0" Name="parPismRow" />
                     <RowDefinition Height="0" Name="openCLRow" />
+                    <RowDefinition Height="0" Name="yavnRow" />
+                    <RowDefinition Height="Auto"/>
                 </Grid.RowDefinitions>
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="Auto"/>
                     <ColumnDefinition Width="6*" />
                 </Grid.ColumnDefinitions>
 
+                <Label Content="Нажмите кнопку проверить устойчивость" FontSize="12" FontWeight="Normal" Height="23" HorizontalAlignment="Center" Margin="0,30,0,0" Name="schemaUst" Padding="2" VerticalAlignment="Top" Grid.Row="5" />
                 <Label Content="N" FontSize="12" FontWeight="Normal" Height="23" HorizontalAlignment="Left" Margin="5,5,0,0" Name="label6" Padding="2" VerticalAlignment="Top"  />
                 <TextBox Height="23" HorizontalAlignment="Left" Margin="72,5,0,0" Name="parametrN" Text="100" VerticalAlignment="Top" Width="176" />
                 <Label Content="I" FontSize="12" FontWeight="Normal" Height="23" HorizontalAlignment="Left" Margin="5,5,0,0" Name="label7" Padding="2" VerticalAlignment="Top"  Grid.Row="1" />
@@ -39,6 +42,8 @@
 
                 <Label Content="Устройства" Height="28" HorizontalAlignment="Left" Margin="5,35,0,0" Name="deviceLabel" VerticalAlignment="Top" Grid.Row="4" />
                 <ComboBox IsEnabled="False" Grid.Row="4" HorizontalAlignment="Left" Margin="75,35,0,0" Name="deviceBoxList" VerticalAlignment="Top" Width="173" SelectionChanged="deviceBox_SelectionChanged" />
+                <Button Content="Проверить устойчивость" Grid.Row="5" Height="23" HorizontalAlignment="Left" Margin="32,5,0,0" Name="button1" VerticalAlignment="Top" Width="188" Click="button1_Click" />
+                <CheckBox Content="Тестовый пример" Grid.Row="6" Height="16" HorizontalAlignment="Left" Margin="5,5,0,0" Name="testCheckBox" VerticalAlignment="Top" />
             </Grid>
         </GroupBox>
         <Button   Content="Ок" Grid.Row="4" Height="23" HorizontalAlignment="Left" Margin="109,0,0,5" Name="okButton" VerticalAlignment="Bottom" Width="75" IsDefault="True" Click="okButton_Click" />
@@ -51,7 +56,6 @@
         <ComboBox Height="23" HorizontalAlignment="Left" Margin="92,5,0,0" Name="processTypeBox" VerticalAlignment="Top" Width="174" Grid.Row="2" SelectionChanged="processTypeBox_SelectionChanged">
             <ComboBoxItem Name="pismen" Content="Писмена - Рекфорда" IsSelected="True" />
             <ComboBoxItem Name="openCL" Content="OCL Писмена Рекфорда" />
-            <ComboBoxItem Content="Полная аналитическая" Name="fullAnalytic" />
             <ComboBoxItem Name="parpismen" Content="Пар. Писмена Рекфорда" />
             <ComboBoxItem Name="yavn" Content="Явная схема" />
             <ComboBoxItem Name="analytic" Content="Аналитическое решение" />
