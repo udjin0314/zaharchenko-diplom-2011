@@ -7,18 +7,18 @@ namespace DiplomWPF.Common.Mathem.Functions
 {
     class IRFunction:Function
     {
-        double P;
-        double a;
+        float P;
+        float a;
 
-        public IRFunction(double P, double a)
+        public IRFunction(float P, float a)
         {
             this.P = P;
             this.a = a;
         }
-        
-        public double resolve(double param)
+
+        public float resolve(float param)
         {
-            return P / (Math.PI * a * a) * Math.Exp(-(param * param / (a * a)));
+            return (float)(P / (Math.PI * a * a) * Math.Exp(-(param * param / (a * a))));
         }
     }
     

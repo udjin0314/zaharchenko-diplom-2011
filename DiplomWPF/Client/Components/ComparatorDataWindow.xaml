@@ -1,0 +1,21 @@
+﻿<Window x:Class="DiplomWPF.Client.Components.ComparatorDataWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="Данные сравнения" Height="300" Width="747">
+    <Grid>
+        <DataGrid AutoGenerateColumns="False" Name="dataGrid" CanUserReorderColumns="False" CanUserResizeColumns="False" CanUserSortColumns="False" ItemsSource="{Binding}">
+            <DataGrid.Columns>
+                <DataGridTextColumn CanUserSort="False" Header="Эксперимент" Binding="{Binding exp}" />
+                <DataGridTextColumn Header="r" Binding="{Binding r}"/>
+                <DataGridTextColumn Header="z" Binding="{Binding z}"/>
+                <DataGridTextColumn Header="t" Binding="{Binding t}"/>
+                <DataGridTextColumn Header="Исходное значение" Binding="{Binding value}"/>
+                <DataGridTextColumn Header="Полученное значение" Binding="{Binding compValue}"/>
+                <DataGridTextColumn Header="Разница" Binding="{Binding diff}"/>
+                <DataGridTextColumn Header="hr" Binding="{Binding hr}"/>
+                <DataGridTextColumn Header="hz" Binding="{Binding hz}"/>
+                <DataGridTextColumn Header="ht" Binding="{Binding ht}"/>
+            </DataGrid.Columns>
+        </DataGrid>
+    </Grid>
+</Window>

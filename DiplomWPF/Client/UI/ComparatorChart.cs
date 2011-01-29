@@ -7,6 +7,7 @@ using Microsoft.Research.DynamicDataDisplay;
 using DiplomWPF.Common.Comparators;
 using System.Windows.Media;
 using Microsoft.Research.DynamicDataDisplay.Charts.Navigation;
+using Microsoft.Research.DynamicDataDisplay.PointMarkers;
 
 namespace DiplomWPF.Client.UI
 {
@@ -19,7 +20,7 @@ namespace DiplomWPF.Client.UI
         private double[] chartX;
         private double[] chartY;
 
-        LineGraph lineGraph = null;
+        LineAndMarker<MarkerPointsGraph> lineGraph = null;
 
         private SchemaComparator schemaComparator;
 
@@ -40,16 +41,17 @@ namespace DiplomWPF.Client.UI
             //dataSrc = null;
             //chartYDataSource = null;
             //xSrc = null;
-            plotter.Children.Remove(lineGraph);
+            plotter.Children.Remove(lineGraph.LineGraph);
+            plotter.Children.Remove(lineGraph.MarkerGraph);
         }
 
         private void initilize(SchemaComparator inSchemaComparator)
         {
             schemaComparator = inSchemaComparator;
-            int K = schemaComparator.pointsN;
+            int K = schemaComparator.numberExperiments;
 
-            chartX = new double[K + 1];
-            chartY = new double[K + 1];
+            chartX = new double[K];
+            chartY = new double[K];
 
             xSrc = new EnumerableDataSource<double>(chartX);
             xSrc.SetXMapping(x => x);
@@ -69,7 +71,9 @@ namespace DiplomWPF.Client.UI
             dataSrc = new CompositeDataSource(xSrc, chartYDataSource);
             lineGraph = plotter.AddLineGraph(dataSrc,
                             new Pen(schemaComparator.brush, 3),
+                             new CirclePointMarker { Size = 10, Fill = Brushes.Red },
                             new PenDescription(name));
+
             reDrawNewValues();
             plotter.Children.Add(new CursorCoordinateGraph());
             plotter.FitToView();
@@ -97,7 +101,7 @@ namespace DiplomWPF.Client.UI
 
         private void prepareData()
         {
-            for (int i = 0; i <= schemaComparator.pointsN; i++)
+            for (int i = 0; i < schemaComparator.numberExperiments; i++)
             {
                 chartX[i] = schemaComparator.values[i, 0];
                 chartY[i] = schemaComparator.values[i, 1];

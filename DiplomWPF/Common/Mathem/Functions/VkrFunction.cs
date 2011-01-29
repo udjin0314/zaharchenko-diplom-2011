@@ -7,18 +7,18 @@ namespace DiplomWPF.Common.Mathem.Functions
 {
     class VkrFunction: Function
     {
-        private double mkr;
-        private double R;
+        private float mkr;
+        private float R;
 
-        public VkrFunction(double R, double mkr)
+        public VkrFunction(float R, float mkr)
         {
             this.mkr = mkr;
             this.R = R;
         }
-        
-        public double resolve(double param)
+
+        public float resolve(float param)
         {
-            return MathHelper.bessel0(mkr/R*param);
+            return (float)MathHelper.bessel0(mkr / R * param);
         }
     }
 }

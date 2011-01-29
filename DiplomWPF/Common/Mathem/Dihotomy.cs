@@ -8,22 +8,22 @@ namespace DiplomWPF.Common.Mathem
 {
     public class Dihotomy
     {
-        private double epsilon = 1e-8;
+        private float epsilon = 1e-8f;
         private Function func;
 
         public Dihotomy(Function func)
         {
             this.func = func;
         }
-        public Dihotomy(Function func, double epsilon)
+        public Dihotomy(Function func, float epsilon)
         {
             this.func = func;
             this.epsilon = epsilon;
         }
 
-        public double resolve(double a, double b)
+        public double resolve(float a, float b)
         {
-            double c;
+            float c;
             //if (func.resolve(a) * func.resolve(b) > 0) 
             while (b - a > epsilon)
             {

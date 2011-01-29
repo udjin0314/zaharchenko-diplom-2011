@@ -7,16 +7,16 @@ namespace DiplomWPF.Common.Mathem.Functions
 {
     class FiZFunction:Function
     {
-        double beta;
+        float beta;
 
-        public FiZFunction(double beta)
+        public FiZFunction(float beta)
         {
             this.beta = beta;
         }
-        
-        public double resolve(double param)
+
+        public float resolve(float param)
         {
-            return beta * Math.Exp(-beta * param); 
+            return (float)(beta * Math.Exp(-beta * param)); 
         }
     }
     

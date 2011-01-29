@@ -7,18 +7,18 @@ namespace DiplomWPF.Common.Mathem.Functions
 {
     public class ResolveMnzFunction : Function
     {
-        private double beta;
-        private double z;
+        private float beta;
+        private float z;
 
-        public ResolveMnzFunction(double beta,double z)
+        public ResolveMnzFunction(float beta, float z)
         {
             this.beta = beta;
             this.z = z;
         }
 
-        public double resolve(double param)
+        public float resolve(float param)
         {
-            return beta * Math.Exp(-beta * z) - Math.Cos(param * z);
+            return (float)(beta * Math.Exp(-beta * z) - Math.Cos(param * z));
         }
     }
 }

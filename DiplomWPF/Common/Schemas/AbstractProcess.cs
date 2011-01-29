@@ -19,7 +19,6 @@ namespace DiplomWPF.Common
         public String additionalName { get; set; }
 
         public Brush brush { get; set; }
-        //   public float[, ,] values { get; set; }
         public ProcessValues values;
         public float P { get; set; }
         public float alphaR { get; set; }
@@ -27,17 +26,13 @@ namespace DiplomWPF.Common
         public float R { get; set; }
         public float l { get; set; }
 
-        public Int32 Npv { get; set; }
-        public Int32 Ipv { get; set; }
-        public Int32 Jpv { get; set; }
-
         public Boolean isExecuted { get; set; }
         public Boolean isForTest { get; set; }
 
         protected double mz;
         protected double mr;
 
-        protected double eps { get; set; }
+        protected float eps { get; set; }
 
         public float a { get; set; }
         public float K { get; set; }
@@ -85,12 +80,9 @@ namespace DiplomWPF.Common
             this.processName = processName;
             this.brush = brush;
             this.isExecuted = false;
-            this.Npv = 100;
-            this.Ipv = 100;
-            this.Jpv = 100;
             swInit = new Stopwatch();
             isForTest = false;
-            eps = 1e-5;
+            eps = 1e-6f;
             swCompute = new Stopwatch();
         }
 
@@ -99,15 +91,14 @@ namespace DiplomWPF.Common
             chartUZ.reDrawNewProcess(this);
             chartUR.reDrawNewProcess(this);
             chartUTime.reDrawNewProcess(this);
-
         }
 
         public virtual void init()
         {
             if (isForTest)
             {
-                mrFile = mrFile + "_aR" + alphaR + "K" + K + "R" + R + ".txt";
-                mzFile = mzFile + "_aZ" + alphaZ + "K" + K + "l" + l + ".txt";
+                mrFile = "mr_aR" + alphaR + "K" + K + "R" + R + ".txt";
+                mzFile = "mz_aZ" + alphaZ + "K" + K + "l" + l + ".txt";
                 preapareMr();
                 preapareMz();
             }
@@ -124,13 +115,10 @@ namespace DiplomWPF.Common
                     return;
                 }
             }
-
             Function mrf = new MkrFunction(alphaR, K, R);
             mrArr = CommonHelper.findM(mrFile, findN, mrf, eps);
             mr = mrArr[1];
         }
-
-
 
         public void preapareMz()
         {
@@ -146,9 +134,7 @@ namespace DiplomWPF.Common
             Function mnf = new MnzFunction(l, alphaZ, K);
             mzArr = CommonHelper.findM(mzFile, findN, mnf, eps);
             mz = mzArr[1];
-
         }
-
 
         public void initializeGraphics(ChartPlotter chartUZPlotter, ChartPlotter chartURPlotter, ChartPlotter chartUTimePlotter)
         {
@@ -159,25 +145,8 @@ namespace DiplomWPF.Common
 
         public virtual void initialize(float P, float alphaR, float alphaZ, float R, float l, float K, float c, float beta, float T, Int32 N, Int32 I, Int32 J)
         {
-            this.P = P;
-            this.alphaR = alphaR;
-            this.alphaZ = alphaZ;
-            this.R = R;
-            this.l = l;
-            this.K = K;
-            this.c = c;
-            this.beta = beta;
-            this.T = T;
-            this.N = N;
-            this.I = I;
-            this.J = J;
-            this.maxTemperature = 0;
-            this.minTemperature = Int32.MaxValue;
-            this.a = 0.15F * R;
-            this.hr = R / I;
-            this.hz = l / J;
-            this.ht = T / N;
-            progressBarMax = N;
+            initializeSchema(I, J, N);
+            initializeParams(P, alphaR, alphaZ, R, l, K, c, beta, T);
         }
 
         public virtual void initializeParams(float P, float alphaR, float alphaZ, float R, float l, float K, float c, float beta, float T)
@@ -210,6 +179,7 @@ namespace DiplomWPF.Common
             this.hz = l / J;
             this.ht = T / N;
             progressBarMax = N;
+            if (values != null) values.clear();
 
         }
 
@@ -234,6 +204,37 @@ namespace DiplomWPF.Common
             initValues();
         }
 
+        public virtual int getNextI(double koef)
+        {
+            return I;
+        }
+
+        public virtual int getNextJ(double koef)
+        {
+            return J;
+        }
+
+        public virtual int getNextN(double koef)
+        {
+            return N;
+        }
+
+        public virtual int getPrevI(double koef)
+        {
+            return I;
+        }
+
+        public virtual int getPrevJ(double koef)
+        {
+            return J;
+        }
+
+        public virtual int getPrevN(double koef)
+        {
+            return N;
+        }
+
+
         public virtual void executeProcess(object parameters)
         {
             initValues();
@@ -254,6 +255,7 @@ namespace DiplomWPF.Common
             chartUR = null;
             chartUZ = null;
             chartUTime = null;
+            if (values != null) values.clear();
         }
 
         public float getPoint(float r, float z, float t)

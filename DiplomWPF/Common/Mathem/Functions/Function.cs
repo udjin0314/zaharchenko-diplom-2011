@@ -7,6 +7,6 @@ namespace DiplomWPF.Common.Mathem.Functions
 {
     public interface Function
     {
-        double resolve(double param);
+        float resolve(float param);
     }
 }

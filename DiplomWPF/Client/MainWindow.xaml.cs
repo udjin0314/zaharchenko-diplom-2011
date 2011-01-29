@@ -50,6 +50,8 @@ namespace DiplomWPF
 
         private int comparatorsValue = 0;
 
+        public static Boolean withSameProcess = false;
+
         public MainWindow()
         {
 
@@ -61,7 +63,7 @@ namespace DiplomWPF
 
             initializeGraphics();
 
-            MatrixWriter.createFile(); 
+            MatrixWriter.createFile();
 
             _timer = new DispatcherTimer();
             _timer.Tick += new EventHandler(delegate(object s, EventArgs a)
@@ -381,26 +383,25 @@ namespace DiplomWPF
             float r = (float)Double.Parse(approxRParam.Text);
             float z = (float)Double.Parse(approxZParam.Text);
             float t = (float)Double.Parse(approxTParam.Text);
-            Int32 maxSize = Int32.Parse(approxMaxSParam.Text);
-            Int32 minSize = Int32.Parse(approxMinSParam.Text);
-            Int32 shag = Int32.Parse(shagTextBox.Text);
+            float koef = (float)Double.Parse(koefTextBox.Text);
+            Int32 numberExperiments = Int32.Parse(numberExperimentsText.Text);
             int mode = 0;
-            if (radioButtonR.IsChecked == true) mode = 0;
-            if (radioButtonZ.IsChecked == true) mode = 1;
-            if (radioButtonT.IsChecked == true) mode = 2;
+            if (UpRadioButton.IsChecked == true) mode = 0;
+            if (DownRadioButton.IsChecked == true) mode = 1;
             if (comparators != null) foreach (SchemaComparator comparator in comparators)
                 {
                     comparator.chartComparator.delete();
                 }
             comparatorsPool = new DThreadPool();
             comparators = new List<SchemaComparator>();
-            comparatorProgressBar.Maximum = (maxSize - minSize) / shag * processControls.Count - 1;
+            comparatorProgressBar.Maximum = numberExperiments+1;
+            if (!paramProcess.isExecuted) paramProcess.executeProcess();
             foreach (ProcessControl prCtrl in processControls)
             {
                 AbstractProcess process = prCtrl.process;
-                if (process != paramProcess)
+                if (process != paramProcess || withSameProcess)
                 {
-                    SchemaComparator comparator = new SchemaComparator(paramProcess, process, minSize, maxSize, shag, r, z, t, mode);
+                    SchemaComparator comparator = new SchemaComparator(paramProcess, process, numberExperiments, koef, mode, r, z, t);
                     comparator.initializeGraphics(comparatorChartPlotter);
                     comparators.Add(comparator);
                     Thread thread = new Thread(new ParameterizedThreadStart(comparator.execute));
@@ -412,6 +413,17 @@ namespace DiplomWPF
 
             }
 
+
+        }
+
+        private void OpenTable_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
+        {
+            foreach (SchemaComparator comp in comparators)
+            {
+                ComparatorDataWindow comparatorDataWindow = new ComparatorDataWindow(comp.compData);
+                comparatorDataWindow.Title = comp.comparatorName;
+                comparatorDataWindow.ShowDialog();
+            }
         }
     }
 

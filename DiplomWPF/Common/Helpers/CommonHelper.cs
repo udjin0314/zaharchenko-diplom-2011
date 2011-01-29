@@ -22,7 +22,7 @@ namespace DiplomWPF.Common.Helpers
             }
         }
 
-        public static List<Double> findM(String filename, Int32 size, Function func, double eps, int firstEl = 0)
+        public static List<Double> findM(String filename, Int32 size, Function func, float eps, int firstEl = 0)
         {
             int i = 0;
             List<Double> targetList = new List<Double>();
@@ -32,9 +32,9 @@ namespace DiplomWPF.Common.Helpers
                 i++;
             }
             i = 0;
-            double interval = 0.01;
-            double first = 0;
-            double last = 0;
+            float interval = 1.0f;
+            float first = 0;
+            float last = 0;
             Dihotomy mzDihotomy = new Dihotomy(func, eps);
             double value = -200;
             while (i < size)

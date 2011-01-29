@@ -7,22 +7,22 @@ namespace DiplomWPF.Common.Mathem.Functions
 {
     public class ResolveMkrFunction : Function
     {
-        double P;
-        double a;
-        double r;
-        double R;
+        float P;
+        float a;
+        float r;
+        float R;
 
-        public ResolveMkrFunction(double P,double a,double R,double r)
+        public ResolveMkrFunction(float P, float a, float R, float r)
         {
             this.P = P;
             this.a = a;
             this.R = R;
             this.r = r;
         }
-        
-        public double resolve(double param)
+
+        public float resolve(float param)
         {
-            return P / (Math.PI * a * a) * Math.Exp(-(r * r / (a * a)))-MathHelper.bessel0(param*r/R);
+            return (float)(P / (Math.PI * a * a) * Math.Exp(-(r * r / (a * a)))-MathHelper.bessel0(param*r/R));
         }
     }
 }

@@ -7,16 +7,16 @@ namespace DiplomWPF.Common.Mathem.Functions
 {
     class VnzFunction: Function
     {
-        private double mnz;
+        private float mnz;
 
-        public VnzFunction(double mnz)
+        public VnzFunction(float mnz)
         {
             this.mnz = mnz;
         }
-        
-        public double resolve(double param)
+
+        public float resolve(float param)
         {
-            return Math.Cos(param * mnz); 
+            return (float)(Math.Cos(param * mnz)); 
         }
     }
     
