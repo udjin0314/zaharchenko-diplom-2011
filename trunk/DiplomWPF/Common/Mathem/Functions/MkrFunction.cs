@@ -7,20 +7,20 @@ namespace DiplomWPF.Common.Mathem.Functions
 {
     public class MkrFunction : Function
     {
-        double alphar;
-        double K;
-        double R;
+        float alphar;
+        float K;
+        float R;
 
-        public MkrFunction(double alphar, double K, double R)
+        public MkrFunction(float alphar, float K, float R)
         {
             this.alphar = alphar;
             this.K = K;
             this.R = R;
         }
 
-        public double resolve(double param)
+        public float resolve(float param)
         {
-            return alphar * R / K * MathHelper.bessel0(param) - param * MathHelper.bessel1(param);
+            return (float)(alphar * MathHelper.bessel0(param) / K - param * MathHelper.bessel1(param));
         }
     }
 }

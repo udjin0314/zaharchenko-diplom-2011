@@ -11,16 +11,16 @@ namespace DiplomWPF.Common.Mathem.Functions
         private double alphaz;
         private double K;
 
-        public MnzFunction(double l,double alphaz,double K)
+        public MnzFunction(float l, float alphaz, float K)
         {
             this.l = l;
             this.alphaz = alphaz;
             this.K = K;
         }
-        
-        public double resolve(double param)
+
+        public float resolve(float param)
         {
-            return Math.Cos(param * l) * 2 * alphaz / K * param - Math.Sin(param * l) * (param * param - alphaz / K * alphaz / K);
+            return (float)(Math.Cos(param * l) * 2 * alphaz / K * param - Math.Sin(param * l) * (param * param - alphaz / K * alphaz / K));
         }
     }
 }

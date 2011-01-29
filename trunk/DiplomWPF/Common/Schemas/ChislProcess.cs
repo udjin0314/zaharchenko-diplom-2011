@@ -11,7 +11,6 @@ namespace DiplomWPF.Common
 {
     class ChislProcess : AbstractProcess
     {
-        public static String FILE_NAME = "log.txt";
         protected float gammaZ = 0;
         protected float gamma = 0;
         protected float sigm = 0;
@@ -19,17 +18,12 @@ namespace DiplomWPF.Common
         protected float[,] tempLayer;
 
         public ChislProcess(String name, Brush brush)
-            : base(name, brush)
-        {
-        }
+            : base(name, brush){}
 
         public override void initialize(float P, float alphaR, float alphaZ, float R, float l, float K, float c, float beta, float T, Int32 N, Int32 I, Int32 J)
         {
             base.initialize(P, alphaR, alphaZ, R, l, K, c, beta, T, N, I, J);
-            gamma = ht * K / (2 * hr * hr);
-            gammaZ = ht * K / (2 * hz * hz);
-            sigm = 2 * gamma * (1 + (1 + (float)1 / (2 * I)) * hr * alphaR / K);
-            sigmZ = 2 * gammaZ * (hz * alphaZ / K + 1);
+            initializeParams(P, alphaR, alphaZ, R, l, K, c, beta, T);
         }
 
         public override void initializeParams(float P, float alphaR, float alphaZ, float R, float l, float K, float c, float beta, float T)
@@ -44,77 +38,50 @@ namespace DiplomWPF.Common
         public virtual void executeAlg()
         {
             float[,] Gsh = prepareMatrixG();
-            //MatrixWriter.writeMatrixToFile("G", Gsh, I + 1, J + 1);
             tempLayer = MatrixHelper.getStdMatrix(I + 1, J + 1);
             float[,] Fr = prepareFr();
-            //MatrixWriter.writeVectorAsString("Fr A", MatrixHelper.getMainDiag(Fr, I + 1), I + 1, true);
-            //MatrixWriter.writeVectorAsString("Fr B", MatrixHelper.getHighDiag(Fr, I + 1), I, true);
-            //MatrixWriter.writeVectorAsString("Fr C", MatrixHelper.getLowDiag(Fr, I + 1), I, true);
             float[,] FFl = prepareFFl();
-            //MatrixWriter.writeVectorAsString("FFl A", MatrixHelper.getMainDiag(FFl, J + 1), J + 1, true);
-            //MatrixWriter.writeVectorAsString("FFl B", MatrixHelper.getHighDiag(FFl, J + 1), J, true);
-            //MatrixWriter.writeVectorAsString("FFl C", MatrixHelper.getLowDiag(FFl, J + 1), J, true);
             for (int n = 0; n <= N - 1; n++)
             {
                 float[,] Fl = prepareFl(tempLayer);
-                //if (n==1) MatrixWriter.writeMatrixToFile("Fl n=" + n, Fl, I + 1, J + 1);
                 float[,] B = prepareB(Fl, Gsh, -1);
-                //if (n == 0) MatrixWriter.writeMatrixToFile("B1 n=" + n, B, I + 1, J + 1);
                 for (int j = 0; j <= J; j++)
                 {
                     float[] Bloc = MatrixHelper.getCol(B, j, I + 1);
                     float[] Prloc = MatrixHelper.progonka(Fr, Bloc, I + 1);
                     MatrixHelper.setCol(tempLayer, Prloc, j, I + 1);
-
                 }
-                //if (n == 0) MatrixWriter.writeMatrixToFile("tempLayer1 n=" + n, tempLayer, I + 1, J + 1);
                 Fl = prepareFFr(tempLayer);
-                //MatrixWriter.writeMatrixToFile("FFr n=" + n, Fl, I + 1, J + 1);
                 B = prepareB(Fl, Gsh, 1);
-                //MatrixWriter.writeMatrixToFile("B2 n=" + n, B, I + 1, J + 1);
-
                 for (int i = 0; i <= I; i++)
                 {
                     float[] Bloc = MatrixHelper.getRow(B, i, J + 1);
                     float[] Prloc = MatrixHelper.progonka(FFl, Bloc, J + 1);
                     MatrixHelper.setRow(tempLayer, Prloc, i, J + 1);
-
                 }
-                //MatrixWriter.writeMatrixToFile("tempLayer2 n=" + n, tempLayer, I + 1, J + 1);
                 copyToProc(tempLayer, n + 1);
             }
         }
 
         public override void executeProcess()
         {
-            //execute();
             swInit.Start();
             base.executeProcess();
             swInit.Stop(); swCompute.Start();
             executeAlg();
             swCompute.Stop();
             isExecuted = true;
-
         }
 
         public override void executeProcess(object parameters)
         {
-            //execute();
             swInit.Start();
             base.executeProcess(parameters);
             swInit.Stop(); swCompute.Start();
             executeAlg();
             swCompute.Stop();
             isExecuted = true;
-
-
         }
-
-
-
-        
-
-
 
         protected float[,] prepareMatrixG()
         {
@@ -130,10 +97,6 @@ namespace DiplomWPF.Common
                    
             return A;
         }
-
-
-
-
 
         protected float[,] prepareB(float[,] A1, float[,] A2, int koef)
         {
@@ -220,7 +183,48 @@ namespace DiplomWPF.Common
                 Fr[i, i + 1] = -gammaZ;
             }
             return Fr;
+        }
 
+        public override int getNextI(double koef)
+        {
+            double hr2 = hr / koef;
+            Int32 I2 = (int)Math.Round(R / hr2);
+            return I2;
+        }
+
+        public override int getNextJ(double koef)
+        {
+            double hz2 = hz / koef;
+            Int32 J2 = (int)Math.Round(l / hz2);
+            return J2;
+        }
+
+        public override int getNextN(double koef)
+        {
+            double ht2 = ht / koef;
+            Int32 N2 = (int)Math.Round(T / ht2);
+            return N2;
+        }
+
+        public override int getPrevI(double koef)
+        {
+            double hr2 = koef * hr;
+            Int32 I2 = (int)Math.Round(R / hr2);
+            return I2;
+        }
+
+        public override int getPrevJ(double koef)
+        {
+            double hz2 = koef * hz;
+            Int32 J2 = (int)Math.Round(l / hz2);
+            return J2;
+        }
+
+        public override int getPrevN(double koef)
+        {
+            double ht2 = koef * ht;
+            Int32 N2 = (int)Math.Round(T / ht2);
+            return N2;
         }
 
         protected void copyToProc(float[,] res, int n)
@@ -228,19 +232,13 @@ namespace DiplomWPF.Common
             for (int j = 0; j <= J; j++)
                 for (int i = 0; i <= I; i++)
                 {
-                    //values[i, j, n] = res[i, j];
                     setPoint(i * hr, j * hz, n * ht, res[i, j]);
                     if (res[i, j] > maxTemperature)
                         maxTemperature = res[i, j];
                     if (res[i, j] < minTemperature)
                         minTemperature = res[i, j];
                 }
-            //if (handler != null) handler();
             if (handler != null) handler.DynamicInvoke();
-
         }
-
-
-
     }
 }

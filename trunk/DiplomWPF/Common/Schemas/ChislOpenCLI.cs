@@ -13,7 +13,7 @@ namespace DiplomWPF.Common.Schemas
 {
     class ChislOpenCLI : ChislProcess
     {
-        public static String KERNEL_FILE = "Common/Schemas/OpenCL/PismenRekford.cpp";
+        public static String KERNEL_FILE = "Common/Schemas/OpenCL/PismenRekford.cl";
         private ComputeContext context;
         private ComputeProgram program;
         private ComputeCommandQueue commands;
@@ -64,9 +64,7 @@ namespace DiplomWPF.Common.Schemas
         public ComputeDevice Device { get; set; }
 
         public ChislOpenCLI(String name, Brush brush)
-            : base(name, brush)
-        {
-        }
+            : base(name, brush){}
 
         public void findOptimalLocalWorkers()
         {
@@ -80,7 +78,6 @@ namespace DiplomWPF.Common.Schemas
             localWorkersIJ = new long[] { locWI, locWJ };
             localWorkers3I = new long[] { locW3I };
             localWorkers3J = new long[] { locW3J };
-
         }
 
         public void InitPrograms()
@@ -90,10 +87,7 @@ namespace DiplomWPF.Common.Schemas
             program = new ComputeProgram(context, System.IO.File.ReadAllText(KERNEL_FILE));
             program.Build(new[] { Device }, "", null, IntPtr.Zero);
             commands = new ComputeCommandQueue(context, Device, ComputeCommandQueueFlags.None);
-            //events = new Collection<ComputeEventBase>();
             events = null;
-
-            // I am specifying the first device, the original example did not, but it does not make a difference in performance.
             kernelFirst = program.CreateKernel("firstrun");
             kernelSecond = program.CreateKernel("secondrun");
             kernelG = program.CreateKernel("prepareMatrixG");
@@ -103,7 +97,6 @@ namespace DiplomWPF.Common.Schemas
             kernelFFr = program.CreateKernel("prepareFFr");
             kernelBFirst = program.CreateKernel("prepareBFirst");
             kernelBSecond = program.CreateKernel("prepareBSecond");
-
         }
 
         public void SetArgumentsToKernels()
@@ -232,7 +225,6 @@ namespace DiplomWPF.Common.Schemas
 
         public void CleanupPrograms()
         {
-            // Empty catches are just for testing purposes.
             kernelFirst.Dispose();
             kernelSecond.Dispose();
             kernelFFr.Dispose();
@@ -378,67 +370,89 @@ namespace DiplomWPF.Common.Schemas
             int maxI = I + 1;
             int maxJ = J + 1;
             prepareMatrixGCl();
-            //MatrixWriter.writeMatrixToFile("G CL", MatrixHelper.VectorToMatrix(commands.Read<float>(GCl, events),ref maxI, ref maxJ), I + 1, J + 1);
             prepareFrCl();
-            //MatrixWriter.writeVectorAsString("FrA CL", commands.Read<float>(FrACl, null), I + 1,true);
-            //MatrixWriter.writeVectorAsString("FrB CL", commands.Read<float>(FrBCl, events), I, true);
-            //MatrixWriter.writeVectorAsString("FrC CL", commands.Read<float>(FrCCl, null), I, true);
             prepareFFlCl();
-            //MatrixWriter.writeVectorAsString("FFlA CL", commands.Read<float>(FFlACl, events), J + 1,true);
-            //MatrixWriter.writeVectorAsString("FFlB CL", commands.Read<float>(FFlBCl, events), J, true);
-            //MatrixWriter.writeVectorAsString("FFlC CL", commands.Read<float>(FFlCCl, events), J, true);
             for (int n = 0; n <= N - 1; n++)
             {
-
-
                 prepareFlCl();
-                //if (n == 1) MatrixWriter.writeMatrixToFile("Fl CL n=" + n, MatrixHelper.VectorToMatrix(commands.Read<float>(FCl, events), ref maxI, ref maxJ), maxI, maxJ);
                 prepareBFirstCl();
-                //if (n == 0) MatrixWriter.writeMatrixToFile("B1 CL n=" + n, MatrixHelper.VectorToMatrix(commands.Read<float>(FCl, events), ref maxI, ref maxJ), maxI, maxJ);
-
                 runFirstKernel();
-                //if (n == 0) MatrixWriter.writeMatrixToFile("tempLayer1 CL n=" + n, MatrixHelper.VectorToMatrix(commands.Read<float>(tempLayerCl, events), ref maxI, ref maxJ), maxI, maxJ);
                 prepareFFrCl();
-                //MatrixWriter.writeMatrixToFile("FFr CL n=" + n, Fl, I + 1, J + 1);
                 prepareBSecondCl();
-                //MatrixWriter.writeMatrixToFile("B2 CL n=" + n, B, I + 1, J + 1);
                 tempLayer = runSecondKernel();
-                //MatrixWriter.writeMatrixToFile("tempLayer2 CL n=" + n, tempLayer, I + 1, J + 1);
-
-                /*commands.Write<float>(FrACl, FrA, events);
-                commands.Write<float>(FFlACl, FFlA, events);*/
-
                 copyToProc(tempLayer, n + 1);
             }
         }
 
         public override void executeProcess()
         {
-            //execute();
             swInit.Start();
             initValues();
             executeOpenCLKernel();
             isExecuted = true;
-
         }
 
         public override void executeProcess(object parameters)
         {
-            //execute();
             swInit.Start();
             initValues();
             handler = (DiplomWPF.ProcessControl.increaseProgressBar)parameters;
             executeOpenCLKernel();
             isExecuted = true;
+        }
 
+        public override int getNextI(double koef)
+        {
+            double hr2 = hr / koef;
+            Int32 I2 = (int)Math.Round(R/hr2);
+            return I2;
+        }
 
+        public override int getNextJ(double koef)
+        {
+            double hz2 = hz / koef;
+            Int32 J2 = (int)Math.Round(l / hz2);
+            return J2;
+        }
+
+        public override int getNextN(double koef)
+        {
+            double ht2 = ht / koef;
+            Int32 N2 = (int)Math.Round(T / ht2);
+            return N2;
+        }
+
+        public override int getPrevI(double koef)
+        {
+            double hr2 = koef * hr;
+            Int32 I2 = (int)Math.Round(R / hr2);
+            return I2;
+        }
+
+        public override int getPrevJ(double koef)
+        {
+            double hz2 = koef * hz;
+            Int32 J2 = (int)Math.Round(l / hz2);
+            return J2;
+        }
+
+        public override int getPrevN(double koef)
+        {
+            double ht2 = koef * ht;
+            Int32 N2 = (int)Math.Round(T / ht2);
+            return N2;
+        }
+
+        public override void delete()
+        {
+            CleanupPrograms();
+            base.delete();
         }
 
         protected void executeOpenCLKernel()
         {
             try
             {
-                
                 System.IO.File.WriteAllText("logCL.txt", "");
                 InitPrograms();
                 SetArgumentsToKernels();
@@ -469,11 +483,6 @@ namespace DiplomWPF.Common.Schemas
                 }
                 System.IO.File.AppendAllLines("logCL.txt", lineList.ToArray());
             }
-
-
         }
-
-
-
     }
 }

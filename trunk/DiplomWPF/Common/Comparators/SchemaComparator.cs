@@ -16,13 +16,18 @@ namespace DiplomWPF.Common.Comparators
         public AbstractProcess mainProc { get; set; }
         public AbstractProcess comparableProc { get; set; }
 
+        DiplomWPF.MainWindow.increaseComparatorProgressBar handler;
+
         private int mode = 0;
 
         public Double[,] values { get; set; }
 
-        public Int32 maxSchemaSize { get; set; }
-        public Int32 minSchemaSize { get; set; }
-        public Int32 shag { get; set; }
+        public List<ComparatorData> compData { get; set; }
+
+        public float value { get; set; }
+        public Boolean withSameProcess = MainWindow.withSameProcess;
+
+        public float shagExp { get; set; }
 
         public float r { get; set; }
         public float z { get; set; }
@@ -31,7 +36,7 @@ namespace DiplomWPF.Common.Comparators
         private int globN = MainWindow.globN;
 
         private bool executed = false;
-        public Int32 pointsN { get; set; }
+        public Int32 numberExperiments { get; set; }
 
         public Boolean isExecuted()
         {
@@ -43,7 +48,7 @@ namespace DiplomWPF.Common.Comparators
             this.comparatorName = mainProc.processName + " - " + comparableProc.processName;
             this.brush = comparableProc.brush;
             this.mainProc = mainProc;
-            this.comparableProc = comparableProc;
+            if (comparableProc != null) this.comparableProc = comparableProc;
         }
 
         public void initializeGraphics(ChartPlotter chartComparatorPlotter)
@@ -51,20 +56,18 @@ namespace DiplomWPF.Common.Comparators
             chartComparator = new ComparatorChart(chartComparatorPlotter);
         }
 
-        public SchemaComparator(AbstractProcess mainProc, AbstractProcess comparableProc, Int32 minSchemaSize, Int32 maxSchemaSize, Int32 shag, float r, float z, float t, int mode)
+        public SchemaComparator(AbstractProcess mainProc, AbstractProcess comparableProc, Int32 numberExperiments, float shag, int mode, float r, float z, float t)
         {
             this.comparatorName = mainProc.processName + " - " + comparableProc.processName;
             this.brush = comparableProc.brush;
             this.mainProc = (AbstractProcess)mainProc.Clone();
-            this.comparableProc = (AbstractProcess)comparableProc.Clone();
-            this.minSchemaSize = minSchemaSize;
-            this.maxSchemaSize = maxSchemaSize;
-            this.shag = shag;
+            if (comparableProc != null) this.comparableProc = (AbstractProcess)comparableProc.Clone();
+            this.shagExp = shag;
             this.r = r;
             this.z = z;
             this.t = t;
+            this.numberExperiments = numberExperiments;
             this.mode = mode;
-            this.pointsN = (Int32)(Math.Round((double)(maxSchemaSize - minSchemaSize)) / shag);
 
         }
 
@@ -74,38 +77,73 @@ namespace DiplomWPF.Common.Comparators
             executed = true;
         }
 
-        public void processSchemaParam(Int32 schemParameter, int i)
+
+        public void processSchema(int exp)
         {
-            if (mode == 0) comparableProc.initializeSchema(schemParameter, comparableProc.J, comparableProc.N);
-            if (mode == 1) comparableProc.initializeSchema(comparableProc.I, schemParameter, comparableProc.N);
-            if (mode == 2) comparableProc.initializeSchema(comparableProc.I, comparableProc.J, schemParameter);
-            comparableProc.executeProcess();
-            values[i, 0] = schemParameter;
-            values[i, 1] = Math.Abs(mainProc.getPoint(r, z, t) - comparableProc.getPoint(r, z, t));
+            Int32 I = comparableProc.I;
+            Int32 J = comparableProc.J;
+            Int32 N = comparableProc.N;
+            if (exp != 0)
+            {
+
+
+                if (mode == 0)
+                {
+                    I = comparableProc.getNextI(shagExp);
+                    J = comparableProc.getNextJ(shagExp);
+                    N = comparableProc.getNextN(shagExp);
+                }
+                else
+                {
+                    I = comparableProc.getPrevI(shagExp);
+                    J = comparableProc.getPrevJ(shagExp);
+                    N = comparableProc.getPrevN(shagExp);
+                }
+                comparableProc.values.clear();
+                comparableProc.initialize(mainProc.P, mainProc.alphaR, mainProc.alphaZ, mainProc.R, mainProc.l, mainProc.K, mainProc.c, mainProc.beta, mainProc.T, N, I, J);
+                //comparableProc.initializeSchema(I, J, N);
+            }
+            else if (withSameProcess) value = comparableProc.getPoint(r, z, t);
+            if ((withSameProcess && exp != 0) || !withSameProcess)
+            {
+                if (withSameProcess) exp = exp - 1;
+                comparableProc.executeProcess();
+                //values[exp, 0] = I * J * N;
+                values[exp, 0] = Math.Pow(shagExp,exp);
+                values[exp, 1] = Math.Abs(value - comparableProc.getPoint(r, z, t));
+                compData.Add(new ComparatorData(exp + 1, value, comparableProc.getPoint(r, z, t), (float)values[exp, 1], comparableProc.R / I, comparableProc.l / J, comparableProc.T / N, r, z, t));
+                if (withSameProcess) value = comparableProc.getPoint(r, z, t);
+            }
+        }
+
+        public Int32 getMaxIterations()
+        {
+            int maxit = 0;
+            for (int i = 0; i < numberExperiments; i++)
+            {
+                maxit = maxit + comparableProc.getNextI(shagExp) * comparableProc.getNextJ(shagExp) * comparableProc.getNextN(shagExp);
+            }
+            return maxit;
         }
 
         public void execute()
         {
-            if (!mainProc.isExecuted) mainProc.executeProcess();
-
-            values = new Double[pointsN + 1, 2];
-            for (int i = 0; i <= pointsN; i++)
-            {
-                Int32 schemParameter = i * shag + minSchemaSize;
-                processSchemaParam(schemParameter, i);
-            }
+            execute(null);
         }
 
         public void execute(object parameters)
         {
-            DiplomWPF.MainWindow.increaseComparatorProgressBar handler = (DiplomWPF.MainWindow.increaseComparatorProgressBar)parameters;
-            if (!mainProc.isExecuted) mainProc.executeProcess();
-            values = new Double[pointsN + 1, 2];
-            for (int i = 0; i <= pointsN; i++)
+            compData = new List<ComparatorData>();
+            handler = (DiplomWPF.MainWindow.increaseComparatorProgressBar)parameters;
+            values = new Double[numberExperiments + 1, 2];
+            value = mainProc.getPoint(r, z, t);
+            if (withSameProcess) comparableProc = mainProc;
+            int points = numberExperiments;
+            if (withSameProcess) points++;
+            for (int i = 0; i < points; i++)
             {
-                Int32 schemParameter = i * shag + minSchemaSize;
-                processSchemaParam(schemParameter, i);
-                handler();
+                processSchema(i);
+                if (handler != null) handler();
             }
         }
 

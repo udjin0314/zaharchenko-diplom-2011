@@ -126,9 +126,13 @@
     <Compile Include="Client\Components\AddProcess.xaml.cs">
       <DependentUpon>AddProcess.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Client\Components\ComparatorDataWindow.xaml.cs">
+      <DependentUpon>ComparatorDataWindow.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Client\UI\Chart2D.cs" />
     <Compile Include="Client\UI\ComparatorChart.cs" />
     <Compile Include="Client\UI\Graph3D.cs" />
+    <Compile Include="Common\Comparators\ComparatorData.cs" />
     <Compile Include="Common\Comparators\SchemaComparator.cs" />
     <Compile Include="Common\Helpers\CommonHelper.cs" />
     <Compile Include="Common\Mathem\Dihotomy.cs" />
@@ -155,6 +159,10 @@
     <Compile Include="Common\Schemas\ChislOpenCLI.cs" />
     <Compile Include="Common\Schemas\YavnSchema.cs" />
     <Page Include="Client\Components\AddProcess.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Client\Components\ComparatorDataWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -196,9 +204,9 @@
     </EmbeddedResource>
     <None Include="app.config" />
     <Resource Include="Client\UI\icon.png" />
-    <Content Include="Common\Schemas\OpenCL\PismenRekford.cpp">
+    <None Include="Common\Schemas\OpenCL\PismenRekford.cl">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
+    </None>
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>

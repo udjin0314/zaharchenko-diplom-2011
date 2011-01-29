@@ -4,6 +4,7 @@ using DiplomWPF.Common;
 using Microsoft.Research.DynamicDataDisplay;
 using System.Windows.Media;
 using Microsoft.Research.DynamicDataDisplay.Charts.Navigation;
+using Microsoft.Research.DynamicDataDisplay.PointMarkers;
 
 namespace DiplomWPF.Client.UI
 {
@@ -54,6 +55,8 @@ namespace DiplomWPF.Client.UI
             xSrc.SetXMapping(x => x);
             chartYDataSource = new EnumerableDataSource<float>(chartY);
             chartYDataSource.SetYMapping(y => y);
+            chartYDataSource.AddMapping(ShapeElementPointMarker.ToolTipTextProperty,
+                y => String.Format("Value is {0}", y));
             addGraph();
         }
 
@@ -104,7 +107,7 @@ namespace DiplomWPF.Client.UI
                     chartX[j] = j * process.l / globN;
                     int jint = j * process.J / globN;
 
-                    float diff = (float)globN / process.Jpv;
+                    //float diff = (float)globN / process.J;
                     float z = process.getPoint((float)Rk, jint * process.hz, (float)Rn);
                     if ((jint != process.J))
                     {

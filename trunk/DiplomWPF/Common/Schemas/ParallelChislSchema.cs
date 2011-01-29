@@ -10,13 +10,10 @@ namespace DiplomWPF.Common.Schemas
 {
     class ParallelChislSchema : ChislProcess
     {
-
         public int threadsN { get; set; }
 
         public ParallelChislSchema(String name, Brush brush)
-            : base(name, brush)
-        {
-        }
+            : base(name, brush){}
 
         protected void firstrun(object parameters)
         {

@@ -21,7 +21,6 @@ namespace DiplomWPF.Common
 
         public override void executeProcess()
         {
-            //execute();
             swInit.Start();
             base.executeProcess();
             swInit.Stop(); swCompute.Start();
@@ -33,7 +32,6 @@ namespace DiplomWPF.Common
 
         public override void executeProcess(object parameters)
         {
-            //execute();
             swInit.Start();
             base.executeProcess(parameters);
             swInit.Stop(); swCompute.Start();
@@ -56,7 +54,6 @@ namespace DiplomWPF.Common
 
         public void executeAlg()
         {
-            //init();
             for (int i = 0; i <= I; i++)
             {
                 for (int j = 0; j <= J; j++)
@@ -65,14 +62,15 @@ namespace DiplomWPF.Common
                     {
                         float res = findU(n * ht, i * hr, j * hz);
                         setPoint(i * hr, j * hz, n * ht, res);
-                        //values[i, j, n] = res;
                         if (res > maxTemperature) maxTemperature = res;
                         if (res < minTemperature) minTemperature = res;
-                        handler();
+                        if (handler!=null) handler();
                     }
                 }
             }
         }
 
+
+        
     }
 }
